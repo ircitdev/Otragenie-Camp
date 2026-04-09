@@ -24,12 +24,12 @@ const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale =
 );
 
 const Button = ({ variant = 'brown', href, children, className = '', onClick, type }: any) => {
-  const base = "inline-flex items-center justify-center gap-2 font-sans text-[0.75rem] tracking-[0.12em] uppercase px-8 py-3.5 font-semibold rounded-full transition-all duration-500 relative overflow-hidden text-center group";
+  const base = "inline-flex items-center justify-center gap-2 font-sans text-[0.75rem] tracking-[0.1em] uppercase px-8 py-3.5 font-semibold rounded-full transition-all duration-500 relative overflow-hidden text-center group hover:scale-[1.02] active:scale-[0.98]";
   const variants: any = {
-    'brown': "bg-brown text-white hover:bg-brown-dark hover:shadow-[0_8px_25px_rgba(154,125,90,0.35)] hover:-translate-y-0.5",
-    'olive': "bg-[#5c6b5e] text-white hover:bg-[#4a574b] hover:shadow-[0_8px_25px_rgba(92,107,94,0.3)] hover:-translate-y-0.5",
-    'outline-light': "border border-white/30 text-white bg-transparent hover:bg-white/10 hover:border-white/60 hover:-translate-y-0.5",
-    'outline-dark': "border border-brown text-brown bg-transparent hover:bg-brown hover:text-white hover:-translate-y-0.5",
+    'brown': "bg-brown text-white hover:bg-brown-dark hover:shadow-[0_8px_25px_rgba(154,125,90,0.35)]",
+    'olive': "bg-[#5c6b5e] text-white hover:bg-[#4a574b] hover:shadow-[0_8px_25px_rgba(92,107,94,0.3)]",
+    'outline-light': "border border-white/30 text-white bg-transparent hover:bg-white/10 hover:border-white/60",
+    'outline-dark': "border border-brown text-brown bg-transparent hover:bg-brown hover:text-white",
     'ghost': "text-brown hover:bg-brown/5"
   };
   const cls = `${base} ${variants[variant]} ${className}`;
@@ -573,7 +573,7 @@ const Authors = ({ onOpenModal }: any) => (
 );
 
 const Location = () => (
-  <section id="location" className="py-20 md:py-24 bg-[#f3ede4] overflow-hidden">
+  <section id="location" className="py-24 md:py-32 bg-[#f3ede4] overflow-hidden">
     <div className="max-w-7xl mx-auto px-6 md:px-12">
       <div className="grid lg:grid-cols-12 gap-16 items-start">
         {/* Left Column: Text and Features */}
@@ -695,7 +695,7 @@ const Testimonials = () => {
   }, [isLoading]);
 
   return (
-    <section id="testimonials" ref={sectionRef} className="relative py-20 md:py-24 bg-white overflow-hidden">
+    <section id="testimonials" ref={sectionRef} className="relative py-24 md:py-32 bg-white overflow-hidden">
       {/* Parallax Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div 
@@ -873,7 +873,7 @@ const LeadMagnet = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className="py-20 md:py-24 bg-cream relative overflow-hidden">
+    <section className="py-24 md:py-32 bg-cream relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-brown/10 rounded-full blur-[100px]" />
@@ -1063,7 +1063,7 @@ const Pricing = ({ onOpenModal }: any) => {
   };
 
   return (
-    <section id="pricing" className="relative py-20 md:py-24 bg-white overflow-hidden">
+    <section id="pricing" className="relative py-24 md:py-32 bg-white overflow-hidden">
       {/* Paper Texture Overlay */}
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-multiply" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper-fibers.png")' }} />
       
@@ -1186,7 +1186,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-20 md:py-24 bg-cream">
+    <section className="py-24 md:py-32 bg-cream">
       <div className="max-w-3xl mx-auto px-6">
         <Reveal direction="up">
           <SectionHeading subtitle="Вопросы" title="Часто спрашивают" />
@@ -1224,7 +1224,7 @@ const FAQ = () => {
 };
 
 const Pains = () => (
-  <section id="pains" className="py-20 md:py-24 bg-white">
+  <section id="pains" className="py-24 md:py-32 bg-white">
     <div className="max-w-7xl mx-auto px-6 md:px-12">
       <Reveal direction="up">
         <SectionHeading subtitle="Проблематика" title="Почему вы здесь?" />
@@ -1261,9 +1261,9 @@ const Pains = () => (
 );
 
 const SystemProblem = () => (
-  <section className="relative py-20 md:py-24 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
+  <section className="relative py-24 md:py-32 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
     {/* Background Image Aligned to Left */}
-    <div className="absolute inset-0 z-0">
+    <Reveal direction="left" className="absolute inset-0 z-0">
       <img 
         src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg" 
         alt="Maya" 
@@ -1272,7 +1272,7 @@ const SystemProblem = () => (
       />
       {/* Subtle fade to background color */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f5f0eb]/20 to-[#f5f0eb]" />
-    </div>
+    </Reveal>
 
     <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
       <Reveal direction="up">
@@ -1497,9 +1497,9 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="relative py-20 md:py-24 bg-white overflow-hidden min-h-[80vh] flex items-center">
+  <section id="for-who" className="relative py-24 md:py-32 bg-white overflow-hidden min-h-[80vh] flex items-center">
     {/* Background Image Aligned to Left */}
-    <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0">
+    <Reveal direction="left" className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0">
       <img 
         src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya2.jpg" 
         alt="Maya and Roman" 
@@ -1508,7 +1508,7 @@ const ForWho = () => (
       />
       {/* Subtle fade to white on mobile/tablet */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-white lg:hidden" />
-    </div>
+    </Reveal>
 
     <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
       <div className="grid lg:grid-cols-12 gap-12">
@@ -1568,7 +1568,7 @@ const Counter = ({ value, suffix = '', duration = 2, delay = 0 }: { value: numbe
 };
 
 const Results = () => (
-  <section className="py-20 md:py-24 bg-navy text-white relative overflow-hidden">
+  <section className="py-24 md:py-32 bg-navy text-white relative overflow-hidden">
     {/* Background Image with Overlay */}
     <div className="absolute inset-0 z-0">
       <img 
@@ -1619,9 +1619,9 @@ const Results = () => (
 );
 
 const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="relative min-h-[80vh] flex items-center bg-[#fdfbf9] overflow-hidden py-20 md:py-24">
+  <section className="relative min-h-[80vh] flex items-center bg-[#fdfbf9] overflow-hidden py-24 md:py-32">
     {/* Background Image Aligned to Left */}
-    <div className="absolute inset-0 z-0">
+    <Reveal direction="left" className="absolute inset-0 z-0">
       <img 
         src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg" 
         alt="Maya and Roman" 
@@ -1630,7 +1630,7 @@ const FinalBlock = ({ onOpenModal }: any) => (
       />
       {/* Subtle fade to white */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-white" />
-    </div>
+    </Reveal>
 
     <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
       <Reveal direction="up">
