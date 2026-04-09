@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, animate } from 'motion/react';
-import { X, CheckCircle, ChevronRight, ChevronDown, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send } from 'lucide-react';
+import { X, CheckCircle, ChevronRight, ChevronDown, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send, MessageCircle } from 'lucide-react';
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
 import { VoiceAssistant } from './components/VoiceAssistant';
 
@@ -71,6 +71,37 @@ const SectionHeading = ({ subtitle, title, light = false, centered = true }: any
 
 // --- Sections ---
 
+const Preloader = ({ onComplete }: { onComplete: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onComplete();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      className="fixed inset-0 z-[999] bg-navy flex items-center justify-center"
+    >
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="text-center"
+      >
+        <h1 className="font-serif text-4xl md:text-6xl text-white tracking-widest mb-4">ОТРАЖЕНИЕ</h1>
+        <motion.div 
+          className="w-0 h-[1px] bg-brown mx-auto"
+          animate={{ width: "100%" }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Navbar = ({ onOpenModal }: any) => {
   const [scrolled, setScrolled] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
@@ -94,8 +125,9 @@ const Navbar = ({ onOpenModal }: any) => {
           : 'bg-transparent py-8'
     }`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#" className={`font-serif text-2xl tracking-widest transition-colors duration-500 ${isPastHero ? 'text-text-dark' : 'text-white'}`}>
+        <a href="#" className={`font-serif text-2xl tracking-widest transition-colors duration-500 flex items-center gap-3 ${isPastHero ? 'text-text-dark' : 'text-white'}`}>
           ОТРАЖЕНИЕ
+          <span className={`text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1 rounded-md font-sans font-bold border transition-colors duration-500 ${isPastHero ? 'border-brown text-brown' : 'border-white/40 text-white'}`}>camp</span>
         </a>
         <div className="hidden md:flex items-center gap-10">
           {['О кэмпе', 'Программа', 'Авторы', 'Тарифы'].map((item, i) => (
@@ -109,8 +141,8 @@ const Navbar = ({ onOpenModal }: any) => {
           ))}
         </div>
         <Button 
-          variant={isPastHero ? 'brown' : 'ghost'} 
-          className={`!px-6 !py-2.5 !text-[0.65rem] ${!isPastHero ? 'text-white border border-white/20 hover:bg-white/10' : ''}`}
+          variant={scrolled ? 'brown' : 'outline-light'} 
+          className="!px-6 !py-2.5 !text-[0.65rem]"
           onClick={onOpenModal}
         >
           Участвовать
@@ -466,7 +498,7 @@ const Authors = ({ onOpenModal }: any) => (
       <div className="text-center mb-24">
         <Reveal direction="down">
           <span className="text-[0.7rem] uppercase tracking-[0.5em] text-brown-light font-bold mb-8 block">Авторы программы</span>
-          <h2 className="font-serif text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.1] mb-8 max-w-4xl mx-auto">
+          <h2 className="font-serif text-[clamp(2rem,4vw,3.5rem)] leading-[1.1] mb-8 max-w-4xl mx-auto">
             Когда глубина встречается со стратегией — <span className="italic text-brown-light">происходят изменения</span>
           </h2>
           <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mx-auto">
@@ -1196,6 +1228,14 @@ const Pricing = ({ onOpenModal }: any) => {
             ))}
           </div>
         )}
+
+        <Reveal direction="up" delay={0.4}>
+          <div className="mt-16 text-center">
+            <Button variant="outline-dark" onClick={() => onOpenModal('compare')}>
+              Сравнение тарифов
+            </Button>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1285,21 +1325,30 @@ const Pains = () => (
   </section>
 );
 
-const SystemProblem = () => (
-  <section className="relative py-24 md:py-32 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
-    {/* Background Image Aligned to Left */}
-    <Reveal direction="left" className="absolute inset-0 z-0">
-      <img 
-        src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg" 
-        alt="Maya" 
-        className="w-full h-full object-cover object-left opacity-40 lg:opacity-100 lg:w-1/2"
-        referrerPolicy="no-referrer"
-      />
-      {/* Subtle fade to background color */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f5f0eb]/20 to-[#f5f0eb]" />
-    </Reveal>
+const SystemProblem = () => {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
-    <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
+  return (
+    <section ref={ref} className="relative py-24 md:py-32 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
+      {/* Background Image Aligned to Left */}
+      <Reveal direction="left" className="absolute inset-0 z-0">
+        <motion.img 
+          style={{ y }}
+          src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg" 
+          alt="Maya" 
+          className="w-full h-[130%] object-cover object-left opacity-40 lg:opacity-100 lg:w-1/2 absolute -top-[15%]"
+          referrerPolicy="no-referrer"
+        />
+        {/* Subtle fade to background color */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f5f0eb]/20 to-[#f5f0eb]" />
+      </Reveal>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
       <Reveal direction="up">
         <span className="text-[0.7rem] uppercase tracking-[0.4em] text-brown font-bold mb-8 block">Суть</span>
         <h2 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.1] text-text-dark mb-6">
@@ -1334,7 +1383,8 @@ const SystemProblem = () => (
           </div>
         </div>
   </section>
-);
+  );
+};
 
 const WhatHappens = () => {
   const icons: any = { Eye, Scale, Infinity, Key };
@@ -2022,7 +2072,7 @@ const ScrollToTop = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[90] w-12 h-12 rounded-full bg-brown text-white shadow-lg flex items-center justify-center hover:bg-brown-dark transition-colors group"
+          className="hidden md:flex fixed bottom-24 right-8 z-[90] w-12 h-12 rounded-full bg-brown text-white shadow-lg items-center justify-center hover:bg-brown-dark transition-colors group"
           aria-label="Scroll to top"
         >
           <ArrowUp size={20} className="group-hover:-translate-y-1 transition-transform" />
@@ -2032,19 +2082,142 @@ const ScrollToTop = () => {
   );
 };
 
+const ComparisonModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            onClick={onClose} 
+            className="absolute inset-0 bg-navy/80 backdrop-blur-md" 
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }} 
+            animate={{ opacity: 1, scale: 1, y: 0 }} 
+            exit={{ opacity: 0, scale: 0.95, y: 20 }} 
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-5xl max-h-[90vh] bg-cream rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
+          >
+            <button 
+              onClick={onClose}
+              className="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-text-dark transition-colors"
+            >
+              <X size={20} />
+            </button>
+            
+            <div className="p-8 md:p-12 overflow-y-auto no-scrollbar">
+              <div className="text-center mb-12">
+                <h2 className="font-serif text-3xl md:text-4xl text-text-dark mb-4">Тарифы на выбор</h2>
+                <p className="text-text-dark-soft">Выберите удобный уровень участия в насыщенной двухдневной программе</p>
+              </div>
+              
+              <div className="overflow-x-auto pb-6">
+                <table className="w-full min-w-[800px] border-collapse">
+                  <thead>
+                    <tr>
+                      <th className="p-4 text-left w-1/4"></th>
+                      <th className="p-6 text-center w-1/4 bg-white rounded-tl-2xl">
+                        <h3 className="font-serif text-xl text-text-dark">База</h3>
+                      </th>
+                      <th className="p-6 text-center w-1/4 bg-white/80">
+                        <h3 className="font-serif text-xl text-brown">Полный</h3>
+                      </th>
+                      <th className="p-6 text-center w-1/4 bg-gradient-to-br from-[#e6d5c3] to-[#d4bca3] rounded-tr-2xl relative">
+                        <div className="absolute top-4 right-4 bg-brown text-white text-[0.6rem] px-3 py-1 rounded-full uppercase tracking-widest font-bold shadow-md">ТОП</div>
+                        <h3 className="font-serif text-xl text-white drop-shadow-sm">Премиум</h3>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><Calendar size={16} className="text-brown/60"/> Участие в 2-дневной программе</td>
+                      <td className="p-4 text-center bg-white"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-white/80"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                    </tr>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><Users size={16} className="text-brown/60"/> Групповые разборы и практики</td>
+                      <td className="p-4 text-center bg-white"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-white/80"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                    </tr>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><Home size={16} className="text-brown/60"/> Проживание в глэмпинге</td>
+                      <td className="p-4 text-center text-xs font-bold tracking-widest uppercase text-text-dark bg-white">2 МЕСТНОЕ</td>
+                      <td className="p-4 text-center text-xs font-bold tracking-widest uppercase text-text-dark bg-white/80">2 МЕСТНОЕ</td>
+                      <td className="p-4 text-center text-xs font-bold tracking-widest uppercase text-brown bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40">1 МЕСТНОЕ</td>
+                    </tr>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><Coffee size={16} className="text-brown/60"/> Банный день</td>
+                      <td className="p-4 text-center bg-white"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-white/80"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                    </tr>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><Info size={16} className="text-brown/60"/> Материалы программы</td>
+                      <td className="p-4 text-center text-sm text-text-dark bg-white">Базовые</td>
+                      <td className="p-4 text-center text-sm text-text-dark bg-white/80">Расширенные</td>
+                      <td className="p-4 text-center text-sm text-brown bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40">Расширенные</td>
+                    </tr>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><Bus size={16} className="text-brown/60"/> Групповой трансфер</td>
+                      <td className="p-4 text-center bg-white"><X size={20} className="mx-auto text-black/10" /></td>
+                      <td className="p-4 text-center bg-white/80"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                      <td className="p-4 text-center bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                    </tr>
+                    <tr className="border-b border-brown/10">
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3"><MessageCircle size={16} className="text-brown/60"/> Поддержка после выезда</td>
+                      <td className="p-4 text-center bg-white"><X size={20} className="mx-auto text-black/10" /></td>
+                      <td className="p-4 text-center text-sm text-text-dark bg-white/80">Групповая встреча</td>
+                      <td className="p-4 text-center text-sm text-brown bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40">Приоритетная</td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 text-sm text-text-dark-soft flex items-center gap-3 rounded-bl-2xl"><Zap size={16} className="text-brown/60"/> Личный разбор с авторами</td>
+                      <td className="p-4 text-center bg-white rounded-b-2xl"><X size={20} className="mx-auto text-black/10" /></td>
+                      <td className="p-4 text-center bg-white/80 rounded-b-2xl"><X size={20} className="mx-auto text-black/10" /></td>
+                      <td className="p-4 text-center bg-gradient-to-br from-[#e6d5c3]/40 to-[#d4bca3]/40 rounded-br-2xl"><CheckCircle size={20} className="mx-auto text-brown" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="text-center mt-8 text-sm text-text-dark-soft">
+                10 человек в группе • Предприниматели и руководители
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 // --- Main App ---
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
 
   const handleOpenModal = (plan?: any) => {
-    setSelectedPlan(plan || null);
-    setIsModalOpen(true);
+    if (plan === 'compare') {
+      setIsCompareModalOpen(true);
+    } else {
+      setSelectedPlan(plan || null);
+      setIsModalOpen(true);
+    }
   };
 
   return (
     <div className="font-sans text-text-dark selection:bg-brown/20">
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader key="preloader" onComplete={() => setIsLoading(false)} />}
+      </AnimatePresence>
+
       <Navbar onOpenModal={() => handleOpenModal()} />
       <Hero onOpenModal={() => handleOpenModal()} />
       <About />
@@ -2065,6 +2238,10 @@ export default function App() {
       <Footer />
       <ScrollToTop />
       <VoiceAssistant />
+      <ComparisonModal 
+        isOpen={isCompareModalOpen} 
+        onClose={() => setIsCompareModalOpen(false)} 
+      />
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
