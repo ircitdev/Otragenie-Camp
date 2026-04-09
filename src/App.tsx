@@ -975,10 +975,10 @@ const LeadMagnet = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#9a7d5a] text-white rounded-full flex items-center justify-center gap-3 shadow-lg shadow-[#9a7d5a]/20 transition-all duration-300 hover:bg-[#826849] hover:-translate-y-0.5"
+                    className="group w-full sm:w-auto px-8 py-3.5 bg-[#9a7d5a] text-white rounded-full flex items-center justify-center gap-3 shadow-lg shadow-[#9a7d5a]/20 transition-all duration-300 hover:bg-[#826849] hover:-translate-y-0.5"
                   >
                     <span className="font-medium text-sm md:text-base">Послушать и понять себя</span>
-                    <ArrowRight size={18} />
+                    <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
                   </motion.a>
                 </div>
 
@@ -1765,14 +1765,33 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
     }
   };
 
-  const handleFinalSubmit = () => {
+  const handleFinalSubmit = async () => {
+    const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+    
+    if (token && chatId) {
+      const text = `🔥 Новая заявка!\n\n👤 Имя: ${formData.name}\n📞 Контакт: ${formData.contact}\n💬 Сообщение: ${formData.message || 'Нет сообщения'}\n💎 Тариф: ${selectedPlan ? selectedPlan.name : 'Не выбран'}`;
+      
+      try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text })
+        });
+      } catch (error) {
+        console.error("Error sending to Telegram:", error);
+      }
+    } else {
+      console.warn("Telegram credentials missing in .env");
+    }
+
     setStep('success');
     setTimeout(() => {
       onClose();
       setTimeout(() => {
         setStep('form');
       }, 500);
-    }, 3000);
+    }, 4000);
   };
 
   const handleCancel = () => {
@@ -1809,36 +1828,50 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
               {step === 'success' ? (
                 <motion.div 
                   key="success"
-                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                  initial={{ opacity: 0, scale: 0.95, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 1.2, y: -20 }}
-                  transition={{ ...transition, type: 'spring', damping: 15 }}
+                  exit={{ opacity: 0, scale: 1.05, y: -10 }}
+                  transition={{ ...transition, type: 'spring', damping: 20, stiffness: 100 }}
                   className="text-center py-10"
                 >
                   <motion.div 
                     initial={{ scale: 0, rotate: -45 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 10 }}
-                    className="w-24 h-24 bg-brown/10 rounded-full flex items-center justify-center mx-auto mb-8 text-brown"
+                    transition={{ delay: 0.1, type: 'spring', stiffness: 200, damping: 12 }}
+                    className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 text-green-600 shadow-inner"
                   >
                     <CheckCircle size={48} />
                   </motion.div>
-                  <h3 className="font-serif text-4xl text-text-dark mb-4">Спасибо!</h3>
-                  <p className="text-text-dark-soft text-lg">Ваша заявка принята. Мы свяжемся с вами в ближайшее время.</p>
+                  <motion.h3 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="font-serif text-3xl md:text-4xl text-text-dark mb-4"
+                  >
+                    Спасибо за заявку!
+                  </motion.h3>
+                  <motion.p 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-text-dark-soft text-base md:text-lg max-w-sm mx-auto leading-relaxed"
+                  >
+                    Мы уже получили ваши данные. В ближайшее время с вами свяжется наш менеджер для подтверждения деталей и ответа на вопросы.
+                  </motion.p>
                 </motion.div>
               ) : step === 'confirm' ? (
                 <motion.div 
                   key="confirm"
-                  initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
-                  animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+                  initial={{ opacity: 0, scale: 0.98, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98, y: -10 }}
                   transition={transition}
                   className="py-6"
                 >
                   <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6 text-amber-600">
                     <AlertTriangle size={32} />
                   </div>
-                  <h3 className="font-serif text-2xl text-center text-text-dark mb-8 px-4">Are you sure you want to submit this application?</h3>
+                  <h3 className="font-serif text-2xl text-center text-text-dark mb-8 px-4">Вы уверены, что хотите отправить заявку?</h3>
                   
                   <div className="space-y-4 mb-10">
                     {selectedPlan && (
@@ -1862,9 +1895,9 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
               ) : step === 'plan' ? (
                 <motion.div 
                   key="plan"
-                  initial={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
-                  animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
+                  initial={{ opacity: 0, scale: 0.98, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98, y: -10 }}
                   transition={transition}
                   className="py-6"
                 >
@@ -1890,9 +1923,9 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
               ) : (
                 <motion.div 
                   key="form"
-                  initial={{ opacity: 0, x: 50, filter: 'blur(10px)' }}
-                  animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, x: -50, filter: 'blur(10px)' }}
+                  initial={{ opacity: 0, scale: 0.98, y: 10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98, y: -10 }}
                   transition={transition}
                 >
                   <h3 className="font-serif text-3xl text-text-dark mb-4">Оставить заявку</h3>
