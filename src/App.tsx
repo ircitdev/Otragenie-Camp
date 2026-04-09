@@ -24,12 +24,12 @@ const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale =
 );
 
 const Button = ({ variant = 'brown', href, children, className = '', onClick, type }: any) => {
-  const base = "inline-flex items-center justify-center gap-2 font-sans text-[0.75rem] tracking-[0.12em] uppercase px-10 py-4 font-semibold rounded-full transition-all duration-500 relative overflow-hidden text-center group";
+  const base = "inline-flex items-center justify-center gap-2 font-sans text-[0.75rem] tracking-[0.12em] uppercase px-8 py-3.5 font-semibold rounded-full transition-all duration-500 relative overflow-hidden text-center group";
   const variants: any = {
-    'brown': "bg-brown text-white hover:bg-brown-dark hover:shadow-[0_10px_30_rgba(154,125,90,0.4)]",
-    'olive': "bg-[#5c6b5e] text-white hover:bg-[#4a574b] hover:shadow-[0_10px_30px_rgba(92,107,94,0.3)]",
-    'outline-light': "border border-white/30 text-white bg-transparent hover:bg-white/10 hover:border-white/60",
-    'outline-dark': "border border-brown text-brown bg-transparent hover:bg-brown hover:text-white",
+    'brown': "bg-brown text-white hover:bg-brown-dark hover:shadow-[0_8px_25px_rgba(154,125,90,0.35)] hover:-translate-y-0.5",
+    'olive': "bg-[#5c6b5e] text-white hover:bg-[#4a574b] hover:shadow-[0_8px_25px_rgba(92,107,94,0.3)] hover:-translate-y-0.5",
+    'outline-light': "border border-white/30 text-white bg-transparent hover:bg-white/10 hover:border-white/60 hover:-translate-y-0.5",
+    'outline-dark': "border border-brown text-brown bg-transparent hover:bg-brown hover:text-white hover:-translate-y-0.5",
     'ghost': "text-brown hover:bg-brown/5"
   };
   const cls = `${base} ${variants[variant]} ${className}`;
@@ -51,7 +51,7 @@ const Button = ({ variant = 'brown', href, children, className = '', onClick, ty
 };
 
 const SectionHeading = ({ subtitle, title, light = false, centered = true }: any) => (
-  <div className={`mb-16 ${centered ? 'text-center' : ''}`}>
+  <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
     <Reveal delay={0.1}>
       <span className={`text-[0.7rem] tracking-[0.3em] uppercase font-medium mb-4 block ${light ? 'text-white/60' : 'text-brown'}`}>
         {subtitle}
@@ -234,10 +234,10 @@ const Hero = ({ onOpenModal }: any) => {
 
         <Reveal delay={0.8}>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button variant="olive" onClick={onOpenModal} className="!px-12 shadow-2xl">
+            <Button variant="olive" onClick={onOpenModal} className="!px-10 shadow-2xl">
               Записаться на разбор
             </Button>
-            <Button variant="outline-light" href="#program" className="!px-12">
+            <Button variant="outline-light" href="#program" className="!px-10">
               Программа выезда
             </Button>
           </div>
@@ -267,7 +267,7 @@ const About = () => {
   const rotate = useTransform(scrollYProgress, [0, 1], [-2, 2]);
 
   return (
-    <section id="about" ref={sectionRef} className="py-40 md:py-56 bg-cream relative overflow-hidden">
+    <section id="about" ref={sectionRef} className="py-24 md:py-32 bg-cream relative overflow-hidden">
       {/* Paper Texture Overlay */}
       <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none mix-blend-multiply" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper-fibers.png")' }} />
       
@@ -416,7 +416,7 @@ const Program = () => {
 };
 
 const Authors = ({ onOpenModal }: any) => (
-  <section id="authors" className="relative py-32 md:py-56 bg-navy text-white overflow-hidden">
+  <section id="authors" className="relative py-24 md:py-32 bg-navy text-white overflow-hidden">
     {/* Background Elements */}
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-brown/5 rounded-full blur-[180px] opacity-60" />
@@ -535,7 +535,7 @@ const Authors = ({ onOpenModal }: any) => (
             <Button 
               variant="brown" 
               onClick={onOpenModal} 
-              className="flex-1 !py-6 shadow-[0_20px_40px_-10px_rgba(196,164,132,0.3)] group"
+              className="flex-1 !py-4 shadow-[0_20px_40px_-10px_rgba(196,164,132,0.3)] group"
             >
               Подходит ли мне этот формат?
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -543,7 +543,7 @@ const Authors = ({ onOpenModal }: any) => (
             <Button 
               variant="outline-light" 
               onClick={onOpenModal} 
-              className="flex-1 !py-6 hover:bg-white hover:text-navy"
+              className="flex-1 !py-4 hover:bg-white hover:text-navy"
             >
               Понять, как это работает
             </Button>
@@ -573,7 +573,7 @@ const Authors = ({ onOpenModal }: any) => (
 );
 
 const Location = () => (
-  <section id="location" className="py-32 bg-[#f3ede4] overflow-hidden">
+  <section id="location" className="py-20 md:py-24 bg-[#f3ede4] overflow-hidden">
     <div className="max-w-7xl mx-auto px-6 md:px-12">
       <div className="grid lg:grid-cols-12 gap-16 items-start">
         {/* Left Column: Text and Features */}
@@ -583,7 +583,7 @@ const Location = () => (
             <h2 className="font-serif text-[clamp(3rem,6vw,4.5rem)] leading-[1.1] text-text-dark mb-4">Красная Поляна</h2>
             <h3 className="font-serif text-[clamp(1.8rem,4vw,2.8rem)] text-brown/60 mb-12 italic">Глэмпинг «Лес»</h3>
             
-            <div className="space-y-8 mb-16">
+            <div className="space-y-8 mb-12">
               <p className="text-xl text-text-dark leading-relaxed">
                 Горы. Тишина. Отсутствие шума.
               </p>
@@ -695,7 +695,7 @@ const Testimonials = () => {
   }, [isLoading]);
 
   return (
-    <section id="testimonials" ref={sectionRef} className="relative py-32 bg-white overflow-hidden">
+    <section id="testimonials" ref={sectionRef} className="relative py-20 md:py-24 bg-white overflow-hidden">
       {/* Parallax Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div 
@@ -873,7 +873,7 @@ const LeadMagnet = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className="py-24 bg-cream relative overflow-hidden">
+    <section className="py-20 md:py-24 bg-cream relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-brown/10 rounded-full blur-[100px]" />
@@ -950,7 +950,7 @@ const LeadMagnet = () => {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto px-8 py-4 bg-[#9a7d5a] text-white rounded-full flex items-center justify-center gap-3 shadow-lg shadow-[#9a7d5a]/20 transition-all duration-300 hover:bg-[#826849]"
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#9a7d5a] text-white rounded-full flex items-center justify-center gap-3 shadow-lg shadow-[#9a7d5a]/20 transition-all duration-300 hover:bg-[#826849] hover:-translate-y-0.5"
                   >
                     <span className="font-medium text-sm md:text-base">Послушать и понять себя</span>
                     <ArrowRight size={18} />
@@ -1063,7 +1063,7 @@ const Pricing = ({ onOpenModal }: any) => {
   };
 
   return (
-    <section id="pricing" className="relative py-32 bg-white overflow-hidden">
+    <section id="pricing" className="relative py-20 md:py-24 bg-white overflow-hidden">
       {/* Paper Texture Overlay */}
       <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-multiply" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper-fibers.png")' }} />
       
@@ -1160,7 +1160,7 @@ const Pricing = ({ onOpenModal }: any) => {
                     )}
                     <Button 
                       variant={plan.theme === 'premium' ? 'brown' : 'outline-dark'} 
-                      className={`w-full !py-5 ${plan.theme === 'premium' ? 'shadow-[0_10px_30px_rgba(154,125,90,0.3)]' : ''}`}
+                      className={`w-full !py-4 ${plan.theme === 'premium' ? 'shadow-[0_10px_30px_rgba(154,125,90,0.3)]' : ''}`}
                       onClick={() => onOpenModal(plan)}
                     >
                       Забронировать
@@ -1186,7 +1186,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-32 bg-cream">
+    <section className="py-20 md:py-24 bg-cream">
       <div className="max-w-3xl mx-auto px-6">
         <Reveal direction="up">
           <SectionHeading subtitle="Вопросы" title="Часто спрашивают" />
@@ -1224,7 +1224,7 @@ const FAQ = () => {
 };
 
 const Pains = () => (
-  <section id="pains" className="py-32 bg-white">
+  <section id="pains" className="py-20 md:py-24 bg-white">
     <div className="max-w-7xl mx-auto px-6 md:px-12">
       <Reveal direction="up">
         <SectionHeading subtitle="Проблематика" title="Почему вы здесь?" />
@@ -1261,7 +1261,7 @@ const Pains = () => (
 );
 
 const SystemProblem = () => (
-  <section className="relative py-24 md:py-32 bg-[#f5f0eb] overflow-hidden min-h-[90vh] flex items-center">
+  <section className="relative py-20 md:py-24 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
     {/* Background Image Aligned to Left */}
     <div className="absolute inset-0 z-0">
       <img 
@@ -1284,7 +1284,7 @@ const SystemProblem = () => (
       </Reveal>
       
       <Reveal delay={0.2} direction="up">
-        <p className="text-lg md:text-xl text-text-dark-soft leading-relaxed mb-16 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-text-dark-soft leading-relaxed mb-12 max-w-2xl mx-auto">
           Мы привыкли решать проблемы на уровне действий: сменить работу, уехать в отпуск, найти нового партнера. Но если система (ваши внутренние сценарии) остается прежней — вы просто переносите старые проблемы в новые декорации.
         </p>
       </Reveal>
@@ -1315,7 +1315,7 @@ const WhatHappens = () => {
   const icons: any = { Eye, Scale, Infinity, Key };
 
   return (
-    <section className="py-32 md:py-48 bg-white relative overflow-hidden">
+    <section className="py-24 md:py-32 bg-white relative overflow-hidden">
       {/* Subtle Background Texture */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0">
         <svg width="100%" height="100%">
@@ -1412,7 +1412,7 @@ const HowItWorks = () => {
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
 
   return (
-    <section ref={sectionRef} className="py-40 bg-cream relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-cream relative overflow-hidden">
       {/* Background Decorative Elements with Parallax */}
       <motion.div 
         style={{ y }}
@@ -1482,7 +1482,7 @@ const HowItWorks = () => {
         </div>
 
         <Reveal delay={0.5} className="mt-32 text-center">
-          <div className="inline-flex items-center gap-5 px-10 py-5 rounded-full bg-white/40 backdrop-blur-md border border-brown/10 text-text-dark text-sm group hover:bg-navy hover:text-white transition-all duration-500 shadow-sm">
+          <div className="inline-flex items-center gap-5 px-8 py-4 rounded-full bg-white/40 backdrop-blur-md border border-brown/10 text-text-dark text-sm group hover:bg-navy hover:text-white transition-all duration-500 shadow-sm">
             <div className="relative">
               <Users size={20} className="text-brown group-hover:text-white transition-colors" />
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-brown rounded-full animate-ping" />
@@ -1497,7 +1497,7 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="relative py-24 md:py-32 bg-white overflow-hidden min-h-[90vh] flex items-center">
+  <section id="for-who" className="relative py-20 md:py-24 bg-white overflow-hidden min-h-[80vh] flex items-center">
     {/* Background Image Aligned to Left */}
     <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0">
       <img 
@@ -1568,7 +1568,7 @@ const Counter = ({ value, suffix = '', duration = 2, delay = 0 }: { value: numbe
 };
 
 const Results = () => (
-  <section className="py-32 bg-navy text-white relative overflow-hidden">
+  <section className="py-20 md:py-24 bg-navy text-white relative overflow-hidden">
     {/* Background Image with Overlay */}
     <div className="absolute inset-0 z-0">
       <img 
@@ -1586,7 +1586,7 @@ const Results = () => (
         <SectionHeading subtitle="Результат" title="Что вы заберете с собой" light />
       </Reveal>
       
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-32">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
         {STATS.map((stat, i) => (
           <Reveal key={i} delay={i * 0.1} direction="up">
             <div className="text-center group">
@@ -1619,7 +1619,7 @@ const Results = () => (
 );
 
 const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="relative min-h-[90vh] flex items-center bg-[#fdfbf9] overflow-hidden py-24 md:py-32">
+  <section className="relative min-h-[80vh] flex items-center bg-[#fdfbf9] overflow-hidden py-20 md:py-24">
     {/* Background Image Aligned to Left */}
     <div className="absolute inset-0 z-0">
       <img 
@@ -1644,7 +1644,7 @@ const FinalBlock = ({ onOpenModal }: any) => (
         </p>
       </Reveal>
       <Reveal delay={0.3} direction="up">
-        <p className="font-serif text-lg md:text-2xl text-brown/70 italic mb-16">
+        <p className="font-serif text-lg md:text-2xl text-brown/70 italic mb-12">
           Этот выезд — точка, где можно это остановить
         </p>
       </Reveal>
@@ -1670,7 +1670,7 @@ const FinalBlock = ({ onOpenModal }: any) => (
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button 
                 onClick={() => onOpenModal()} 
-                className="px-12 py-5 text-sm"
+                className="!px-10 !py-4"
               >
                 Забронировать место
               </Button>
@@ -1830,8 +1830,8 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    <Button onClick={handleFinalSubmit} className="w-full">Yes, Submit</Button>
-                    <Button variant="outline-dark" onClick={handleCancel} className="w-full">No, Go Back</Button>
+                    <Button onClick={handleFinalSubmit} className="w-full">Подтвердить</Button>
+                    <Button variant="outline-dark" onClick={handleCancel} className="w-full">Назад</Button>
                   </div>
                 </motion.div>
               ) : step === 'plan' ? (
