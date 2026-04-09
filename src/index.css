@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+
+  --color-cream: #f3ede4;
+  --color-cream-soft: #ebe4d9;
+  --color-cream-card: #ffffff;
+  --color-cream-card-alt: #f7f3ed;
+
+  --color-navy: #0b1130;
+  --color-navy-soft: #101740;
+
+  --color-brown: #9a7d5a;
+  --color-brown-light: #b8996e;
+  --color-brown-dark: #7a6245;
+  --color-brown-bg: #c4a97a;
+
+  --color-text-dark: #2a2218;
+  --color-text-dark-soft: #5c4f3d;
+  --color-text-dark-muted: #8a7d6d;
+  --color-text-light: #f0e8db;
+  --color-text-light-soft: #bbb3a5;
+  --color-text-light-muted: #6e6a62;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+  .glass-dark {
+    @apply backdrop-blur-md bg-black/20 border border-white/10;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
+}
+
+body {
+  line-height: 1.7;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brown-light);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brown);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
