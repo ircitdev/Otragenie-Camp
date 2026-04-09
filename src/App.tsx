@@ -29,6 +29,7 @@ const Button = ({ variant = 'brown', href, children, className = '', onClick, ty
   const variants: any = {
     'brown': "bg-brown text-white hover:bg-brown-dark hover:shadow-[0_8px_25px_rgba(154,125,90,0.35)]",
     'olive': "bg-[#5c6b5e] text-white hover:bg-[#4a574b] hover:shadow-[0_8px_25px_rgba(92,107,94,0.3)]",
+    'navy': "bg-[#0f172a] text-white hover:bg-[#1e293b] border border-white/10 hover:border-white/30 hover:shadow-[0_8px_25px_rgba(15,23,42,0.5)]",
     'outline-light': "border border-white/30 text-white bg-transparent hover:bg-white/10 hover:border-white/60",
     'outline-dark': "border border-brown text-brown bg-transparent hover:bg-brown hover:text-white",
     'ghost': "text-brown hover:bg-brown/5"
@@ -105,6 +106,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
 const Navbar = ({ onOpenModal }: any) => {
   const [scrolled, setScrolled] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,39 +118,97 @@ const Navbar = ({ onOpenModal }: any) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { name: 'О кэмпе', id: 'about' },
+    { name: 'Программа', id: 'program' },
+    { name: 'Авторы', id: 'authors' },
+    { name: 'Тарифы', id: 'pricing' }
+  ];
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-      isPastHero 
-        ? 'bg-cream/80 backdrop-blur-xl py-4 shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-brown/5' 
-        : scrolled 
-          ? 'bg-navy/20 backdrop-blur-md py-6' 
-          : 'bg-transparent py-8'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        <a href="#" className={`font-serif text-2xl tracking-widest transition-colors duration-500 flex items-center gap-3 ${isPastHero ? 'text-text-dark' : 'text-white'}`}>
-          ОТРАЖЕНИЕ
-          <span className={`text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1 rounded-md font-sans font-bold border transition-colors duration-500 ${isPastHero ? 'border-brown text-brown' : 'border-white/40 text-white'}`}>camp</span>
-        </a>
-        <div className="hidden md:flex items-center gap-10">
-          {['О кэмпе', 'Программа', 'Авторы', 'Тарифы'].map((item, i) => (
-            <a 
-              key={i} 
-              href={`#${['about', 'program', 'authors', 'pricing'][i]}`}
-              className={`text-[0.65rem] uppercase tracking-[0.2em] font-semibold transition-colors hover:text-brown ${isPastHero ? 'text-text-dark/70' : 'text-white/80'}`}
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+        isPastHero 
+          ? 'bg-cream/80 backdrop-blur-xl py-4 shadow-[0_4px_30px_rgba(0,0,0,0.05)] border-b border-brown/5' 
+          : scrolled 
+            ? 'bg-navy/20 backdrop-blur-md py-6' 
+            : 'bg-transparent py-8'
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+          <a href="#" className={`font-serif text-2xl tracking-widest transition-colors duration-500 flex items-center gap-3 ${isPastHero ? 'text-text-dark' : 'text-white'}`}>
+            ОТРАЖЕНИЕ
+            <span className={`text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1 rounded-md font-sans font-bold border transition-colors duration-500 ${isPastHero ? 'border-brown text-brown' : 'border-white/40 text-white'}`}>camp</span>
+          </a>
+          
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-10">
+            {navLinks.map((item, i) => (
+              <a 
+                key={i} 
+                href={`#${item.id}`}
+                className={`text-[0.65rem] uppercase tracking-[0.2em] font-semibold transition-colors hover:text-brown ${isPastHero ? 'text-text-dark/70' : 'text-white/80'}`}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+          
+          <div className="hidden md:block">
+            <Button 
+              variant={scrolled ? 'brown' : 'outline-light'} 
+              className="!px-6 !py-2.5 !text-[0.65rem]"
+              onClick={onOpenModal}
             >
-              {item}
-            </a>
-          ))}
+              Участвовать
+            </Button>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className={`md:hidden p-2 -mr-2 transition-colors ${isPastHero ? 'text-text-dark' : 'text-white'}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-        <Button 
-          variant={scrolled ? 'brown' : 'outline-light'} 
-          className="!px-6 !py-2.5 !text-[0.65rem]"
-          onClick={onOpenModal}
-        >
-          Участвовать
-        </Button>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-[90] bg-navy/95 backdrop-blur-xl flex flex-col items-center justify-center pt-20"
+          >
+            <div className="flex flex-col items-center gap-8 w-full px-6">
+              {navLinks.map((item, i) => (
+                <a 
+                  key={i} 
+                  href={`#${item.id}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-white text-xl uppercase tracking-[0.2em] font-serif hover:text-brown transition-colors"
+                >
+                  {item.name}
+                </a>
+              ))}
+              <div className="w-full h-px bg-white/10 my-4" />
+              <Button 
+                variant="olive" 
+                className="w-full max-w-xs !py-4"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onOpenModal();
+                }}
+              >
+                Участвовать
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -273,11 +333,11 @@ const Hero = ({ onOpenModal }: any) => {
         
         <Reveal delay={2.6}>
           <div className="relative mb-8">
-            <h1 className="font-serif text-[clamp(3.5rem,10vw,8.5rem)] leading-[0.9] text-white font-light tracking-tight relative z-10">
+            <h1 className="font-serif text-[clamp(2.5rem,10vw,8.5rem)] leading-[0.9] text-white font-light tracking-tight relative z-10">
               ОТРАЖЕНИЕ
             </h1>
             {/* Mirror Reflection */}
-            <h1 className="font-serif text-[clamp(3.5rem,10vw,8.5rem)] leading-[0.9] text-white font-light tracking-tight absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: 'linear-gradient(to bottom, transparent 20%, black 100%)' }}>
+            <h1 className="font-serif text-[clamp(2.5rem,10vw,8.5rem)] leading-[0.9] text-white font-light tracking-tight absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: 'linear-gradient(to bottom, transparent 20%, black 100%)' }}>
               ОТРАЖЕНИЕ
             </h1>
           </div>
@@ -479,156 +539,125 @@ const Program = () => {
   );
 };
 
-const Authors = ({ onOpenModal }: any) => (
-  <section id="authors" className="relative py-24 md:py-32 bg-navy text-white overflow-hidden">
-    {/* Background Elements */}
-    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] bg-brown/5 rounded-full blur-[180px] opacity-60" />
-      
-      {/* Central Light Beam (The Connection) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-[80%] bg-gradient-to-b from-transparent via-brown/40 to-transparent z-10" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] h-[60%] bg-brown/10 blur-[40px] z-0" />
+const Philosophy = () => (
+  <section className="py-24 bg-navy text-white text-center px-6">
+    <Reveal direction="up">
+      <span className="text-[0.7rem] uppercase tracking-[0.5em] text-brown-light font-bold mb-8 block">Философия</span>
+      <h2 className="font-serif text-[clamp(1.8rem,3vw,2.5rem)] leading-[1.2] mb-8 max-w-4xl mx-auto">
+        Когда глубина встречается со стратегией — <span className="italic text-brown-light">происходят изменения</span>
+      </h2>
+      <p className="text-lg md:text-xl text-white/60 font-light max-w-2xl mx-auto">
+        Мы объединяем женскую <span className="text-white font-medium">глубину</span> и мужскую <span className="text-white font-medium">структуру</span> для решений, которые меняют систему жизни.
+      </p>
+    </Reveal>
+  </section>
+);
 
-      {/* Strategy Particles */}
-      <div className="absolute inset-0 opacity-20">
-        <svg className="w-full h-full" viewBox="0 0 1000 1000" fill="none">
-          <motion.circle 
-            animate={{ opacity: [0.1, 0.3, 0.1], scale: [1, 1.1, 1] }}
-            transition={{ duration: 5, repeat: Infinity }}
-            cx="500" cy="500" r="300" stroke="var(--color-brown)" strokeWidth="0.2" strokeDasharray="4 8" 
-          />
-        </svg>
+const Authors = ({ onOpenModal }: any) => (
+  <section id="authors" className="relative bg-navy text-white overflow-hidden lg:h-screen flex flex-col pt-24 lg:pt-0">
+    {/* Top Half: Images */}
+    <div className="relative flex-none h-[40vh] lg:h-[50vh] flex flex-row">
+      {/* Central Connection Labels (Desktop) */}
+      <div className="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-4 pointer-events-none">
+        <div className="flex items-center gap-4">
+          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-brown-light/60">эмоции</span>
+          <div className="w-12 h-[1px] bg-brown/30" />
+          <span className="text-[0.65rem] uppercase tracking-[0.3em] text-brown-light/60">решения</span>
+        </div>
+      </div>
+
+      {/* Maya Image */}
+      <div className="w-1/2 lg:w-1/2 h-full relative overflow-hidden">
+        <img 
+          src={AUTHORS[0].img} 
+          alt={AUTHORS[0].name} 
+          className="w-full h-full object-cover object-top"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-navy/50" />
+      </div>
+
+      {/* Roman Image */}
+      <div className="w-1/2 lg:w-1/2 h-full relative overflow-hidden">
+        <img 
+          src={AUTHORS[1].img} 
+          alt={AUTHORS[1].name} 
+          className="w-full h-full object-cover object-top"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent lg:bg-gradient-to-l lg:from-transparent lg:to-navy/50" />
       </div>
     </div>
 
-    <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-      <div className="text-center mb-24">
-        <Reveal direction="down">
-          <span className="text-[0.7rem] uppercase tracking-[0.5em] text-brown-light font-bold mb-8 block">Авторы программы</span>
-          <h2 className="font-serif text-[clamp(2rem,4vw,3.5rem)] leading-[1.1] mb-8 max-w-4xl mx-auto">
-            Когда глубина встречается со стратегией — <span className="italic text-brown-light">происходят изменения</span>
-          </h2>
-          <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mx-auto">
-            Мы объединяем женскую <span className="text-white font-medium">глубину</span> и мужскую <span className="text-white font-medium">структуру</span> для решений, которые меняют систему жизни.
+    {/* Bottom Half: Content */}
+    <div className="flex-1 flex flex-col justify-center max-w-7xl mx-auto w-full px-6 md:px-12 py-12 lg:py-0 relative z-10">
+      <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 mb-12">
+        {/* Maya Content */}
+        <Reveal direction="up" className="text-center">
+          <h3 className="font-serif text-3xl md:text-4xl mb-4">{AUTHORS[0].name}</h3>
+          <p className="text-brown-light text-[0.65rem] md:text-[0.7rem] tracking-[0.2em] md:tracking-[0.3em] uppercase font-bold mb-6">
+            Помогает увидеть то, что ты не замечаешь
           </p>
+          <div className="space-y-4 text-white/80 text-sm font-light">
+            <p>Психолог. Автор терапевтических программ.</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-brown" /> 10+ лет практики
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-brown" /> 500+ разборов
+              </span>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Roman Content */}
+        <Reveal delay={0.2} direction="up" className="text-center">
+          <h3 className="font-serif text-3xl md:text-4xl mb-4">{AUTHORS[1].name}</h3>
+          <p className="text-brown-light text-[0.65rem] md:text-[0.7rem] tracking-[0.2em] md:tracking-[0.3em] uppercase font-bold mb-6">
+            Помогает понять, что с этим делать
+          </p>
+          <div className="space-y-4 text-white/80 text-sm font-light">
+            <p>Предприниматель, консультант первых лиц.</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-brown" /> 15+ лет опыта
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-1 h-1 rounded-full bg-brown" /> работа с собственниками
+              </span>
+            </div>
+          </div>
         </Reveal>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-0 items-center relative">
-        {/* Central Connection Labels (Desktop) */}
-        <div className="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex-col items-center gap-64 pointer-events-none">
-          <div className="flex items-center gap-4">
-            <span className="text-[0.65rem] uppercase tracking-[0.3em] text-brown-light/60">глубина</span>
-            <div className="w-12 h-[1px] bg-brown/30" />
-            <span className="text-[0.65rem] uppercase tracking-[0.3em] text-brown-light/60">структура</span>
+      {/* Buttons */}
+      <Reveal delay={0.4} direction="up" className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
+        <Button variant="navy" onClick={onOpenModal} className="w-full sm:w-auto !px-8">
+          Подходит ли мне этот формат? <ArrowRight size={16} className="ml-2 inline" />
+        </Button>
+        <Button variant="outline-light" href="#program" className="w-full sm:w-auto !px-8">
+          Понять, как это работает
+        </Button>
+      </Reveal>
+
+      {/* Stats */}
+      <Reveal delay={0.6} direction="up" className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 text-center">
+        <span className="text-[0.65rem] uppercase tracking-[0.3em] text-white/40 font-bold">
+          Доверие в цифрах:
+        </span>
+        <div className="flex gap-8 md:gap-16">
+          <div>
+            <div className="font-serif text-2xl md:text-3xl text-white mb-1">500+</div>
+            <div className="text-[0.55rem] uppercase tracking-[0.2em] text-white/40">разборов</div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-[0.65rem] uppercase tracking-[0.3em] text-brown-light/60">эмоции</span>
-            <div className="w-12 h-[1px] bg-brown/30" />
-            <span className="text-[0.65rem] uppercase tracking-[0.3em] text-brown-light/60">решения</span>
+          <div>
+            <div className="font-serif text-2xl md:text-3xl text-white mb-1">10+</div>
+            <div className="text-[0.55rem] uppercase tracking-[0.2em] text-white/40">лет опыта</div>
           </div>
-        </div>
-
-        {/* Maya (Left) */}
-        <div className="relative group">
-          <Reveal direction="left" className="relative z-20">
-            <div className="relative aspect-[4/5] max-w-md mx-auto lg:mr-0">
-              <img 
-                src={AUTHORS[0].img} 
-                alt={AUTHORS[0].name} 
-                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 group-hover:scale-105 group-hover:-rotate-1"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-navy/40 to-transparent pointer-events-none" />
-            </div>
-          </Reveal>
-          
-          <Reveal delay={0.4} direction="up" className="mt-10 lg:text-right lg:pr-12">
-            <h3 className="font-serif text-4xl mb-3">{AUTHORS[0].name}</h3>
-            <p className="text-brown-light text-[0.7rem] tracking-[0.3em] uppercase font-bold mb-6">Помогает увидеть то, что ты не замечаешь</p>
-            <div className="space-y-4 text-white/60 text-sm font-light max-w-sm lg:ml-auto">
-              <p>Психолог. Автор терапевтических программ.</p>
-              <div className="flex flex-wrap gap-4 lg:justify-end">
-                <span className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-brown" /> 10+ лет практики
-                </span>
-                <span className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-brown" /> 500+ разборов
-                </span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-
-        {/* Roman (Right) */}
-        <div className="relative group">
-          <Reveal direction="right" className="relative z-20">
-            <div className="relative aspect-[4/5] max-w-md mx-auto lg:ml-0">
-              <img 
-                src={AUTHORS[1].img} 
-                alt={AUTHORS[1].name} 
-                className="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 group-hover:scale-105 group-hover:rotate-1"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-l from-navy/40 to-transparent pointer-events-none" />
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.6} direction="up" className="mt-10 lg:pl-12">
-            <h3 className="font-serif text-4xl mb-3">{AUTHORS[1].name}</h3>
-            <p className="text-brown-light text-[0.7rem] tracking-[0.3em] uppercase font-bold mb-6">Помогает понять, что с этим делать</p>
-            <div className="space-y-4 text-white/60 text-sm font-light max-w-sm">
-              <p>Предприниматель, консультант первых лиц.</p>
-              <div className="flex flex-wrap gap-4">
-                <span className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-brown" /> 15+ лет опыта
-                </span>
-                <span className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-brown" /> работа с собственниками
-                </span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-
-      {/* Joint Action Section */}
-      <Reveal delay={0.8} direction="up" className="mt-32 text-center">
-        <div className="flex flex-col items-center gap-12">
-          <div className="flex flex-col sm:flex-row gap-6 w-full max-w-2xl">
-            <Button 
-              variant="brown" 
-              onClick={onOpenModal} 
-              className="flex-1 !py-4 shadow-[0_20px_40px_-10px_rgba(196,164,132,0.3)] group"
-            >
-              Подходит ли мне этот формат?
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button 
-              variant="outline-light" 
-              onClick={onOpenModal} 
-              className="flex-1 !py-4 hover:bg-white hover:text-navy"
-            >
-              Понять, как это работает
-            </Button>
-          </div>
-          
-          <div className="flex items-center gap-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-            <span className="text-[0.6rem] uppercase tracking-[0.3em]">Доверие в цифрах:</span>
-            <div className="flex gap-10">
-              <div className="text-center">
-                <div className="text-xl font-serif">500+</div>
-                <div className="text-[0.5rem] uppercase tracking-widest">разборов</div>
-              </div>
-              <div className="text-center">
-                <div className="text-xl font-serif">10+</div>
-                <div className="text-[0.5rem] uppercase tracking-widest">лет опыта</div>
-              </div>
-              <div className="text-center">
-                <div className="text-xl font-serif">100%</div>
-                <div className="text-[0.5rem] uppercase tracking-widest">честности</div>
-              </div>
-            </div>
+          <div>
+            <div className="font-serif text-2xl md:text-3xl text-white mb-1">100%</div>
+            <div className="text-[0.55rem] uppercase tracking-[0.2em] text-white/40">честности</div>
           </div>
         </div>
       </Reveal>
@@ -1430,9 +1459,9 @@ const WhatHappens = () => {
               </div>
 
               {/* Redesigned Quote Box */}
-              <div className="absolute -bottom-10 -right-6 md:-right-12 bg-brown text-white p-10 md:p-12 rounded-[2rem] shadow-2xl max-w-sm z-30 border border-white/10">
-                <Quote className="text-white/20 mb-6" size={40} />
-                <p className="font-serif text-xl md:text-2xl leading-relaxed italic">
+              <div className="absolute -bottom-10 right-4 left-4 md:left-auto md:-right-12 bg-brown text-white p-8 md:p-12 rounded-[2rem] shadow-2xl md:max-w-sm z-30 border border-white/10">
+                <Quote className="text-white/20 mb-4 md:mb-6" size={32} />
+                <p className="font-serif text-lg md:text-2xl leading-relaxed italic">
                   «Это не просто отдых. Это глубокая <span className="text-white font-bold underline decoration-white/30 underline-offset-4">хирургическая работа</span> с вашей реальностью».
                 </p>
               </div>
@@ -1574,7 +1603,7 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="relative py-24 md:py-32 bg-white overflow-hidden min-h-[80vh] flex items-center">
+  <section id="for-who" className="relative py-24 md:py-32 bg-white overflow-hidden lg:h-screen flex items-center">
     {/* Background Image Aligned to Left */}
     <Reveal direction="left" className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0">
       <img 
@@ -1583,27 +1612,37 @@ const ForWho = () => (
         className="w-full h-full object-cover object-left"
         referrerPolicy="no-referrer"
       />
-      {/* Subtle fade to white on mobile/tablet */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-white lg:hidden" />
+      {/* Strong fade to white on mobile/tablet for text readability */}
+      <div className="absolute inset-0 bg-white/80 lg:hidden" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent lg:hidden" />
+      {/* Gradient fade to white on desktop to blend with the right side */}
+      <div className="hidden lg:block absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-white" />
     </Reveal>
 
     <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
       <div className="grid lg:grid-cols-12 gap-12">
         {/* Spacer for the left-aligned background image */}
-        <div className="hidden lg:block lg:col-span-5" />
+        <div className="hidden lg:block lg:col-span-6" />
 
         {/* Content on the Right */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-6">
           <Reveal direction="up">
-            <SectionHeading subtitle="Для кого" title="Кому это нужно сейчас" centered={false} />
+            <div className="mb-12">
+              <span className="text-[0.7rem] tracking-[0.3em] uppercase font-medium mb-4 block text-brown">
+                Для кого
+              </span>
+              <h2 className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-[1.1] text-text-dark">
+                Кому это нужно<br />сейчас
+              </h2>
+            </div>
           </Reveal>
-          <div className="space-y-6">
+          
+          <div className="relative pl-8 border-l border-brown/20 space-y-8">
             {FOR_WHO.map((text, i) => (
               <Reveal key={i} delay={i * 0.1} direction="left">
-                <div className="flex gap-4 items-start">
-                  <div className="w-6 h-6 rounded-full bg-brown/10 flex items-center justify-center shrink-0 mt-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brown" />
-                  </div>
+                <div className="relative">
+                  {/* Bullet Point on the line */}
+                  <div className="absolute -left-[37px] top-2.5 w-2 h-2 rounded-full bg-brown/40" />
                   <p className="text-text-dark-soft leading-relaxed text-lg">{text}</p>
                 </div>
               </Reveal>
@@ -1696,64 +1735,79 @@ const Results = () => (
 );
 
 const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="relative min-h-[80vh] flex items-center bg-[#fdfbf9] overflow-hidden py-24 md:py-32">
+  <section className="relative lg:h-screen flex items-center bg-[#fdfbf9] overflow-hidden py-24 md:py-32">
     {/* Background Image Aligned to Left */}
-    <Reveal direction="left" className="absolute inset-0 z-0">
+    <Reveal direction="left" className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0">
       <img 
         src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg" 
         alt="Maya and Roman" 
-        className="w-full h-full object-cover object-left opacity-40 lg:opacity-100 lg:w-1/2"
+        className="w-full h-full object-cover object-left lg:object-[center_top]"
         referrerPolicy="no-referrer"
       />
-      {/* Subtle fade to white */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-white" />
+      {/* Strong fade to background color on mobile/tablet for text readability */}
+      <div className="absolute inset-0 bg-[#fdfbf9]/80 lg:hidden" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#fdfbf9] via-[#fdfbf9]/80 to-transparent lg:hidden" />
+      {/* Gradient fade to background color on desktop to blend with the right side */}
+      <div className="hidden lg:block absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-[#fdfbf9]" />
     </Reveal>
 
-    <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
-      <Reveal direction="up">
-        <h2 className="font-serif text-[clamp(2rem,5vw,3.8rem)] leading-[1.1] text-text-dark mb-6">
-          Если ничего не менять — через год <br className="hidden md:block" /> будет то же самое
-        </h2>
-      </Reveal>
-      <Reveal delay={0.2} direction="up">
-        <p className="text-lg md:text-xl text-text-dark-soft mb-2 tracking-wide">
-          Те же мысли. Те же решения. Те же сценарии.
-        </p>
-      </Reveal>
-      <Reveal delay={0.3} direction="up">
-        <p className="font-serif text-lg md:text-2xl text-brown/70 italic mb-12">
-          Этот выезд — точка, где можно это остановить
-        </p>
-      </Reveal>
+    <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
+      <div className="grid lg:grid-cols-12 gap-12 items-center">
+        {/* Spacer for the left-aligned background image */}
+        <div className="hidden lg:block lg:col-span-5" />
 
-      <div className="max-w-xl w-full text-left mx-auto">
-        <Reveal delay={0.5} direction="left">
-          <div className="space-y-10">
-            <div className="space-y-4">
-              <h4 className="font-serif text-2xl text-text-dark/80">Эксперты:</h4>
-              <h3 className="font-serif text-[clamp(2rem,4vw,3rem)] leading-tight text-text-dark">
-                Майя Дзодзатти <br /> и Роман Дусенко
-              </h3>
-              <p className="text-lg text-text-dark-soft italic">
-                Помогаем найти свои ответы и наладить жизнь
-              </p>
-            </div>
+        {/* Content on the Right */}
+        <div className="lg:col-span-7 flex flex-col items-center text-center lg:pl-10">
+          <Reveal direction="up">
+            <h2 className="font-serif text-[clamp(2.2rem,4vw,3.5rem)] leading-[1.1] text-text-dark mb-6">
+              Если ничего не менять — через год <br className="hidden md:block" /> будет то же самое
+            </h2>
+          </Reveal>
+          <Reveal delay={0.2} direction="up">
+            <p className="text-lg md:text-xl text-text-dark-soft mb-2 tracking-wide">
+              Те же мысли. Те же решения. Те же сценарии.
+            </p>
+          </Reveal>
+          <Reveal delay={0.3} direction="up">
+            <p className="font-serif text-lg md:text-2xl text-brown/70 italic mb-16">
+              Этот выезд — точка, где можно это остановить
+            </p>
+          </Reveal>
 
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-brown/20 bg-brown/5 text-brown text-sm font-bold tracking-wider uppercase">
-              <span className="w-2 h-2 rounded-full bg-brown animate-pulse" />
-              В группе всего 10 мест
-            </div>
+          <div className="w-full text-left">
+            <Reveal delay={0.5} direction="left">
+              <div className="space-y-4 mb-12">
+                <h4 className="font-serif text-xl text-text-dark/80">Эксперты:</h4>
+                <h3 className="font-serif text-[clamp(2rem,3.5vw,3rem)] leading-tight text-text-dark">
+                  Майя Дзодзатти <br /> и Роман Дусенко
+                </h3>
+                <p className="text-lg text-text-dark-soft italic">
+                  Помогаем найти свои ответы и наладить жизнь
+                </p>
+              </div>
+            </Reveal>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button 
-                onClick={() => onOpenModal()} 
-                className="!px-10 !py-4"
-              >
-                Забронировать место
-              </Button>
-            </div>
+            <Reveal delay={0.7} direction="up">
+              <div className="inline-flex items-center gap-3 bg-brown/5 px-6 py-3 rounded-full border border-brown/10">
+                <div className="w-2 h-2 rounded-full bg-brown animate-pulse" />
+                <span className="text-xs font-bold tracking-widest uppercase text-brown">
+                  В группе всего 10 мест
+                </span>
+              </div>
+            </Reveal>
+            
+            <Reveal delay={0.8} direction="up">
+              <div className="flex flex-col sm:flex-row gap-4 pt-8">
+                <Button 
+                  onClick={() => onOpenModal()} 
+                  className="!px-10 !py-4"
+                >
+                  Забронировать место
+                </Button>
+              </div>
+            </Reveal>
           </div>
-        </Reveal>
+        </div>
       </div>
     </div>
   </section>
@@ -1818,23 +1872,48 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
   };
 
   const handleFinalSubmit = async () => {
-    const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-    
-    if (token && chatId) {
-      const text = `🔥 Новая заявка!\n\n👤 Имя: ${formData.name}\n📞 Контакт: ${formData.contact}\n💬 Сообщение: ${formData.message || 'Нет сообщения'}\n💎 Тариф: ${selectedPlan ? selectedPlan.name : 'Не выбран'}`;
-      
+    if (selectedPlan) {
       try {
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        const response = await fetch('/api/prodamus/pay', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: chatId, text })
+          body: JSON.stringify({
+            tariffName: selectedPlan.name,
+            price: parseInt(selectedPlan.price.replace(/\D/g, '')),
+            contact: formData.contact,
+            name: formData.name
+          })
         });
+        
+        if (!response.ok) {
+          throw new Error('Payment initiation failed');
+        }
+        
+        const data = await response.json();
+        if (data.paymentUrl) {
+          window.location.href = data.paymentUrl;
+          return;
+        }
       } catch (error) {
-        console.error("Error sending to Telegram:", error);
+        console.error("Error initiating payment:", error);
+        alert("Произошла ошибка при переходе к оплате. Пожалуйста, попробуйте позже или свяжитесь с нами.");
+        return;
       }
-    } else {
-      console.warn("Telegram credentials missing in .env");
+    }
+
+    try {
+      await fetch('/api/telegram/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          contact: formData.contact,
+          message: formData.message,
+          tariffName: selectedPlan ? selectedPlan.name : 'Не выбран'
+        })
+      });
+    } catch (error) {
+      console.error("Error sending notification:", error);
     }
 
     setStep('success');
@@ -2116,6 +2195,12 @@ const ComparisonModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
                 <p className="text-text-dark-soft">Выберите удобный уровень участия в насыщенной двухдневной программе</p>
               </div>
               
+              <div className="md:hidden text-center mb-4 text-brown/60 text-sm flex items-center justify-center gap-2">
+                <ChevronLeft size={16} />
+                <span>Свайпайте таблицу</span>
+                <ChevronRight size={16} />
+              </div>
+
               <div className="overflow-x-auto pb-6">
                 <table className="w-full min-w-[800px] border-collapse">
                   <thead>
@@ -2226,6 +2311,7 @@ export default function App() {
       <Pains />
       <SystemProblem />
       <WhatHappens />
+      <Philosophy />
       <Authors onOpenModal={() => handleOpenModal()} />
       <HowItWorks />
       <Program />
