@@ -82,7 +82,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.8, ease: "easeInOut" } }}
+      exit={{ y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
       className="fixed inset-0 z-[999] bg-navy flex items-center justify-center"
     >
       <motion.div
@@ -265,13 +265,13 @@ const Hero = ({ onOpenModal }: any) => {
       </motion.div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        <Reveal delay={0.2} direction="down">
+        <Reveal delay={2.4} direction="down">
           <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white/70 text-[0.65rem] tracking-[0.3em] uppercase mb-10">
             17 — 19 апреля • Красная Поляна
           </span>
         </Reveal>
         
-        <Reveal delay={0.4}>
+        <Reveal delay={2.6}>
           <div className="relative mb-8">
             <h1 className="font-serif text-[clamp(3.5rem,10vw,8.5rem)] leading-[0.9] text-white font-light tracking-tight relative z-10">
               ОТРАЖЕНИЕ
@@ -283,13 +283,13 @@ const Hero = ({ onOpenModal }: any) => {
           </div>
         </Reveal>
 
-        <Reveal delay={0.6}>
+        <Reveal delay={2.8}>
           <p className="font-serif text-[clamp(1.1rem,2.5vw,1.6rem)] text-white/80 max-w-2xl mx-auto mb-14 italic leading-[1.6] font-light">
             О честности с собой. Двухдневный терапевтический выезд для тех, кто готов увидеть свою жизнь без иллюзий.
           </p>
         </Reveal>
 
-        <Reveal delay={0.8}>
+        <Reveal delay={3.0}>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button variant="olive" onClick={onOpenModal} className="!px-10 shadow-2xl">
               Записаться на разбор
@@ -301,14 +301,21 @@ const Hero = ({ onOpenModal }: any) => {
         </Reveal>
       </div>
 
-      <motion.div 
-        animate={{ y: [0, 10, 0] }} 
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
-        <span className="text-white/40 text-[0.6rem] tracking-[0.4em] uppercase font-medium">Листайте вниз</span>
-        <ChevronDown size={20} className="text-white/30" />
-      </motion.div>
+      <Reveal delay={3.2} className="absolute bottom-10 left-1/2 -translate-x-1/2">
+        <motion.div 
+          animate={{ y: [0, 10, 0] }} 
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-3"
+        >
+          <span className="text-white/40 text-[0.6rem] tracking-[0.4em] uppercase font-medium">Листайте вниз</span>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown size={20} className="text-white/30" />
+          </motion.div>
+        </motion.div>
+      </Reveal>
     </section>
   );
 };
@@ -1406,11 +1413,6 @@ const WhatHappens = () => {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           <Reveal direction="left">
             <div className="relative">
-              {/* Overlapping Title for Desktop */}
-              <div className="hidden lg:block absolute -top-12 -right-24 z-20 pointer-events-none">
-                <SectionHeading subtitle="Процесс" title="Что происходит на кэмпе" centered={false} />
-              </div>
-
               <div className="rounded-[2.5rem] shadow-2xl overflow-hidden aspect-[4/5] relative group">
                 <video 
                   src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2.mp4" 
@@ -1420,7 +1422,11 @@ const WhatHappens = () => {
                   playsInline 
                   className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/20 to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/10 to-navy/60" />
+                
+                <div className="absolute top-0 left-0 right-0 p-10 md:p-12 z-20 pointer-events-none">
+                  <SectionHeading subtitle="Процесс" title="Что происходит на кэмпе" centered={false} light={true} />
+                </div>
               </div>
 
               {/* Redesigned Quote Box */}
@@ -1434,10 +1440,6 @@ const WhatHappens = () => {
           </Reveal>
 
           <div className="mt-20 lg:mt-0">
-            <div className="lg:hidden mb-12">
-              <SectionHeading subtitle="Процесс" title="Что происходит на кэмпе" centered={false} />
-            </div>
-            
             <div className="space-y-12">
               <Reveal direction="up" delay={0.1}>
                 <p className="text-xl text-text-dark-soft leading-relaxed mb-12 font-light">
