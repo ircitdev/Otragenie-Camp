@@ -142,6 +142,28 @@ const Hero = ({ onOpenModal }: any) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [videoSrc, setVideoSrc] = useState("");
+
+  useEffect(() => {
+    const desktopVideos = [
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/intro-budda.mp4",
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/intro-girls.mp4",
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/intro-yoga.mp4",
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4",
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro.mp4"
+    ];
+
+    const mobileVideos = [
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2_m.mp4",
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1_m.mp4",
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro_m.mp4"
+    ];
+
+    const isMobile = window.innerWidth < 768;
+    const videos = isMobile ? mobileVideos : desktopVideos;
+    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+    setVideoSrc(randomVideo);
+  }, []);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -168,14 +190,16 @@ const Hero = ({ onOpenModal }: any) => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-navy group/hero"
     >
       <motion.div style={{ y, opacity, scale, willChange: "transform, opacity" }} className="absolute inset-0 z-0">
-        <video 
-          ref={videoRef}
-          autoPlay muted loop playsInline 
-          className="w-full h-full object-cover opacity-40"
-          referrerPolicy="no-referrer"
-        >
-          <source src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro.mp4" type="video/mp4" />
-        </video>
+        {videoSrc && (
+          <video 
+            ref={videoRef}
+            autoPlay muted loop playsInline 
+            className="w-full h-full object-cover opacity-40"
+            referrerPolicy="no-referrer"
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-transparent to-navy/80" />
         
         {/* Interactive Spotlight Effect */}
