@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, animate } from 'motion/react';
 import { X, CheckCircle, ChevronRight, ChevronDown, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send } from 'lucide-react';
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
+import { VoiceAssistant } from './components/VoiceAssistant';
 
 // --- Components ---
 
@@ -2006,6 +2007,7 @@ export default function App() {
       <FinalBlock onOpenModal={() => handleOpenModal()} />
       <Footer />
       <ScrollToTop />
+      <VoiceAssistant />
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
