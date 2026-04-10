@@ -2,10 +2,14 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import crypto from "crypto";
+import { startBot } from "./bot";
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Start the Telegram Bot
+  startBot();
 
   // We need raw body for Prodamus signature verification, but let's use urlencoded/json
   // Prodamus sends POST data as application/x-www-form-urlencoded or application/json.
