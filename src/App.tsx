@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, animate } from 'motion/react';
-import { X, CheckCircle, ChevronRight, ChevronDown, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send, MessageCircle } from 'lucide-react';
+import { X, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send, MessageCircle, Menu } from 'lucide-react';
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
-import { VoiceAssistant } from './components/VoiceAssistant';
+import { ChatAssistant } from './components/ChatAssistant';
 
 // --- Components ---
 
@@ -72,7 +72,7 @@ const SectionHeading = ({ subtitle, title, light = false, centered = true }: any
 
 // --- Sections ---
 
-const Preloader = ({ onComplete }: { onComplete: () => void }) => {
+const Preloader: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
@@ -2325,7 +2325,7 @@ export default function App() {
       <FinalBlock onOpenModal={() => handleOpenModal()} />
       <Footer />
       <ScrollToTop />
-      <VoiceAssistant />
+      <ChatAssistant />
       <ComparisonModal 
         isOpen={isCompareModalOpen} 
         onClose={() => setIsCompareModalOpen(false)} 
