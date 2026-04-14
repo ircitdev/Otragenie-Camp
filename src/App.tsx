@@ -2283,6 +2283,7 @@ export const DocPage = () => {
             ["audio", "Загрузка аудио в бот"],
             ["chat", "AI-чат на сайте"],
             ["pay", "Оплата через Prodamus"],
+            ["analytics", "Метрика и отчёты"],
             ["sections", "Варианты дизайна секций"],
             ["edit", "Как вносить правки"],
             ["contacts", "Контакты"]
@@ -2382,9 +2383,9 @@ export const DocPage = () => {
               <strong>Текущие администраторы бота</strong> (по Telegram ID):
             </p>
             <ul className="list-disc pl-6 space-y-1">
-              <li><code>389386707</code></li>
-              <li><code>200853681</code></li>
-              <li><code>65876198</code></li>
+              <li>Роман Дусенко (id <code>389386707</code>)</li>
+              <li>Мария Зубрицкая (id <code>200853681</code>)</li>
+              <li>Aleksandr Uspeshnyy (id <code>65876198</code>)</li>
             </ul>
             <p className="text-[0.85rem] text-text-dark-muted">
               Чтобы добавить нового администратора — пришлите его Telegram ID разработчику. Узнать свой ID можно у бота{" "}
@@ -2405,10 +2406,52 @@ export const DocPage = () => {
 
             <p className="mt-6"><strong>Другие админ-команды бота:</strong></p>
             <ul className="list-disc pl-6 space-y-1">
-              <li><code>/prices</code> — показать текущие тарифы.</li>
-              <li><code>/dates</code> — показать дату и локацию кэмпа.</li>
+              <li><code>/prices</code> — показать текущие тарифы (База 149 000 ₽ · Полный 179 000 ₽ · Премиум 249 000 ₽).</li>
+              <li><code>/dates</code> — показать дату и локацию кэмпа (19—21 июня 2026, Красная Поляна, Глэмпинг «Дзен рекавери», до 10 человек).</li>
               <li><code>/analytics</code> (или <code>/stats</code>) — статистика сайта из Яндекс.Метрики за сегодня / неделю / месяц / квартал (визиты, посетители, просмотры, длительность, % отказов).</li>
             </ul>
+          </Section>
+
+          <Section id="analytics" title="Метрика и отчёты">
+            <p>
+              На сайте установлена <strong>Яндекс.Метрика</strong> (счётчик <code>108536568</code>). Она автоматически считает посещения, фиксирует клики, записывает Вебвизор и отслеживает ключевые события пользователя.
+            </p>
+            <p>
+              <strong>Открыть дашборд:</strong>{" "}
+              <a className="text-brown hover:underline" href="https://metrika.yandex.ru/dashboard?id=108536568" target="_blank" rel="noopener noreferrer">
+                metrika.yandex.ru/dashboard?id=108536568
+              </a>
+            </p>
+
+            <p className="mt-4"><strong>Отслеживаемые цели (события на сайте):</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><code>cta_book_click</code> — клик по кнопке «Забронировать» / «Пройти разбор» в любой секции.</li>
+              <li><code>compare_open</code> — открытие модалки «Сравнение тарифов».</li>
+              <li><code>form_submit</code> — заполнение и отправка формы бронирования.</li>
+              <li><code>payment_start</code> — подтверждение тарифа, начало оплаты.</li>
+              <li><code>payment_redirect</code> — успешный переход на платёжную форму Prodamus.</li>
+              <li><code>leadmagnet_click</code> — клик «Послушать и понять себя» (переход к боту).</li>
+              <li><code>chat_open</code> — открытие AI-чата в правом нижнем углу.</li>
+            </ul>
+            <p className="text-[0.85rem] text-text-dark-muted">
+              Каждое событие можно посмотреть в Метрике в разделе <em>Отчёты → Стандартные → Конверсии</em>, а также построить по нему воронку.
+            </p>
+
+            <p className="mt-4"><strong>Быстрый отчёт прямо в Telegram:</strong></p>
+            <p>
+              В личке у бота <a className="text-brown hover:underline" href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer">@otrageniecamp_bot</a> отправьте команду{" "}
+              <code>/analytics</code> — придёт сводный отчёт за <strong>сегодня</strong>, <strong>неделю</strong>, <strong>месяц</strong> и <strong>квартал</strong>:
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>визиты</li>
+              <li>посетители</li>
+              <li>просмотры страниц</li>
+              <li>средняя длительность визита</li>
+              <li>процент отказов</li>
+            </ul>
+            <p className="text-[0.85rem] text-text-dark-muted">
+              Команда доступна только администраторам бота (см. раздел «Загрузка аудио»).
+            </p>
           </Section>
 
           <Section id="chat" title="AI-чат на сайте">
