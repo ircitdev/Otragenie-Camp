@@ -1199,8 +1199,18 @@ const Pains = () => (
   </section>
 );
 
-const SystemProblem = () => (
+const SYSTEM_BGS = [
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya2.jpg",
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg",
+];
+
+const SystemProblem = () => {
+  const [bg] = useState(() => SYSTEM_BGS[Math.floor(Math.random() * SYSTEM_BGS.length)]);
+  return (
   <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
+    <img src={bg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" referrerPolicy="no-referrer" />
+    <div className="absolute inset-0 bg-navy/70 mix-blend-multiply" />
+    <div className="absolute inset-0 bg-gradient-to-b from-navy via-navy/50 to-navy" />
     <div
       aria-hidden
       className="absolute inset-0 pointer-events-none"
@@ -1229,7 +1239,8 @@ const SystemProblem = () => (
       </p>
     </div>
   </section>
-);
+  );
+};
 
 const WhatHappens = () => {
   const icons: any = { Eye, Scale, Infinity, Key };
@@ -1435,10 +1446,17 @@ const Counter = ({ value, suffix = '', duration = 2, delay = 0 }: { value: numbe
   );
 };
 
-const Results = () => (
+const RESULTS_BGS = [
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya3.jpg",
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya4.jpg",
+];
+
+const Results = () => {
+  const [bg] = useState(() => RESULTS_BGS[Math.floor(Math.random() * RESULTS_BGS.length)]);
+  return (
   <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
     <div className="absolute inset-0 z-0">
-      <img src={RES_BG} alt="" className="w-full h-full object-cover object-[center_top] opacity-30" referrerPolicy="no-referrer" />
+      <img src={bg} alt="" className="w-full h-full object-cover object-[center_top] opacity-30" referrerPolicy="no-referrer" />
       <div className="absolute inset-0 bg-navy/80 mix-blend-multiply" />
       <div className="absolute inset-0 bg-gradient-to-b from-navy via-transparent to-navy" />
     </div>
@@ -1471,7 +1489,8 @@ const Results = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 const FINAL_IMG_SRC = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg";
 
@@ -2279,6 +2298,7 @@ export const DocPage = () => {
           {[
             ["overview", "Что это за сайт"],
             ["pages", "Разделы и страницы"],
+            ["dynamics", "Живые элементы"],
             ["bot", "Telegram-бот"],
             ["audio", "Загрузка аудио в бот"],
             ["chat", "AI-чат на сайте"],
@@ -2344,6 +2364,48 @@ export const DocPage = () => {
                 <a className="text-brown hover:underline" href="/doc">otragenie-camp.ru/doc</a> — эта страница (доступ по паролю).
               </li>
             </ul>
+          </Section>
+
+          <Section id="dynamics" title="Живые элементы сайта">
+            <p>
+              На сайте несколько мест, где каждый пользователь видит <strong>разное оформление</strong> — это делает сайт «живым»: при каждом новом открытии выбирается один из заготовленных вариантов.
+            </p>
+
+            <p className="mt-4"><strong>Hero-секция (первый экран)</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>
+                На фоне первого экрана проигрывается короткое видео-клип.
+              </li>
+              <li>
+                При каждой загрузке сайта случайным образом выбирается <strong>один из пяти</strong> видео-файлов (виды Красной Поляны, природа, занятия, фрагменты йоги и медитации).
+              </li>
+              <li>
+                Для <strong>мобильных и для десктопов</strong> используются <strong>разные наборы видео</strong>: мобильный набор снят вертикально, чтобы не обрезался на узких экранах.
+              </li>
+              <li>
+                Замена видео на другие (или расширение набора) — через разработчика.
+              </li>
+            </ul>
+
+            <p className="mt-4"><strong>Фоны секций «Проблема в системе» и «Результат»</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>
+                В обеих тёмных секциях под текстом видно фото, приглушённое затемнением.
+              </li>
+              <li>
+                Фото выбирается случайно <strong>из двух вариантов</strong> при каждой загрузке сайта.
+              </li>
+              <li>
+                Это даёт ощущение живого, не статичного ресурса — и одновременно позволяет использовать две разные эмоции/композиции без редизайна.
+              </li>
+            </ul>
+
+            <p className="text-[0.85rem] text-text-dark-muted mt-3">
+              Посмотреть первую версию сайта (для сравнения композиции) можно здесь:{" "}
+              <a className="text-brown hover:underline" href="https://otragenie-camp.ru/v1" target="_blank" rel="noopener noreferrer">
+                otragenie-camp.ru/v1
+              </a>.
+            </p>
           </Section>
 
           <Section id="bot" title="Telegram-бот @otrageniecamp_bot">
