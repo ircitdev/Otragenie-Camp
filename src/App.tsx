@@ -2290,8 +2290,23 @@ export const DocPage = () => {
 
           <Section id="overview" title="Что это за сайт">
             <p>
-              <strong>otragenie-camp.ru</strong> — промо-сайт терапевтического выезда «Отражение»: <strong>19–21 июня 2026</strong>, Красная Поляна, глэмпинг «Дзен рекавери». Группа — 10 человек.
+              <a className="text-brown hover:underline" href="https://otragenie-camp.ru" target="_blank" rel="noopener noreferrer"><strong>otragenie-camp.ru</strong></a> — промо-сайт терапевтического выезда «Отражение»: <strong>19–21 июня 2026</strong>, Красная Поляна, глэмпинг «Дзен рекавери». Группа — 10 человек.
             </p>
+            <p>
+              <strong>Документы проекта:</strong>
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>
+                <a className="text-brown hover:underline" href="https://docs.google.com/document/d/1hG7OHEBpvOMfqZQUBRg-CNE3EIJqsaav6VT_cWpRmqA/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                  Техническое задание (Google Docs)
+                </a>
+              </li>
+              <li>
+                <a className="text-brown hover:underline" href="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/kp.html" target="_blank" rel="noopener noreferrer">
+                  Коммерческое предложение
+                </a>
+              </li>
+            </ul>
             <p>В сайт встроены три инструмента, работающие вместе:</p>
             <ul className="list-disc pl-6 space-y-1">
               <li><strong>Сам сайт</strong> с программой, авторами, кейсами и формой бронирования.</li>
