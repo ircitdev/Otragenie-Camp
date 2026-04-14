@@ -2262,19 +2262,19 @@ export const DocPage = () => {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-10 py-10 grid lg:grid-cols-[200px_1fr] gap-10">
-        <nav className="lg:sticky lg:top-24 lg:self-start text-[0.82rem] space-y-2">
+      <div className="max-w-5xl mx-auto px-6 md:px-10 py-10 grid lg:grid-cols-[220px_1fr] gap-10">
+        <nav className="lg:sticky lg:top-24 lg:self-start text-[0.85rem] space-y-2">
           <div className="text-[0.6rem] uppercase tracking-[0.25em] text-brown font-bold mb-2">Содержание</div>
           {[
-            ["overview", "Обзор"],
-            ["stack", "Стек и запуск"],
-            ["env", "Переменные окружения"],
-            ["routing", "Маршрутизация"],
+            ["overview", "Что это за сайт"],
+            ["pages", "Разделы и страницы"],
             ["bot", "Telegram-бот"],
-            ["prodamus", "Prodamus"],
-            ["ai", "AI-чат"],
-            ["sections", "Варианты секций"],
-            ["deploy", "Деплой"]
+            ["audio", "Загрузка аудио в бот"],
+            ["chat", "AI-чат на сайте"],
+            ["pay", "Оплата через Prodamus"],
+            ["sections", "Варианты дизайна секций"],
+            ["edit", "Как вносить правки"],
+            ["contacts", "Контакты"]
           ].map(([id, t]) => (
             <a key={id} href={`#${id}`} className="block text-text-dark-soft hover:text-brown transition">{t}</a>
           ))}
@@ -2285,125 +2285,144 @@ export const DocPage = () => {
             Документация <span className="not-italic">· Отражение Camp</span>
           </h1>
           <p className="text-text-dark-soft leading-[1.7] mb-10 max-w-prose">
-            Короткая выжимка по всему проекту — сайту, боту, интеграции с Prodamus, AI-чату и вариантам секций.
-            Подробности — в <a className="text-brown hover:underline" href="https://github.com/ircitdev/otragenie-camp.ru" target="_blank" rel="noopener noreferrer">репозитории</a>,
-            файлах <code className="text-[0.85em] bg-white px-1.5 py-0.5 rounded border border-brown/15">CLAUDE.md</code> и <code className="text-[0.85em] bg-white px-1.5 py-0.5 rounded border border-brown/15">docs/ARCHITECTURE.md</code>.
+            Краткая инструкция по сайту: что где находится, как работает Telegram-бот, как принимаются оплаты и где менять тексты. Без технических деталей — только то, что нужно знать, чтобы пользоваться проектом.
           </p>
 
-          <Section id="overview" title="Обзор">
-            <p>Монорепозиторий из трёх слоёв, запускаемых одним процессом через <code>server.ts</code>:</p>
+          <Section id="overview" title="Что это за сайт">
+            <p>
+              <strong>otragenie-camp.ru</strong> — промо-сайт терапевтического выезда «Отражение»: <strong>19–21 июня 2026</strong>, Красная Поляна, глэмпинг «Дзен рекавери». Группа — 10 человек.
+            </p>
+            <p>В сайт встроены три инструмента, работающие вместе:</p>
             <ul className="list-disc pl-6 space-y-1">
-              <li><strong>Лендинг</strong> — React 19 + Vite 6 + TypeScript + Tailwind 4 + Motion.</li>
-              <li><strong>Express API</strong> — Prodamus (оплата), Telegram-нотификации, health.</li>
-              <li><strong>Telegram-бот</strong> — Telegraf + better-sqlite3, ведёт воронку, синхронизирует переписку с forum-topic в группе.</li>
-              <li><strong>AI-чат</strong> — Gemini (<code>@google/genai</code>, <code>gemini-2.5-flash</code>) с function calling, ссылка оплаты через <code>/api/prodamus/pay</code>.</li>
+              <li><strong>Сам сайт</strong> с программой, авторами, кейсами и формой бронирования.</li>
+              <li><strong>Telegram-бот @otrageniecamp_bot</strong> — короткая воронка с аудио-практикой «10 минут честности с собой» для лидов.</li>
+              <li><strong>AI-чат</strong> в правом нижнем углу — отвечает на вопросы посетителей и помогает выбрать тариф.</li>
             </ul>
-            <p className="mt-3">Событие: <strong>19–21 июня 2026</strong>, Красная Поляна, глэмпинг «Дзен рекавери». Группа 10 человек.</p>
+            <p>Сайт работает на сервере 24/7, без вмешательства не требуется.</p>
           </Section>
 
-          <Section id="stack" title="Стек и запуск">
-            <p><strong>Команды:</strong></p>
-            <pre><code>{`npm run dev    # :3000 — бот + API + Vite middleware
-npm run build  # vite build + esbuild server.ts -> dist/server.cjs
-npm run start  # node dist/server.cjs (production)
-npm run lint   # tsc --noEmit`}</code></pre>
-            <p>Node 18+. SQLite-файл <code>bot.db</code> создаётся автоматически.</p>
-          </Section>
-
-          <Section id="env" title="Переменные окружения">
-            <p>Файл <code>.env</code> в корне (см. <code>.env.example</code>). Критичные ключи:</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><code>TELEGRAM_BOT_TOKEN</code> — токен @otrageniecamp_bot.</li>
-              <li><code>TELEGRAM_CHAT_ID</code>, <code>TELEGRAM_TOPIC_ID</code> — группа и топик уведомлений.</li>
-              <li><code>TELEGRAM_ADMIN_IDS</code> — comma-separated user IDs для админ-команд бота.</li>
-              <li><code>TELEGRAM_AUDIO_FILE_ID</code> / <code>TELEGRAM_AUDIO_URL</code> — фолбэк, если аудио не задано через <code>/setaudio</code> (хранится в SQLite <code>settings.audio_file_id</code>).</li>
-              <li><code>PRODAMUS_URL</code> — базовый URL платёжной формы (например <code>https://store.payform.ru</code>). <em>Без него <code>/api/prodamus/pay</code> вернёт 500.</em></li>
-              <li><code>PRODAMUS_SECRET_KEY</code> — секрет для HMAC-верификации webhook.</li>
-              <li><code>GEMINI_API_KEY</code> / <code>VITE_GEMINI_API_KEY</code> — сервер и фронт.</li>
-              <li><code>PUBLIC_SITE_URL</code> — для кнопок бота.</li>
-            </ul>
-          </Section>
-
-          <Section id="routing" title="Маршрутизация">
-            <p>Нет react-router — простой свитч по <code>window.location.pathname</code> в <code>src/main.tsx</code>.</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><code>/</code> — основной сайт.</li>
-              <li><code>/v1</code> — замороженная первая версия (<code>src/App.v1.tsx</code>).</li>
-              <li><code>/doc</code> — эта страница, пароль <code>{DOC_PASSWORD}</code>.</li>
-              <li><code>/sections</code> — индекс всех черновиков.</li>
-              <li><code>/*-sections</code> — превью-страницы с 4–5 вариантами каждой секции.</li>
+          <Section id="pages" title="Разделы и страницы">
+            <p>На сайте есть служебные страницы, не указанные в меню:</p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>
+                <a className="text-brown hover:underline" href="/">otragenie-camp.ru</a> — основной сайт для посетителей.
+              </li>
+              <li>
+                <a className="text-brown hover:underline" href="/v1">otragenie-camp.ru/v1</a> — замороженная первая версия дизайна, чтобы можно было сравнивать.
+              </li>
+              <li>
+                <a className="text-brown hover:underline" href="/sections">otragenie-camp.ru/sections</a> — индекс всех черновиков с вариантами оформления каждой секции (Hero, Авторы, Программа и т.д.).
+              </li>
+              <li>
+                <a className="text-brown hover:underline" href="/doc">otragenie-camp.ru/doc</a> — эта страница (доступ по паролю).
+              </li>
             </ul>
           </Section>
 
           <Section id="bot" title="Telegram-бот @otrageniecamp_bot">
-            <p><strong>Сценарий пользователя:</strong></p>
+            <p>Бот ведёт пользователя по короткому сценарию, чтобы получить лида и сразу дать ему пользу:</p>
             <ol className="list-decimal pl-6 space-y-1">
-              <li><code>/start</code> → приветствие + «Как к вам обращаться?»</li>
-              <li>Выбор роли (Предприниматель / Топ-менеджер / Другое)</li>
-              <li>Выбор боли (Устал тянуть всё / Проблемы в отношениях / Потерял смыслы)</li>
-              <li>Отправка аудио-практики «10 минут честности с собой»</li>
-              <li>Через <code>BOT_FEELING_DELAY_MS</code> (дефолт 10 мин) — вопрос «какое одно слово или чувство сейчас внутри?»</li>
-              <li>После ответа — создаётся forum-topic в Telegram-группе, лид-карточка</li>
-              <li>Дальнейший диалог синхронизируется между личкой и топиком</li>
-              <li>Через 24 ч — follow-up</li>
+              <li>Пользователь нажимает «Начать» (<code>/start</code>) — бот здоровается и спрашивает имя.</li>
+              <li>Затем спрашивает роль (предприниматель / руководитель / другое).</li>
+              <li>Затем спрашивает основную «боль».</li>
+              <li>Высылает аудио-практику «10 минут честности с собой».</li>
+              <li>Через 10 минут спрашивает «какое одно слово или чувство сейчас внутри?»</li>
+              <li>Когда пользователь отвечает — в общей Telegram-группе автоматически создаётся отдельная ветка-карточка с информацией об этом человеке. Команда может писать ему прямо из этой ветки, и сообщения попадут пользователю в личку (и наоборот).</li>
+              <li>Через 24 часа бот напомнит о себе.</li>
             </ol>
-            <p className="mt-3"><strong>Админ-команды (только в личке, только для <code>TELEGRAM_ADMIN_IDS</code>):</strong></p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><code>/setaudio</code> — перевести в режим ожидания; следующее voice/audio сохранится как аудио-практика.</li>
-              <li><code>/cancelaudio</code> — выйти из режима.</li>
-              <li><code>/audioinfo</code> — текущий file_id, тип, дата обновления.</li>
-              <li><code>/audiotest</code> — прислать сохранённое аудио себе.</li>
-            </ul>
+            <p>
+              Кнопка «Послушать и понять себя» в блоке сайта про лид-магнит ведёт в этого же бота.
+            </p>
           </Section>
 
-          <Section id="prodamus" title="Prodamus — приём оплаты">
-            <p><strong>Поток:</strong></p>
+          <Section id="audio" title="Как загрузить (или поменять) аудио-практику">
+            <p>Аудио меняется через личные сообщения боту. Доступно только администраторам.</p>
             <ol className="list-decimal pl-6 space-y-1">
-              <li>Пользователь на сайте (модалка или AI-чат) выбирает тариф и вводит имя + контакт.</li>
-              <li>Фронт → <code>POST /api/prodamus/pay</code> с <code>{"{ tariffName, price, contact, name }"}</code>.</li>
-              <li>Сервер строит URL платёжной формы на базе <code>PRODAMUS_URL</code> с query-параметрами: <code>products[0][name/price/quantity]</code>, <code>customer_email</code> или <code>customer_phone</code>, <code>customer_extra</code> (JSON с name+contact), <code>order_id=ORDER_&lt;timestamp&gt;</code>.</li>
-              <li>Редирект на Prodamus, оплата.</li>
-              <li>Prodamus шлёт <code>POST /api/prodamus/webhook</code>.</li>
-              <li>Сервер берёт raw body, считает <code>HMAC-SHA256(body, PRODAMUS_SECRET_KEY)</code>, сравнивает с заголовком <code>Sign</code> через <code>timingSafeEqual</code>. Неверная подпись → <code>401</code>.</li>
-              <li>При <code>payment_status === 'success'</code> — уведомление в Telegram-группу (имя, тариф, сумма, email/телефон, order_id).</li>
+              <li>Откройте чат с <strong>@otrageniecamp_bot</strong> в Telegram.</li>
+              <li>Отправьте команду <code>/setaudio</code>. Бот ответит, что ждёт аудио.</li>
+              <li>Запишите голосовое сообщение или прикрепите аудио-файл — бот сохранит его и подтвердит.</li>
+              <li>Чтобы проверить, что новое аудио сохранилось — отправьте <code>/audiotest</code>, бот пришлёт его вам.</li>
             </ol>
-            <p className="mt-3"><strong>URL вебхука в кабинете Prodamus:</strong> <code>https://otragenie-camp.ru/api/prodamus/webhook</code></p>
-            <p><strong>Текущий статус:</strong> <code>PRODAMUS_URL</code> ещё не задан — до его появления ссылка оплаты не генерируется, AI-чат честно показывает «не удалось сгенерировать ссылку». Всё остальное готово.</p>
-          </Section>
-
-          <Section id="ai" title="AI-чат (Gemini)">
-            <p>Виджет <code>src/components/ChatAssistant.tsx</code>. Системный промпт и function declarations — в <code>src/ai-config.ts</code>.</p>
+            <p>Дополнительные команды:</p>
             <ul className="list-disc pl-6 space-y-1">
-              <li>Модель: <code>gemini-2.5-flash</code>, streaming.</li>
-              <li>Function call <code>generatePaymentLink(tariffName, userName, contactInfo)</code> → <code>fetch('/api/prodamus/pay')</code> → пользователь получает реальный URL.</li>
-              <li>Цена подставляется из <code>PRICING</code> в <code>src/data.ts</code> по имени тарифа.</li>
+              <li><code>/audioinfo</code> — показать, какое аудио сейчас активно и когда обновлялось.</li>
+              <li><code>/cancelaudio</code> — отменить, если передумали загружать.</li>
             </ul>
+            <p>Новое аудио начнёт получать каждый новый пользователь сразу — без перезапуска и обновлений.</p>
           </Section>
 
-          <Section id="sections" title="Варианты секций (черновики)">
-            <p>Для каждой секции сделана отдельная страница с 4–5 вариантами дизайна. Открывай, смотри, выбирай:</p>
+          <Section id="chat" title="AI-чат на сайте">
+            <p>В правом нижнем углу сайта есть кнопка чата. Внутри — умный помощник на основе Google Gemini. Он:</p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Отвечает на вопросы о кэмпе, программе, авторах, локации.</li>
+              <li>Помогает выбрать подходящий тариф.</li>
+              <li>Может прямо в чате сгенерировать ссылку на оплату — нужно только назвать тариф, имя и контакт.</li>
+            </ul>
+            <p>
+              Помощник работает автоматически. Если он чего-то не знает — честно говорит об этом и предлагает оставить заявку.
+            </p>
+          </Section>
+
+          <Section id="pay" title="Оплата через Prodamus">
+            <p>Когда посетитель сайта выбирает тариф и жмёт «Забронировать» (или просит ссылку у AI-чата), происходит следующее:</p>
+            <ol className="list-decimal pl-6 space-y-1">
+              <li>Открывается короткая форма: имя и контакт (телефон или email).</li>
+              <li>Сайт автоматически создаёт ссылку оплаты в Prodamus с уже подставленным тарифом и контактом.</li>
+              <li>Пользователь переходит на платёжную форму Prodamus и оплачивает.</li>
+              <li>После успешной оплаты Prodamus присылает уведомление сайту.</li>
+              <li>В Telegram-группе автоматически появляется сообщение «🎉 Успешная оплата!» с именем, тарифом, суммой и контактами.</li>
+            </ol>
+            <p>
+              <strong>Адрес для уведомлений в кабинете Prodamus:</strong>
+              <br />
+              <code className="break-all">https://otragenie-camp.ru/api/prodamus/webhook</code>
+              <br />
+              Этот адрес нужно один раз указать в настройках Prodamus.
+            </p>
+            <p>
+              <strong>Сейчас:</strong> ждём от Prodamus адрес платёжного магазина (формат <code>https://имя-магазина.payform.ru</code>). Как только он появится — оплата на сайте заработает полностью. Без него ссылка пока не создаётся, и AI-чат честно говорит об этом пользователю.
+            </p>
+          </Section>
+
+          <Section id="sections" title="Варианты дизайна секций">
+            <p>
+              Для каждой секции сайта подготовлены 4–5 разных вариантов оформления. Можно открыть страницу секции, посмотреть варианты бок-о-бок и выбрать понравившийся.
+            </p>
             <div className="grid sm:grid-cols-2 gap-2 mt-3">
               {SECTION_LINKS.map(([href, title]) => (
                 <a key={href} href={href} className="flex items-center justify-between gap-3 bg-white border border-brown/10 hover:border-brown/30 rounded-lg px-4 py-3 transition group">
                   <span className="text-[0.95rem] text-text-dark group-hover:text-brown transition">{title}</span>
-                  <code className="text-[0.72rem] text-text-dark-muted">{href}</code>
+                  <span className="text-[0.7rem] text-text-dark-muted">→</span>
                 </a>
               ))}
             </div>
-            <p className="mt-3">Индекс со всеми черновиками — <a className="text-brown hover:underline" href="/sections">/sections</a>. Замороженный первый вариант — <a className="text-brown hover:underline" href="/v1">/v1</a>.</p>
+            <p className="mt-3">
+              Все черновики собраны в одном месте: <a className="text-brown hover:underline" href="/sections">otragenie-camp.ru/sections</a>.
+              <br />
+              Первая версия дизайна для сравнения — <a className="text-brown hover:underline" href="/v1">otragenie-camp.ru/v1</a>.
+            </p>
           </Section>
 
-          <Section id="deploy" title="Деплой">
-            <p><strong>Сервер:</strong> <code>root@31.44.7.144</code>, домен <code>otragenie-camp.ru</code>.</p>
-            <p><strong>Шаги:</strong></p>
-            <ol className="list-decimal pl-6 space-y-1">
-              <li><code>git pull</code> в <code>/var/www/otragenie-camp.ru</code>.</li>
-              <li><code>npm ci</code> (пересборка нативного <code>better-sqlite3</code>).</li>
-              <li><code>npm run build</code> — фронт в <code>dist/</code>, сервер в <code>dist/server.cjs</code>.</li>
-              <li><code>pm2 restart otragenie</code> (или systemd-юнит).</li>
-              <li>Nginx проксирует <code>/</code> и <code>/api/*</code> на <code>127.0.0.1:3000</code>, <code>client_max_body_size 1m</code>.</li>
-            </ol>
-            <p><strong>Важно:</strong> Prodamus webhook требует raw body — в nginx не должно быть <code>proxy_set_header Content-Type</code> с подменой. <code>bot.db</code> держать вне git, но персистентным.</p>
+          <Section id="edit" title="Как вносить правки">
+            <p>
+              Все правки на сайте (тексты, цены, программа, добавление новых секций или изменение дизайна) делает разработчик. Чтобы что-то поправить — напишите, что и как нужно изменить, и приложите примеры или скриншоты, если есть.
+            </p>
+            <p>Удобный формат запроса:</p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><strong>Где:</strong> название секции или адрес страницы.</li>
+              <li><strong>Что сейчас:</strong> текущий текст или скриншот.</li>
+              <li><strong>Что нужно:</strong> новый текст или описание желаемого результата.</li>
+            </ul>
+            <p>После правок изменения появятся на сайте автоматически в течение нескольких минут.</p>
+          </Section>
+
+          <Section id="contacts" title="Контакты">
+            <p>По всем вопросам по сайту, боту и оплате — пишите вашему менеджеру проекта. Он передаст разработчику.</p>
+            <p>
+              <strong>Адрес сайта:</strong> <a className="text-brown hover:underline" href="https://otragenie-camp.ru" target="_blank" rel="noopener noreferrer">otragenie-camp.ru</a>
+              <br />
+              <strong>Telegram-бот:</strong> <a className="text-brown hover:underline" href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer">@otrageniecamp_bot</a>
+            </p>
           </Section>
         </main>
       </div>
