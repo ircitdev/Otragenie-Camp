@@ -176,7 +176,7 @@ export const ChatAssistant = () => {
     <>
       {/* Floating Action Button */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => { (window as any).ym?.(108536568, "reachGoal", "chat_open"); setIsOpen(true); }}
         className={`fixed bottom-6 right-6 z-50 w-14 h-14 bg-brown text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'}`}
         aria-label="Открыть чат"
       >

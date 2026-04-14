@@ -577,6 +577,80 @@ const isAdminUser = (userId?: number) => {
   return ADMIN_IDS.has(userId);
 };
 
+// --- Yandex.Metrika analytics ---
+
+const YANDEX_METRIKA_COUNTER_ID = process.env.YANDEX_METRIKA_COUNTER_ID?.trim() || "108536568";
+const YANDEX_METRIKA_OAUTH = process.env.YANDEX_METRIKA_OAUTH_TOKEN?.trim();
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 10);
+const formatNumber = (value: number) => {
+  if (!Number.isFinite(value)) return "—";
+  return Math.round(value).toLocaleString("ru-RU");
+};
+
+type MetrikaRow = { metrics: number[] };
+
+const fetchMetrika = async (from: Date, to: Date, metrics: string[]) => {
+  if (!YANDEX_METRIKA_OAUTH) throw new Error("YANDEX_METRIKA_OAUTH_TOKEN не задан в .env");
+  const params = new URLSearchParams({
+    ids: YANDEX_METRIKA_COUNTER_ID,
+    date1: formatDate(from),
+    date2: formatDate(to),
+    metrics: metrics.join(","),
+    accuracy: "full",
+  });
+  const url = `https://api-metrika.yandex.net/stat/v1/data?${params.toString()}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `OAuth ${YANDEX_METRIKA_OAUTH}` },
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`HTTP ${res.status}: ${body.slice(0, 200)}`);
+  }
+  const data = (await res.json()) as { totals?: number[]; data?: MetrikaRow[] };
+  return data.totals || data.data?.[0]?.metrics || [];
+};
+
+const buildAnalyticsReport = async (): Promise<string> => {
+  const now = new Date();
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const weekAgo = new Date(today); weekAgo.setUTCDate(today.getUTCDate() - 6);
+  const monthAgo = new Date(today); monthAgo.setUTCDate(today.getUTCDate() - 29);
+  const quarterAgo = new Date(today); quarterAgo.setUTCDate(today.getUTCDate() - 89);
+
+  const metrics = ["ym:s:visits", "ym:s:users", "ym:s:pageviews", "ym:s:avgVisitDurationSeconds", "ym:s:bounceRate"];
+  const periods: Array<[string, Date, Date]> = [
+    ["Сегодня", today, today],
+    ["Неделя", weekAgo, today],
+    ["Месяц", monthAgo, today],
+    ["Квартал", quarterAgo, today],
+  ];
+
+  const results: Array<[string, number[]]> = [];
+  for (const [label, from, to] of periods) {
+    const totals = await fetchMetrika(from, to, metrics);
+    results.push([label, totals]);
+  }
+
+  const lines = [
+    "📊 <b>Статистика сайта otragenie-camp.ru</b>",
+    `<i>Счётчик Яндекс.Метрики ${YANDEX_METRIKA_COUNTER_ID}</i>`,
+    "",
+  ];
+  for (const [label, m] of results) {
+    const [visits = 0, users = 0, views = 0, duration = 0, bounce = 0] = m;
+    const mmss = `${Math.floor(duration / 60)}:${String(Math.round(duration % 60)).padStart(2, "0")}`;
+    lines.push(
+      `<b>${label}</b>`,
+      `  визиты: ${formatNumber(visits)} · посетители: ${formatNumber(users)}`,
+      `  просмотры: ${formatNumber(views)} · длит.: ${mmss} · отказы: ${bounce ? bounce.toFixed(1) : "0"}%`,
+      ""
+    );
+  }
+  lines.push(`<a href="https://metrika.yandex.ru/dashboard?id=${YANDEX_METRIKA_COUNTER_ID}">Открыть в Метрике →</a>`);
+  return lines.join("\n");
+};
+
 if (bot) {
   bot.command("setaudio", async (ctx) => {
     if (ctx.chat.type !== "private") return;
@@ -622,6 +696,49 @@ if (bot) {
     }
     if (ftype === "audio") await (ctx as any).replyWithAudio(fid);
     else await (ctx as any).replyWithVoice(fid);
+  });
+
+  bot.command("prices", async (ctx) => {
+    if (ctx.chat.type !== "private") return;
+    if (!isAdminUser(ctx.from?.id)) return;
+    const lines = [
+      "💰 <b>Текущие тарифы</b>",
+      "",
+      "• <b>База</b> — 149 000 ₽",
+      "• <b>Полный</b> — 179 000 ₽",
+      "• <b>Премиум</b> — 249 000 ₽",
+      "",
+      "Подробности и сравнение: https://otragenie-camp.ru/#pricing",
+    ];
+    await ctx.reply(lines.join("\n"), { parse_mode: "HTML" } as any);
+  });
+
+  bot.command("dates", async (ctx) => {
+    if (ctx.chat.type !== "private") return;
+    if (!isAdminUser(ctx.from?.id)) return;
+    const lines = [
+      "📅 <b>Дата мероприятия</b>",
+      "",
+      "<b>19 — 21 июня 2026</b>",
+      "Красная Поляна",
+      "Глэмпинг «Дзен рекавери»",
+      "",
+      "Группа: до 10 человек",
+    ];
+    await ctx.reply(lines.join("\n"), { parse_mode: "HTML" } as any);
+  });
+
+  bot.command(["analytics", "stats"], async (ctx) => {
+    if (ctx.chat.type !== "private") return;
+    if (!isAdminUser(ctx.from?.id)) return;
+    await ctx.reply("⏳ Собираю статистику сайта…");
+    try {
+      const report = await buildAnalyticsReport();
+      await ctx.reply(report, { parse_mode: "HTML", disable_web_page_preview: true } as any);
+    } catch (error: any) {
+      console.error("analytics error:", error);
+      await ctx.reply(`⚠️ Не удалось получить статистику: ${error?.message || "неизвестная ошибка"}`);
+    }
   });
 
   bot.start(async (ctx) => {

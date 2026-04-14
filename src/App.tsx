@@ -4,6 +4,14 @@ import { X, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calenda
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
 import { ChatAssistant } from './components/ChatAssistant';
 
+// Yandex.Metrika goal helper
+const YM_ID = 108536568;
+const ymGoal = (name: string, params?: Record<string, any>) => {
+  try {
+    (window as any).ym?.(YM_ID, "reachGoal", name, params);
+  } catch {}
+};
+
 // --- Components ---
 
 const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale = false }: any) => (
@@ -943,7 +951,7 @@ const LeadMagnet = () => (
                 </div>
                 <span className="text-[0.72rem] text-text-dark-muted leading-tight"><span className="font-bold text-text-dark">1200+ человек</span> уже прошли</span>
               </div>
-              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
+              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" onClick={() => ymGoal("leadmagnet_click")} className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
                 <span className="font-medium text-[0.82rem]">Послушать и понять себя</span>
                 <ArrowRight size={16} />
               </a>
@@ -1567,12 +1575,14 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
   const handleInitialSubmit = (e: any) => {
     e.preventDefault();
     if (validate()) {
+      ymGoal("form_submit", { plan: selectedPlan?.name });
       setStep('confirm');
     }
   };
 
   const handleFinalSubmit = async () => {
     if (selectedPlan) {
+      ymGoal("payment_start", { plan: selectedPlan.name, price: selectedPlan.price });
       try {
         const response = await fetch('/api/prodamus/pay', {
           method: 'POST',
@@ -1584,13 +1594,14 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
             name: formData.name
           })
         });
-        
+
         if (!response.ok) {
           throw new Error('Payment initiation failed');
         }
-        
+
         const data = await response.json();
         if (data.paymentUrl) {
+          ymGoal("payment_redirect", { plan: selectedPlan.name });
           window.location.href = data.paymentUrl;
           return;
         }
@@ -2391,6 +2402,13 @@ export const DocPage = () => {
               <li><code>/cancelaudio</code> — отменить, если передумали загружать.</li>
             </ul>
             <p>Новое аудио начнёт получать каждый новый пользователь сразу — без перезапуска и обновлений.</p>
+
+            <p className="mt-6"><strong>Другие админ-команды бота:</strong></p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><code>/prices</code> — показать текущие тарифы.</li>
+              <li><code>/dates</code> — показать дату и локацию кэмпа.</li>
+              <li><code>/analytics</code> (или <code>/stats</code>) — статистика сайта из Яндекс.Метрики за сегодня / неделю / месяц / квартал (визиты, посетители, просмотры, длительность, % отказов).</li>
+            </ul>
           </Section>
 
           <Section id="chat" title="AI-чат на сайте">
@@ -3669,7 +3687,7 @@ const LeadMagnetV5 = () => (
                 </div>
                 <span className="text-[0.72rem] text-text-dark-muted leading-tight"><span className="font-bold text-text-dark">1200+ человек</span> уже прошли</span>
               </div>
-              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
+              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" onClick={() => ymGoal("leadmagnet_click")} className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
                 <span className="font-medium text-[0.82rem]">Послушать и понять себя</span>
                 <ArrowRight size={16} />
               </a>
@@ -5276,8 +5294,10 @@ export default function App() {
 
   const handleOpenModal = (plan?: any) => {
     if (plan === 'compare') {
+      ymGoal("compare_open");
       setIsCompareModalOpen(true);
     } else {
+      ymGoal("cta_book_click", { plan: plan?.name || "generic" });
       setSelectedPlan(plan || null);
       setIsModalOpen(true);
     }
