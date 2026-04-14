@@ -2352,6 +2352,18 @@ export const DocPage = () => {
 
           <Section id="audio" title="Как загрузить (или поменять) аудио-практику">
             <p>Аудио меняется через личные сообщения боту. Доступно только администраторам.</p>
+            <p>
+              <strong>Текущие администраторы бота</strong> (по Telegram ID):
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><code>389386707</code></li>
+              <li><code>200853681</code></li>
+              <li><code>65876198</code></li>
+            </ul>
+            <p className="text-[0.85rem] text-text-dark-muted">
+              Чтобы добавить нового администратора — пришлите его Telegram ID разработчику. Узнать свой ID можно у бота{" "}
+              <a className="text-brown hover:underline" href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">@userinfobot</a>.
+            </p>
             <ol className="list-decimal pl-6 space-y-1">
               <li>Откройте чат с <strong>@otrageniecamp_bot</strong> в Telegram.</li>
               <li>Отправьте команду <code>/setaudio</code>. Бот ответит, что ждёт аудио.</li>
@@ -2395,7 +2407,7 @@ export const DocPage = () => {
               Этот адрес нужно один раз указать в настройках Prodamus.
             </p>
             <p>
-              <strong>Сейчас:</strong> ждём от Prodamus адрес платёжного магазина (формат <code>https://имя-магазина.payform.ru</code>). Как только он появится — оплата на сайте заработает полностью. Без него ссылка пока не создаётся, и AI-чат честно говорит об этом пользователю.
+              <strong>Сейчас:</strong> ждём от Романа адрес платёжного магазина (формат <code>https://имя-магазина.payform.ru</code>). Как только он появится — оплата на сайте заработает полностью <strong>(берём 100% предоплату или 10%?)</strong>. Без него ссылка пока не создаётся, и AI-чат честно говорит об этом пользователю.
             </p>
           </Section>
 
