@@ -1,20 +1,254 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Otragenie Camp
 
-# Run and deploy your AI Studio app
+Промо-сайт и коммуникационная платформа для терапевтического кэмпа «Отражение» (19–21 июня 2026, Красная Поляна, глэмпинг «Дзен рекавери»).
 
-This contains everything you need to run your app locally.
+## Документация
 
-View your app in AI Studio: https://ai.studio/apps/a6cd03a8-78a3-4435-bc21-9b2a9c7f9db9
+- [CLAUDE.md](CLAUDE.md) — структура, маршруты, env, команды, продакшен.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — подробная техническая схема.
+- `/doc` (пароль `otragenie888camp`) — живая документация в приложении: разделы «Сайт», «Telegram-бот», «Prodamus», «Варианты секций».
+- `/sections` — индекс всех черновиков секций (по 4–5 вариантов).
+- `/v1` — замороженный снимок первой версии сайта.
 
-## Run Locally
+Проект объединяет:
+- лендинг на React + Vite;
+- сервер на Express;
+- Telegram-бота на Telegraf;
+- SQLite для хранения состояний пользователей бота;
+- AI-чат на Gemini для консультации посетителей сайта;
+- интеграцию с Prodamus для генерации ссылок на оплату и обработки webhook.
 
-**Prerequisites:**  Node.js
+## Что умеет проект
 
+### 1. Лендинг
+- показывает программу, авторов, кейсы, тарифы и FAQ;
+- открывает формы заявки и выбора тарифа;
+- отправляет лиды в Telegram;
+- может переводить пользователя на оплату через Prodamus.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 2. AI-чат на сайте
+- отвечает на вопросы по кэмпу;
+- помогает выбрать тариф;
+- умеет сгенерировать ссылку на оплату через function calling;
+- работает через `@google/genai`.
+
+### 3. Telegram-бот
+- ведёт пользователя по мини-воронке после `/start`;
+- собирает имя, роль, основной запрос и обратную связь после аудио-практики;
+- создаёт forum topic в Telegram-группе под конкретного лида;
+- пересылает сообщения между пользователем и командой в Telegram;
+- отправляет follow-up спустя 24 часа.
+
+### 4. Серверные endpoint'ы
+- health-check;
+- генерация платёжной ссылки Prodamus;
+- приём webhook от Prodamus;
+- отправка лидов и уведомлений в Telegram.
+
+## Стек
+
+- React 19
+- Vite 6
+- TypeScript
+- Express
+- Telegraf
+- better-sqlite3
+- Tailwind CSS 4
+- Motion
+- Google Gemini API
+
+## Структура проекта
+
+```text
+Otragenie-Camp/
+  src/
+    App.tsx                      # Основной лендинг и модальные окна
+    data.ts                      # Контент сайта: тарифы, программа, кейсы
+    ai-config.ts                 # Системный промпт и function declaration для AI-чата
+    components/
+      ChatAssistant.tsx          # Виджет AI-чата
+  server.ts                      # Express-сервер и API
+  bot.ts                         # Telegram-бот и SQLite-логика
+  metadata.json                  # Метаданные проекта
+  vite.config.ts                 # Конфиг фронтенда
+  .env.example                   # Пример переменных окружения
+```
+
+## Быстрый запуск
+
+### Требования
+- Node.js 18+;
+- npm;
+- Telegram Bot Token;
+- Prodamus аккаунт, если нужен платёжный сценарий;
+- Gemini API key, если нужен AI-чат.
+
+### Установка
+
+```bash
+npm install
+```
+
+### Настройка окружения
+
+Создайте `.env` или `.env.local` и заполните переменные:
+
+```env
+PRODAMUS_URL=
+PRODAMUS_SECRET_KEY=
+
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=-1003978251165
+TELEGRAM_TOPIC_ID=4
+
+GEMINI_API_KEY=
+VITE_GEMINI_API_KEY=
+```
+
+Примечания:
+- для фронтенда чат читает `VITE_GEMINI_API_KEY`;
+- в `vite.config.ts` дополнительно пробрасывается `GEMINI_API_KEY`;
+- бот и сервер используют `TELEGRAM_*` и `PRODAMUS_*`;
+- при первом запуске бот создаст файл `bot.db` в корне проекта.
+
+### Запуск в разработке
+
+```bash
+npm run dev
+```
+
+Команда запускает `server.ts` через `tsx`. Сервер:
+- стартует Telegram-бота;
+- поднимает Express API;
+- подключает Vite middleware для фронтенда.
+
+По умолчанию приложение доступно на `http://localhost:3000`.
+
+### Сборка
+
+```bash
+npm run build
+```
+
+Сборка:
+- собирает фронтенд через Vite;
+- бандлит `server.ts` в `dist/server.cjs`.
+
+### Запуск production-сборки
+
+```bash
+npm run start
+```
+
+## API
+
+### `GET /api/health`
+Проверка состояния сервера.
+
+Ответ:
+
+```json
+{ "status": "ok" }
+```
+
+### `POST /api/prodamus/pay`
+Генерирует ссылку на оплату Prodamus.
+
+Тело запроса:
+
+```json
+{
+  "tariffName": "Премиум",
+  "price": 249000,
+  "contact": "user@example.com",
+  "name": "Иван"
+}
+```
+
+Ответ:
+
+```json
+{
+  "paymentUrl": "https://...payform..."
+}
+```
+
+### `POST /api/prodamus/webhook`
+Принимает уведомления об оплате от Prodamus. При успешной оплате отправляет сообщение в Telegram.
+
+### `POST /api/telegram/notify`
+Отправляет новую заявку в Telegram-группу.
+
+Тело запроса:
+
+```json
+{
+  "name": "Иван",
+  "contact": "@ivan",
+  "message": "Хочу узнать детали",
+  "tariffName": "Полный"
+}
+```
+
+## Логика Telegram-бота
+
+Сценарий пользователя:
+1. `/start`
+2. бот спрашивает имя;
+3. бот спрашивает роль;
+4. бот спрашивает основную боль/запрос;
+5. бот отправляет аудио-практику;
+6. через 10 минут задаёт вопрос о состоянии;
+7. после ответа создаёт topic в Telegram-группе и отправляет карточку лида;
+8. дальнейшая переписка синхронизируется между личным чатом и topic в группе;
+9. спустя 24 часа бот отправляет follow-up.
+
+Состояние пользователя хранится в SQLite-таблице `users`.
+
+## Как устроен AI-чат
+
+AI-виджет находится в `src/components/ChatAssistant.tsx`.
+
+Он:
+- создаёт чат с моделью `gemini-2.5-flash`;
+- использует системную инструкцию из `src/ai-config.ts`;
+- поддерживает function calling `generatePaymentLink`;
+- после вызова функции формирует ссылку и возвращает её пользователю в диалог.
+
+Важно: сейчас AI-чат генерирует ссылку локально по шаблону `https://pay.otrazhenie-camp.ru/checkout?...`, а не через серверный endpoint `/api/prodamus/pay`.
+
+## Переменные окружения
+
+### Обязательные для сервера и бота
+- `TELEGRAM_BOT_TOKEN` - токен Telegram-бота.
+- `TELEGRAM_CHAT_ID` - ID Telegram-группы или супергруппы.
+- `TELEGRAM_TOPIC_ID` - ID topic по умолчанию для уведомлений.
+- `PRODAMUS_URL` - базовый URL платёжной формы Prodamus.
+
+### Нужны для отдельных сценариев
+- `PRODAMUS_SECRET_KEY` - секрет для верификации webhook.
+- `GEMINI_API_KEY` - Gemini API key.
+- `VITE_GEMINI_API_KEY` - Gemini API key для фронтенда.
+
+## Технические особенности проекта
+
+- В `server.ts` импортирован `crypto`, но фактическая проверка подписи webhook пока не завершена.
+- В `server.ts` есть комментарии о необходимости raw body для корректной проверки подписи Prodamus.
+- В `bot.ts` задан fallback-токен бота прямо в коде. Для продакшена это нужно убрать и хранить только в env.
+- В `bot.ts` аудио-практика и часть follow-up контента пока реализованы как заглушки.
+- Контент проекта в консоль PowerShell может отображаться некорректно из-за кодировки, но сами исходники содержат русский текст.
+- Скрипт `clean` использует `rm -rf dist`, что нативно не подходит для Windows PowerShell без совместимой оболочки.
+
+## Что стоит улучшить дальше
+
+- довести до конца проверку подписи Prodamus webhook;
+- вынести секреты из исходников;
+- заменить заглушки аудио и кейсов реальными материалами;
+- унифицировать генерацию платёжных ссылок через backend;
+- добавить миграции и резервное копирование для `bot.db`;
+- покрыть ключевые сценарии тестами;
+- разделить крупный `src/App.tsx` на независимые секции.
+
+## Документация
+
+Подробная техническая схема находится в файле `docs/ARCHITECTURE.md`.

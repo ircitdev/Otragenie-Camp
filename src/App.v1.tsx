@@ -316,7 +316,7 @@ const Hero = ({ onOpenModal }: any) => {
       <div className="relative z-10 max-w-[72rem] mx-auto px-6 text-center">
         <Reveal delay={2.4} direction="down">
           <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white/70 text-[0.72rem] tracking-[0.3em] uppercase mb-9">
-            19 — 21 июня • Красная Поляна
+            17 — 19 апреля • Красная Поляна
           </span>
         </Reveal>
         
@@ -733,7 +733,7 @@ const Location = () => (
         <div>
           <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
           <h2 className="font-serif italic text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] text-text-dark md:whitespace-nowrap">
-            Красная Поляна · <span className="not-italic">Глэмпинг «Дзен рекавери»</span>
+            Красная Поляна · <span className="not-italic">Глэмпинг «Лес»</span>
           </h2>
         </div>
         <p className="text-[0.9rem] text-text-dark-soft leading-[1.65] max-w-sm">Горы, тишина, отсутствие шума — контекст, в котором становится видно себя.</p>
@@ -943,7 +943,7 @@ const LeadMagnet = () => (
                 </div>
                 <span className="text-[0.72rem] text-text-dark-muted leading-tight"><span className="font-bold text-text-dark">1200+ человек</span> уже прошли</span>
               </div>
-              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
+              <a href="#" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
                 <span className="font-medium text-[0.82rem]">Послушать и понять себя</span>
                 <ArrowRight size={16} />
               </a>
@@ -1191,37 +1191,71 @@ const Pains = () => (
   </section>
 );
 
-const SystemProblem = () => (
-  <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
-    <div
-      aria-hidden
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        WebkitMaskImage: "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%)",
-        maskImage: "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%)"
-      }}
-    >
-      <div className="absolute left-[10%] top-16 h-64 w-64 rounded-full bg-brown/15 blur-3xl" />
-      <div className="absolute right-[10%] bottom-16 h-72 w-72 rounded-full bg-brown-light/10 blur-3xl" />
-    </div>
-    <div className="max-w-4xl w-full mx-auto px-6 md:px-12 relative z-10 text-center">
-      <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-6">Суть</span>
-      <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
-        Проблема не в теле.
-      </h2>
-      <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
-        Не в отношениях. Не в работе.
-      </h2>
-      <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-8">
-        Не в усталости.
-      </h2>
-      <div className="h-px w-16 bg-brown-light/40 mx-auto mb-8" />
-      <p className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown-light leading-[1.3] max-w-2xl mx-auto">
-        Проблема — в системе,<br />из которой ты живёшь.
-      </p>
-    </div>
+const SystemProblem = () => {
+  const ref = useRef<HTMLElement>(null);
+  const [backgroundImage] = useState(() =>
+    Math.random() < 0.5
+      ? "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg"
+      : "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya2.jpg"
+  );
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+
+  return (
+    <section ref={ref} className="relative py-24 md:py-32 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
+      {/* Background Image Aligned to Left */}
+      <Reveal direction="left" className="absolute inset-0 z-0">
+        <motion.img 
+          style={{ y }}
+          src={backgroundImage}
+          alt="Maya" 
+          className="w-full h-[130%] object-cover object-left opacity-40 lg:opacity-100 lg:w-1/2 absolute -top-[15%]"
+          referrerPolicy="no-referrer"
+        />
+        {/* Subtle fade to background color */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f5f0eb]/20 to-[#f5f0eb]" />
+      </Reveal>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
+      <Reveal direction="up">
+        <span className="text-[0.7rem] uppercase tracking-[0.4em] text-brown font-bold mb-8 block">Суть</span>
+        <h2 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.1] text-text-dark mb-6">
+          Проблема в системе
+        </h2>
+        <div className="w-24 h-[1px] bg-brown/20 mx-auto mb-10" />
+      </Reveal>
+      
+      <Reveal delay={0.2} direction="up">
+        <p className="text-lg md:text-xl text-text-dark-soft leading-relaxed mb-12 max-w-2xl mx-auto">
+          Мы привыкли решать проблемы на уровне действий: сменить работу, уехать в отпуск, найти нового партнера. Но если система (ваши внутренние сценарии) остается прежней — вы просто переносите старые проблемы в новые декорации.
+        </p>
+      </Reveal>
+      
+      <div className="grid sm:grid-cols-2 gap-6 w-full max-w-3xl mx-auto">
+            <Reveal delay={0.3} direction="up">
+              <div className="p-10 rounded-3xl bg-white shadow-sm border border-brown/5 text-left h-full">
+                <h4 className="font-serif text-2xl mb-6 text-brown">Сценарий «Выживание»</h4>
+                <p className="text-sm text-text-dark-soft leading-relaxed">
+                  Когда каждое достижение дается через сверхусилие, а отдых воспринимается как слабость.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.4} direction="up">
+              <div className="p-10 rounded-3xl bg-white shadow-sm border border-brown/5 text-left h-full">
+                <h4 className="font-serif text-2xl mb-6 text-brown">Сценарий «Одиночество»</h4>
+                <p className="text-sm text-text-dark-soft leading-relaxed">
+                  Когда вокруг много людей, но нет ощущения близости и понимания.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
   </section>
-);
+  );
+};
 
 const WhatHappens = () => {
   const icons: any = { Eye, Scale, Infinity, Key };
@@ -1515,8 +1549,8 @@ const Footer = () => (
         </div>
         <div>
           <div className="text-[0.6rem] uppercase tracking-[0.25em] text-brown-light mb-3">Даты</div>
-          <div className="font-serif text-[1.6rem] text-white leading-tight mb-1">19—21<br />июня 2026</div>
-          <p className="text-[0.78rem] text-white/50">Глэмпинг «Дзен рекавери», Красная Поляна</p>
+          <div className="font-serif text-[1.6rem] text-white leading-tight mb-1">17—19<br />апреля 2026</div>
+          <p className="text-[0.78rem] text-white/50">Глэмпинг «Лес», Красная Поляна</p>
         </div>
       </div>
       <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.62rem] uppercase tracking-[0.24em] text-white/35">
@@ -2178,243 +2212,6 @@ export const ProcessSectionsPage = () => (
   </div>
 );
 
-// --- /doc Documentation Page (password-protected) ---
-
-const DOC_PASSWORD = "otragenie888camp";
-const DOC_STORAGE_KEY = "otragenie_doc_auth_v1";
-
-export const DocPage = () => {
-  const [authed, setAuthed] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.sessionStorage.getItem(DOC_STORAGE_KEY) === "1";
-  });
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password.trim() === DOC_PASSWORD) {
-      window.sessionStorage.setItem(DOC_STORAGE_KEY, "1");
-      setAuthed(true);
-      setError("");
-    } else {
-      setError("Неверный пароль");
-    }
-  };
-
-  if (!authed) {
-    return (
-      <div className="min-h-screen bg-navy text-white flex items-center justify-center p-6">
-        <form onSubmit={submit} className="w-full max-w-sm bg-white/[0.04] border border-white/10 rounded-2xl p-8">
-          <h1 className="font-serif text-[1.6rem] mb-2">Документация</h1>
-          <p className="text-white/60 text-[0.88rem] mb-6">Доступ по паролю</p>
-          <input
-            type="password"
-            autoFocus
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="пароль"
-            className="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-brown-light/60"
-          />
-          {error && <p className="text-red-300 text-sm mt-2">{error}</p>}
-          <button type="submit" className="w-full mt-4 bg-brown hover:bg-brown-dark text-white font-medium py-3 rounded-xl transition">Войти</button>
-          <a href="/" className="block text-center text-[0.75rem] uppercase tracking-[0.2em] text-white/40 hover:text-white/70 mt-4 transition">← На главную</a>
-        </form>
-      </div>
-    );
-  }
-
-  const Section = ({ title, children, id }: { title: string; children: React.ReactNode; id: string }) => (
-    <section id={id} className="mb-12 scroll-mt-16">
-      <h2 className="font-serif text-[clamp(1.6rem,3vw,2.2rem)] text-text-dark mb-4 pb-2 border-b border-brown/20">{title}</h2>
-      <div className="prose-doc">{children}</div>
-    </section>
-  );
-
-  const SECTION_LINKS = [
-    ["/hero-sections", "Hero"],
-    ["/about-sections", "О проекте"],
-    ["/process-sections", "Процесс"],
-    ["/philosophy-sections", "Философия"],
-    ["/authors-sections", "Авторы"],
-    ["/metodology-sections", "Методология"],
-    ["/program-sections", "Программа"],
-    ["/location-sections", "Локация"],
-    ["/testimonials-sections", "Кейсы"],
-    ["/leadmagnit-sections", "Лид-магнит"],
-    ["/for-who-sections", "Для кого"],
-    ["/result-sections", "Результат"],
-    ["/pricing-sections", "Стоимость"],
-    ["/faq-sections", "Вопросы"],
-    ["/final-sections", "Финальный выбор"],
-    ["/footer-sections", "Футер"]
-  ] as const;
-
-  return (
-    <div className="min-h-screen bg-cream text-text-dark">
-      <header className="border-b border-brown/15 bg-white/60 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a href="/" className="font-serif text-[1.2rem] tracking-[0.1em] text-text-dark hover:text-brown transition">Отражение</a>
-            <span className="text-[0.62rem] uppercase tracking-[0.25em] text-brown font-bold">/ doc</span>
-          </div>
-          <button onClick={() => { window.sessionStorage.removeItem(DOC_STORAGE_KEY); setAuthed(false); }} className="text-[0.7rem] uppercase tracking-[0.2em] text-text-dark-muted hover:text-text-dark transition">Выйти</button>
-        </div>
-      </header>
-
-      <div className="max-w-5xl mx-auto px-6 md:px-10 py-10 grid lg:grid-cols-[200px_1fr] gap-10">
-        <nav className="lg:sticky lg:top-24 lg:self-start text-[0.82rem] space-y-2">
-          <div className="text-[0.6rem] uppercase tracking-[0.25em] text-brown font-bold mb-2">Содержание</div>
-          {[
-            ["overview", "Обзор"],
-            ["stack", "Стек и запуск"],
-            ["env", "Переменные окружения"],
-            ["routing", "Маршрутизация"],
-            ["bot", "Telegram-бот"],
-            ["prodamus", "Prodamus"],
-            ["ai", "AI-чат"],
-            ["sections", "Варианты секций"],
-            ["deploy", "Деплой"]
-          ].map(([id, t]) => (
-            <a key={id} href={`#${id}`} className="block text-text-dark-soft hover:text-brown transition">{t}</a>
-          ))}
-        </nav>
-
-        <main>
-          <h1 className="font-serif italic text-[clamp(2rem,5vw,3.2rem)] text-text-dark leading-[1.05] mb-3">
-            Документация <span className="not-italic">· Отражение Camp</span>
-          </h1>
-          <p className="text-text-dark-soft leading-[1.7] mb-10 max-w-prose">
-            Короткая выжимка по всему проекту — сайту, боту, интеграции с Prodamus, AI-чату и вариантам секций.
-            Подробности — в <a className="text-brown hover:underline" href="https://github.com/ircitdev/otragenie-camp.ru" target="_blank" rel="noopener noreferrer">репозитории</a>,
-            файлах <code className="text-[0.85em] bg-white px-1.5 py-0.5 rounded border border-brown/15">CLAUDE.md</code> и <code className="text-[0.85em] bg-white px-1.5 py-0.5 rounded border border-brown/15">docs/ARCHITECTURE.md</code>.
-          </p>
-
-          <Section id="overview" title="Обзор">
-            <p>Монорепозиторий из трёх слоёв, запускаемых одним процессом через <code>server.ts</code>:</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><strong>Лендинг</strong> — React 19 + Vite 6 + TypeScript + Tailwind 4 + Motion.</li>
-              <li><strong>Express API</strong> — Prodamus (оплата), Telegram-нотификации, health.</li>
-              <li><strong>Telegram-бот</strong> — Telegraf + better-sqlite3, ведёт воронку, синхронизирует переписку с forum-topic в группе.</li>
-              <li><strong>AI-чат</strong> — Gemini (<code>@google/genai</code>, <code>gemini-2.5-flash</code>) с function calling, ссылка оплаты через <code>/api/prodamus/pay</code>.</li>
-            </ul>
-            <p className="mt-3">Событие: <strong>19–21 июня 2026</strong>, Красная Поляна, глэмпинг «Дзен рекавери». Группа 10 человек.</p>
-          </Section>
-
-          <Section id="stack" title="Стек и запуск">
-            <p><strong>Команды:</strong></p>
-            <pre><code>{`npm run dev    # :3000 — бот + API + Vite middleware
-npm run build  # vite build + esbuild server.ts -> dist/server.cjs
-npm run start  # node dist/server.cjs (production)
-npm run lint   # tsc --noEmit`}</code></pre>
-            <p>Node 18+. SQLite-файл <code>bot.db</code> создаётся автоматически.</p>
-          </Section>
-
-          <Section id="env" title="Переменные окружения">
-            <p>Файл <code>.env</code> в корне (см. <code>.env.example</code>). Критичные ключи:</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><code>TELEGRAM_BOT_TOKEN</code> — токен @otrageniecamp_bot.</li>
-              <li><code>TELEGRAM_CHAT_ID</code>, <code>TELEGRAM_TOPIC_ID</code> — группа и топик уведомлений.</li>
-              <li><code>TELEGRAM_ADMIN_IDS</code> — comma-separated user IDs для админ-команд бота.</li>
-              <li><code>TELEGRAM_AUDIO_FILE_ID</code> / <code>TELEGRAM_AUDIO_URL</code> — фолбэк, если аудио не задано через <code>/setaudio</code> (хранится в SQLite <code>settings.audio_file_id</code>).</li>
-              <li><code>PRODAMUS_URL</code> — базовый URL платёжной формы (например <code>https://store.payform.ru</code>). <em>Без него <code>/api/prodamus/pay</code> вернёт 500.</em></li>
-              <li><code>PRODAMUS_SECRET_KEY</code> — секрет для HMAC-верификации webhook.</li>
-              <li><code>GEMINI_API_KEY</code> / <code>VITE_GEMINI_API_KEY</code> — сервер и фронт.</li>
-              <li><code>PUBLIC_SITE_URL</code> — для кнопок бота.</li>
-            </ul>
-          </Section>
-
-          <Section id="routing" title="Маршрутизация">
-            <p>Нет react-router — простой свитч по <code>window.location.pathname</code> в <code>src/main.tsx</code>.</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><code>/</code> — основной сайт.</li>
-              <li><code>/v1</code> — замороженная первая версия (<code>src/App.v1.tsx</code>).</li>
-              <li><code>/doc</code> — эта страница, пароль <code>{DOC_PASSWORD}</code>.</li>
-              <li><code>/sections</code> — индекс всех черновиков.</li>
-              <li><code>/*-sections</code> — превью-страницы с 4–5 вариантами каждой секции.</li>
-            </ul>
-          </Section>
-
-          <Section id="bot" title="Telegram-бот @otrageniecamp_bot">
-            <p><strong>Сценарий пользователя:</strong></p>
-            <ol className="list-decimal pl-6 space-y-1">
-              <li><code>/start</code> → приветствие + «Как к вам обращаться?»</li>
-              <li>Выбор роли (Предприниматель / Топ-менеджер / Другое)</li>
-              <li>Выбор боли (Устал тянуть всё / Проблемы в отношениях / Потерял смыслы)</li>
-              <li>Отправка аудио-практики «10 минут честности с собой»</li>
-              <li>Через <code>BOT_FEELING_DELAY_MS</code> (дефолт 10 мин) — вопрос «какое одно слово или чувство сейчас внутри?»</li>
-              <li>После ответа — создаётся forum-topic в Telegram-группе, лид-карточка</li>
-              <li>Дальнейший диалог синхронизируется между личкой и топиком</li>
-              <li>Через 24 ч — follow-up</li>
-            </ol>
-            <p className="mt-3"><strong>Админ-команды (только в личке, только для <code>TELEGRAM_ADMIN_IDS</code>):</strong></p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li><code>/setaudio</code> — перевести в режим ожидания; следующее voice/audio сохранится как аудио-практика.</li>
-              <li><code>/cancelaudio</code> — выйти из режима.</li>
-              <li><code>/audioinfo</code> — текущий file_id, тип, дата обновления.</li>
-              <li><code>/audiotest</code> — прислать сохранённое аудио себе.</li>
-            </ul>
-          </Section>
-
-          <Section id="prodamus" title="Prodamus — приём оплаты">
-            <p><strong>Поток:</strong></p>
-            <ol className="list-decimal pl-6 space-y-1">
-              <li>Пользователь на сайте (модалка или AI-чат) выбирает тариф и вводит имя + контакт.</li>
-              <li>Фронт → <code>POST /api/prodamus/pay</code> с <code>{"{ tariffName, price, contact, name }"}</code>.</li>
-              <li>Сервер строит URL платёжной формы на базе <code>PRODAMUS_URL</code> с query-параметрами: <code>products[0][name/price/quantity]</code>, <code>customer_email</code> или <code>customer_phone</code>, <code>customer_extra</code> (JSON с name+contact), <code>order_id=ORDER_&lt;timestamp&gt;</code>.</li>
-              <li>Редирект на Prodamus, оплата.</li>
-              <li>Prodamus шлёт <code>POST /api/prodamus/webhook</code>.</li>
-              <li>Сервер берёт raw body, считает <code>HMAC-SHA256(body, PRODAMUS_SECRET_KEY)</code>, сравнивает с заголовком <code>Sign</code> через <code>timingSafeEqual</code>. Неверная подпись → <code>401</code>.</li>
-              <li>При <code>payment_status === 'success'</code> — уведомление в Telegram-группу (имя, тариф, сумма, email/телефон, order_id).</li>
-            </ol>
-            <p className="mt-3"><strong>URL вебхука в кабинете Prodamus:</strong> <code>https://otragenie-camp.ru/api/prodamus/webhook</code></p>
-            <p><strong>Текущий статус:</strong> <code>PRODAMUS_URL</code> ещё не задан — до его появления ссылка оплаты не генерируется, AI-чат честно показывает «не удалось сгенерировать ссылку». Всё остальное готово.</p>
-          </Section>
-
-          <Section id="ai" title="AI-чат (Gemini)">
-            <p>Виджет <code>src/components/ChatAssistant.tsx</code>. Системный промпт и function declarations — в <code>src/ai-config.ts</code>.</p>
-            <ul className="list-disc pl-6 space-y-1">
-              <li>Модель: <code>gemini-2.5-flash</code>, streaming.</li>
-              <li>Function call <code>generatePaymentLink(tariffName, userName, contactInfo)</code> → <code>fetch('/api/prodamus/pay')</code> → пользователь получает реальный URL.</li>
-              <li>Цена подставляется из <code>PRICING</code> в <code>src/data.ts</code> по имени тарифа.</li>
-            </ul>
-          </Section>
-
-          <Section id="sections" title="Варианты секций (черновики)">
-            <p>Для каждой секции сделана отдельная страница с 4–5 вариантами дизайна. Открывай, смотри, выбирай:</p>
-            <div className="grid sm:grid-cols-2 gap-2 mt-3">
-              {SECTION_LINKS.map(([href, title]) => (
-                <a key={href} href={href} className="flex items-center justify-between gap-3 bg-white border border-brown/10 hover:border-brown/30 rounded-lg px-4 py-3 transition group">
-                  <span className="text-[0.95rem] text-text-dark group-hover:text-brown transition">{title}</span>
-                  <code className="text-[0.72rem] text-text-dark-muted">{href}</code>
-                </a>
-              ))}
-            </div>
-            <p className="mt-3">Индекс со всеми черновиками — <a className="text-brown hover:underline" href="/sections">/sections</a>. Замороженный первый вариант — <a className="text-brown hover:underline" href="/v1">/v1</a>.</p>
-          </Section>
-
-          <Section id="deploy" title="Деплой">
-            <p><strong>Сервер:</strong> <code>root@31.44.7.144</code>, домен <code>otragenie-camp.ru</code>.</p>
-            <p><strong>Шаги:</strong></p>
-            <ol className="list-decimal pl-6 space-y-1">
-              <li><code>git pull</code> в <code>/var/www/otragenie-camp.ru</code>.</li>
-              <li><code>npm ci</code> (пересборка нативного <code>better-sqlite3</code>).</li>
-              <li><code>npm run build</code> — фронт в <code>dist/</code>, сервер в <code>dist/server.cjs</code>.</li>
-              <li><code>pm2 restart otragenie</code> (или systemd-юнит).</li>
-              <li>Nginx проксирует <code>/</code> и <code>/api/*</code> на <code>127.0.0.1:3000</code>, <code>client_max_body_size 1m</code>.</li>
-            </ol>
-            <p><strong>Важно:</strong> Prodamus webhook требует raw body — в nginx не должно быть <code>proxy_set_header Content-Type</code> с подменой. <code>bot.db</code> держать вне git, но персистентным.</p>
-          </Section>
-        </main>
-      </div>
-
-      <footer className="mt-10 py-8 border-t border-brown/15 text-center text-[0.7rem] uppercase tracking-[0.22em] text-text-dark-muted">
-        © Отражение Camp 2026 · Внутренний документ
-      </footer>
-    </div>
-  );
-};
-
 // --- Sections Index ---
 
 const SECTIONS_INDEX: { path: string; title: string; desc: string }[] = [
@@ -2425,7 +2222,7 @@ const SECTIONS_INDEX: { path: string; title: string; desc: string }[] = [
   { path: "/authors-sections", title: "Авторы", desc: "Майя и Роман" },
   { path: "/metodology-sections", title: "Методология", desc: "Как проходит работа" },
   { path: "/program-sections", title: "Программа", desc: "Три дня трансформации" },
-  { path: "/location-sections", title: "Локация", desc: "Красная Поляна, Глэмпинг «Дзен рекавери»" },
+  { path: "/location-sections", title: "Локация", desc: "Красная Поляна, Глэмпинг «Лес»" },
   { path: "/testimonials-sections", title: "Кейсы", desc: "Истории трансформации" },
   { path: "/leadmagnit-sections", title: "Лид-магнит", desc: "10 минут, которые покажут почему" },
   { path: "/for-who-sections", title: "Для кого", desc: "Кому это нужно сейчас" },
@@ -2478,7 +2275,7 @@ const HeroV1 = () => (
     <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-transparent to-navy/80" />
     <div className="absolute top-6 left-1/2 -translate-x-1/2 text-[0.65rem] uppercase tracking-[0.4em] text-white/70 z-20">Вариант 1 · Минимал-центр</div>
     <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-      <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white/70 text-[0.7rem] tracking-[0.3em] uppercase mb-8">19 — 21 июня · Красная Поляна</span>
+      <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white/70 text-[0.7rem] tracking-[0.3em] uppercase mb-8">17 — 19 апреля · Красная Поляна</span>
       <h1 className="font-serif text-[clamp(3rem,8vw,6rem)] leading-[0.95] text-white mb-6">Отражение</h1>
       <p className="font-serif italic text-[clamp(1rem,2vw,1.2rem)] text-white/75 max-w-md mx-auto mb-8 leading-[1.7]">О честности с собой. Двухдневный терапевтический выезд для тех, кто готов увидеть свою жизнь без иллюзий.</p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -2502,7 +2299,7 @@ const HeroV2 = () => (
         <div>
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-5">Выездной терапевтический кэмп</span>
           <h1 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.98] text-text-dark mb-5">Отражение</h1>
-          <p className="font-serif italic text-[clamp(1.1rem,2vw,1.4rem)] text-brown mb-2">19 — 21 июня 2026</p>
+          <p className="font-serif italic text-[clamp(1.1rem,2vw,1.4rem)] text-brown mb-2">17 — 19 апреля 2026</p>
           <p className="text-[0.98rem] text-text-dark-soft leading-[1.75] max-w-md mb-8">О честности с собой. Двухдневный терапевтический выезд для тех, кто готов увидеть свою жизнь без иллюзий.</p>
           <div className="flex flex-wrap gap-3">
             <button className="px-7 py-3 rounded-full bg-brown text-white text-[0.8rem] uppercase tracking-[0.12em] font-medium hover:bg-brown-dark transition">Пройти разбор</button>
@@ -2528,7 +2325,7 @@ const HeroV3 = () => (
           <div className="h-px w-24 bg-brown/40 mb-4" />
           <p className="font-serif text-[clamp(1.1rem,2vw,1.4rem)] text-text-dark leading-[1.55] mb-6 max-w-md">Двухдневный терапевтический выезд. О честности с собой — и о том, как увидеть свою жизнь без иллюзий.</p>
           <div className="flex flex-wrap items-center gap-4 mb-7 text-[0.68rem] uppercase tracking-[0.22em] text-text-dark-muted">
-            <span><span className="text-brown font-bold">Даты:</span> 19 — 21 июн</span>
+            <span><span className="text-brown font-bold">Даты:</span> 17 — 19 апр</span>
             <span className="w-1 h-1 rounded-full bg-brown/40" />
             <span><span className="text-brown font-bold">Мест:</span> 10</span>
             <span className="w-1 h-1 rounded-full bg-brown/40" />
@@ -2560,7 +2357,7 @@ const HeroV4 = () => (
     <div className="absolute top-6 left-1/2 -translate-x-1/2 text-[0.65rem] uppercase tracking-[0.4em] text-white/70 z-20">Вариант 4 · Фото + мета-бар</div>
     <div className="relative z-10 w-full flex flex-col justify-end pb-20">
       <div className="max-w-6xl w-full mx-auto px-6 md:px-12">
-        <span className="block text-[0.68rem] uppercase tracking-[0.35em] text-brown-light mb-5">Терапевтический выезд · 19 — 21 июня</span>
+        <span className="block text-[0.68rem] uppercase tracking-[0.35em] text-brown-light mb-5">Терапевтический выезд · 17 — 19 апреля</span>
         <h1 className="font-serif text-[clamp(3.5rem,11vw,9rem)] leading-[0.9] text-white uppercase tracking-[0.04em] mb-4">ОТРАЖЕНИЕ</h1>
         <p className="font-serif italic text-[clamp(1.1rem,2vw,1.5rem)] text-white/80 max-w-xl leading-[1.5] mb-7">Место, где можно увидеть свою жизнь без иллюзий — и пересобрать.</p>
         <div className="flex gap-3 flex-wrap mb-10">
@@ -2588,7 +2385,7 @@ const HeroV5 = () => (
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)]" />
     <div className="absolute top-6 left-1/2 -translate-x-1/2 text-[0.65rem] uppercase tracking-[0.4em] text-white/70 z-20">Вариант 5 · Текущий (доработанный)</div>
     <div className="relative z-10 max-w-[72rem] mx-auto px-6 text-center">
-      <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white/70 text-[0.72rem] tracking-[0.3em] uppercase mb-9">19 — 21 июня · Красная Поляна</span>
+      <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white/70 text-[0.72rem] tracking-[0.3em] uppercase mb-9">17 — 19 апреля · Красная Поляна</span>
       <div className="relative mb-7">
         <h1 className="font-serif text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-normal tracking-[0.02em] relative z-10">Отражение</h1>
         <h1 className="font-serif text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-normal tracking-[0.02em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>Отражение</h1>
@@ -2700,8 +2497,8 @@ const FooterV3 = () => (
         </div>
         <div>
           <div className="text-[0.6rem] uppercase tracking-[0.25em] text-brown-light mb-3">Даты</div>
-          <div className="font-serif text-[1.6rem] text-white leading-tight mb-1">19—21<br />июня 2026</div>
-          <p className="text-[0.78rem] text-white/50">Глэмпинг «Дзен рекавери», Красная Поляна</p>
+          <div className="font-serif text-[1.6rem] text-white leading-tight mb-1">17—19<br />апреля 2026</div>
+          <p className="text-[0.78rem] text-white/50">Глэмпинг «Лес», Красная Поляна</p>
         </div>
       </div>
       <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.62rem] uppercase tracking-[0.24em] text-white/35">
@@ -2725,7 +2522,7 @@ const FooterV4 = () => (
           </div>
         </div>
         <div className="text-right">
-          <div className="font-serif italic text-[1.3rem] text-text-dark">19 — 21 июня</div>
+          <div className="font-serif italic text-[1.3rem] text-text-dark">17 — 19 апреля</div>
           <div className="text-[0.7rem] uppercase tracking-[0.22em] text-brown">Красная Поляна</div>
         </div>
       </div>
@@ -2887,7 +2684,7 @@ const FinalV4 = () => (
       <div className="text-[0.65rem] uppercase tracking-[0.4em] text-brown-light/60 mb-5">Вариант 4 · Urgency-баннер</div>
       <span className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-white font-bold bg-brown/30 border border-brown-light/40 rounded-full px-4 py-1.5 mb-6">
         <AlertTriangle size={12} />
-        Финальный выбор · 19–21 июня
+        Финальный выбор · 17–19 апреля
       </span>
       <h2 className="font-serif text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.02] mb-5 font-light">
         Если ничего не менять,<br /><span className="italic text-brown-light">через год будет то же самое</span>
@@ -2973,7 +2770,7 @@ export const FinalSectionsPage = () => (
 const FAQ_ITEMS = [
   { q: "Как понять, подходит ли мне этот формат?", a: "Для этого мы проводим предварительный индивидуальный разбор. Это бесплатная 20-минутная встреча, где мы обсуждаем ваш запрос и понимаем, сможем ли мы быть полезны в рамках этого выезда." },
   { q: "Нужна ли специальная психологическая подготовка?", a: "Нет, специальная подготовка не требуется. Важна только ваша готовность к честному диалогу с собой и группой." },
-  { q: "Что входит в стоимость проживания?", a: "В стоимость входит проживание в премиальном глэмпинге «Дзен рекавери», трехразовое питание от шеф-повара, банный ритуал и все материалы программы." },
+  { q: "Что входит в стоимость проживания?", a: "В стоимость входит проживание в премиальном глэмпинге «Лес», трехразовое питание от шеф-повара, банный ритуал и все материалы программы." },
   { q: "Сколько человек будет в группе?", a: "Мы ограничиваем группу до 10 человек. Это оптимальное количество для того, чтобы каждый участник получил достаточно внимания и смог пройти глубокий личный процесс." }
 ];
 
@@ -3593,7 +3390,7 @@ const LeadMagnetV5 = () => (
                 </div>
                 <span className="text-[0.72rem] text-text-dark-muted leading-tight"><span className="font-bold text-text-dark">1200+ человек</span> уже прошли</span>
               </div>
-              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
+              <a href="#" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
                 <span className="font-medium text-[0.82rem]">Послушать и понять себя</span>
                 <ArrowRight size={16} />
               </a>
@@ -3973,7 +3770,7 @@ const LocationV1 = () => (
       <div className="max-w-6xl w-full mx-auto px-6 md:px-12 text-white">
         <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light block mb-3">Локация</span>
         <h2 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] mb-2 font-light">Красная Поляна</h2>
-        <h3 className="font-serif italic text-[clamp(1.4rem,3vw,2.2rem)] text-brown-light/85 mb-6">Глэмпинг «Дзен рекавери»</h3>
+        <h3 className="font-serif italic text-[clamp(1.4rem,3vw,2.2rem)] text-brown-light/85 mb-6">Глэмпинг «Лес»</h3>
         <p className="max-w-xl text-[1rem] text-white/80 leading-[1.7] mb-8">Горы. Тишина. Отсутствие шума. Когда исчезает привычный контекст — появляется возможность увидеть себя.</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5 max-w-3xl">
           {LOC_FEATURES.map((f) => (
@@ -4007,7 +3804,7 @@ const LocationV2 = () => (
         <div>
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Локация</span>
           <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] text-text-dark mb-2">Красная Поляна</h2>
-          <h3 className="font-serif italic text-[clamp(1.2rem,2.5vw,1.8rem)] text-brown/70 mb-6">Глэмпинг «Дзен рекавери»</h3>
+          <h3 className="font-serif italic text-[clamp(1.2rem,2.5vw,1.8rem)] text-brown/70 mb-6">Глэмпинг «Лес»</h3>
           <p className="text-[1rem] text-text-dark leading-[1.7] mb-4">Горы. Тишина. Отсутствие шума.</p>
           <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-8">Когда исчезает привычный контекст — появляется возможность увидеть себя.</p>
           <div className="grid grid-cols-2 gap-5">
@@ -4033,7 +3830,7 @@ const LocationV3 = () => (
         <div>
           <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
           <h2 className="font-serif italic text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] text-text-dark">
-            Красная Поляна · <span className="not-italic">Глэмпинг «Дзен рекавери»</span>
+            Красная Поляна · <span className="not-italic">Глэмпинг «Лес»</span>
           </h2>
         </div>
         <p className="text-[0.9rem] text-text-dark-soft leading-[1.65] max-w-sm">Горы, тишина, отсутствие шума — контекст, в котором становится видно себя.</p>
@@ -4072,7 +3869,7 @@ const LocationV4 = () => (
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-navy/70 lg:to-navy" />
         <div className="absolute bottom-8 left-8 right-8 lg:right-auto lg:max-w-md">
           <div className="inline-flex items-center gap-2 text-[0.62rem] uppercase tracking-[0.24em] text-brown-light mb-3">
-            <MapPin size={14} /> Красная Поляна · Глэмпинг «Дзен рекавери»
+            <MapPin size={14} /> Красная Поляна · Глэмпинг «Лес»
           </div>
           <p className="font-serif italic text-white/85 text-[1.2rem] leading-snug">«Место, где замедляется жизнь»</p>
         </div>
@@ -4106,7 +3903,7 @@ const LocationV5 = () => (
         <div className="lg:col-span-5">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Локация</span>
           <h2 className="font-serif text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.05] text-text-dark mb-2">Красная Поляна</h2>
-          <h3 className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown/65 mb-6">Глэмпинг «Дзен рекавери»</h3>
+          <h3 className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown/65 mb-6">Глэмпинг «Лес»</h3>
           <p className="text-[1.05rem] text-text-dark leading-[1.65] mb-2">Горы. Тишина. Отсутствие шума.</p>
           <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-7 max-w-md">Когда исчезает привычный контекст — появляется возможность увидеть себя.</p>
           <div className="grid grid-cols-2 gap-x-6 gap-y-5">
@@ -4502,7 +4299,7 @@ const ProgramV4 = () => (
       <div className="text-center text-[0.65rem] uppercase tracking-[0.4em] text-brown/60 mb-5">Вариант 4 · Журнальное расписание</div>
       <div className="mb-8 pb-5 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
         <div>
-          <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Программа · 19–21 июня</span>
+          <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Программа · 17–19 апреля</span>
           <h2 className="font-serif italic text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.05] text-text-dark max-w-[18ch]">
             Три дня <span className="not-italic">трансформации</span>
           </h2>
@@ -5192,7 +4989,7 @@ export const AboutSectionsPage = () => (
 
 // --- Main App ---
 
-export default function App() {
+export default function AppV1() {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);

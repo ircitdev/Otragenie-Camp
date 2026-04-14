@@ -60,10 +60,32 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 120px;
+  font-size: 16px;
 }
 
 body {
+  font-family: var(--font-sans);
+  font-weight: 400;
   line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-serif,
+h1, h2, h3, h4, h5, h6,
+blockquote, q, cite {
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.font-sans,
+p, span, a, li, button, input, textarea, select, label, div {
+  font-family: "Inter", -apple-system, sans-serif;
+}
+
+.font-serif, .font-serif *,
+h1, h2, h3, h4, h5, h6,
+blockquote, q, cite {
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
 ::-webkit-scrollbar {

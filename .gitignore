@@ -6,3 +6,15 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Local bot database (contains user data)
+bot.db
+bot.db-journal
+bot.db-wal
+bot.db-shm
+
+# Local helper scripts
+kill3000.ps1
+
+# Claude Code agent config
+.claude/

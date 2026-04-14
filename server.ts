@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
@@ -11,39 +12,45 @@ async function startServer() {
   // Start the Telegram Bot
   startBot();
 
-  // We need raw body for Prodamus signature verification, but let's use urlencoded/json
-  // Prodamus sends POST data as application/x-www-form-urlencoded or application/json.
-  // Usually it's URL encoded.
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
+  // Prodamus webhook uses raw body for HMAC-SHA256 signature verification.
+  // Must be registered BEFORE express.json / urlencoded (otherwise they consume the body).
+  app.post(
+    "/api/prodamus/webhook",
+    express.raw({ type: "*/*", limit: "1mb" }),
+    async (req, res) => {
+      try {
+        const prodamusSecret = process.env.PRODAMUS_SECRET_KEY;
+        if (!prodamusSecret) {
+          console.error("PRODAMUS_SECRET_KEY is not set");
+          return res.status(500).send("Server configuration error");
+        }
 
-  // API routes FIRST
-  app.get("/api/health", (req, res) => {
-    res.json({ status: "ok" });
-  });
+        const rawBody: Buffer = req.body instanceof Buffer ? req.body : Buffer.from("");
+        const rawString = rawBody.toString("utf8");
 
-  // Prodamus Webhook Endpoint
-  app.post("/api/prodamus/webhook", async (req, res) => {
-    try {
-      const prodamusSecret = process.env.PRODAMUS_SECRET_KEY;
-      if (!prodamusSecret) {
-        console.error("PRODAMUS_SECRET_KEY is not set");
-        return res.status(500).send("Server configuration error");
-      }
+        const signHeader = (req.headers["sign"] || req.headers["Sign"] || req.headers["x-sign"] || "") as string;
+        const expected = crypto.createHmac("sha256", prodamusSecret).update(rawBody).digest("hex");
+        const provided = String(signHeader).trim().toLowerCase();
 
-      // Verify signature (Prodamus sends signature in 'Sign' header)
-      const signHeader = req.headers['sign'] || req.headers['Sign'];
-      
-      // Prodamus signature is HMAC-SHA256 of the raw body or sorted parameters.
-      // For simplicity, if we just want to accept the webhook and send to Telegram,
-      // we should verify it. If verification is too complex without raw body, 
-      // we can do basic checks, but let's try to verify if possible.
-      // Actually, Prodamus signature verification:
-      // "Подпись передаётся в HTTP-заголовке Sign. Это HMAC-SHA256 от тела запроса."
-      // Since we used express.urlencoded, req.body is parsed. We might need raw body.
-      
-      const paymentData = req.body;
-      console.log("Received webhook from Prodamus:", paymentData);
+        const signatureOk =
+          provided.length > 0 &&
+          provided.length === expected.length &&
+          crypto.timingSafeEqual(Buffer.from(provided), Buffer.from(expected));
+
+        if (!signatureOk) {
+          console.warn("Prodamus webhook signature mismatch", { provided, expected });
+          return res.status(401).send("Invalid signature");
+        }
+
+        // Parse body (Prodamus sends urlencoded or JSON)
+        let paymentData: any = {};
+        const contentType = String(req.headers["content-type"] || "").toLowerCase();
+        if (contentType.includes("application/json")) {
+          try { paymentData = JSON.parse(rawString); } catch {}
+        } else {
+          paymentData = Object.fromEntries(new URLSearchParams(rawString).entries());
+        }
+        console.log("Received webhook from Prodamus:", paymentData);
 
       // Check if payment is successful
       // Prodamus sends payment_status=success
@@ -104,6 +111,14 @@ async function startServer() {
       console.error("Webhook error:", error);
       res.status(500).send("Error processing webhook");
     }
+  });
+
+  // Body parsers for the rest of the API (webhook above uses raw body)
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok" });
   });
 
   // Generate payment link endpoint

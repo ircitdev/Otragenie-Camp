@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Loader2, Bot, User } from 'lucide-react';
 import { GoogleGenAI, Chat } from '@google/genai';
 import { AI_SYSTEM_INSTRUCTION, generatePaymentLinkDeclaration } from '../ai-config';
+import { PRICING } from '../data';
 
 interface Message {
   id: string;
@@ -93,24 +94,50 @@ export const ChatAssistant = () => {
           for (const fc of chunk.functionCalls) {
             if (fc.name === 'generatePaymentLink') {
               const args = fc.args as any;
-              const link = `https://pay.otrazhenie-camp.ru/checkout?tariff=${encodeURIComponent(args.tariffName)}&name=${encodeURIComponent(args.userName)}`;
-              
+              const plan = (PRICING as any[]).find(p => p.name.toLowerCase() === String(args.tariffName || '').toLowerCase());
+              const priceNum = plan ? parseInt(String(plan.price).replace(/\D/g, ''), 10) : 0;
+
+              let link = '';
+              let errorMessage = '';
+              try {
+                const resp = await fetch('/api/prodamus/pay', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    tariffName: plan?.name || args.tariffName,
+                    price: priceNum,
+                    name: args.userName,
+                    contact: args.contactInfo,
+                  }),
+                });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+                link = data.paymentUrl || '';
+              } catch (e: any) {
+                errorMessage = e?.message || 'request_failed';
+              }
+
               const sysMsgId = Date.now().toString();
-              setMessages(prev => [...prev, { 
+              setMessages(prev => [...prev, {
                 id: sysMsgId,
-                role: 'system', 
-                text: `Сгенерирована ссылка на оплату (Тариф: ${args.tariffName}): ${link}` 
+                role: 'system',
+                text: link
+                  ? `Сгенерирована ссылка на оплату (Тариф: ${args.tariffName}): ${link}`
+                  : `Не удалось сгенерировать ссылку на оплату (${errorMessage || 'сервис временно недоступен'}). Оставьте заявку — свяжемся лично.`,
               }]);
 
-              // Send function response back to the model
               const funcResponseStream = await chatRef.current!.sendMessageStream({
                 message: [{
                   functionResponse: {
                     id: fc.id,
                     name: fc.name,
-                    response: { result: `Ссылка успешно сгенерирована: ${link}. Передай её пользователю.` }
-                  }
-                }] as any
+                    response: {
+                      result: link
+                        ? `Ссылка успешно сгенерирована: ${link}. Передай её пользователю.`
+                        : `Не удалось создать ссылку оплаты (${errorMessage}). Извинись и предложи оставить заявку через форму на сайте.`,
+                    },
+                  },
+                }] as any,
               });
 
               for await (const funcChunk of funcResponseStream) {
