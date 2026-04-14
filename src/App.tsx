@@ -2320,6 +2320,21 @@ export const DocPage = () => {
           </Section>
 
           <Section id="bot" title="Telegram-бот @otrageniecamp_bot">
+            <p>
+              <strong>Ссылка на бота:</strong>{" "}
+              <a className="text-brown hover:underline" href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer">
+                t.me/otrageniecamp_bot
+              </a>
+              <br />
+              <strong>Ссылка-приглашение в супергруппу с лидами:</strong>{" "}
+              <a className="text-brown hover:underline break-all" href="https://t.me/+Y3OkTzH32uw1Zjgy" target="_blank" rel="noopener noreferrer">
+                t.me/+Y3OkTzH32uw1Zjgy
+              </a>
+              <br />
+              <span className="text-[0.85rem] text-text-dark-muted">
+                В супергруппе под каждого лида создаётся отдельная ветка. Все, у кого есть приглашение, могут отвечать клиенту прямо из ветки — сообщения автоматически попадут ему в личный чат с ботом.
+              </span>
+            </p>
             <p>Бот ведёт пользователя по короткому сценарию, чтобы получить лида и сразу дать ему пользу:</p>
             <ol className="list-decimal pl-6 space-y-1">
               <li>Пользователь нажимает «Начать» (<code>/start</code>) — бот здоровается и спрашивает имя.</li>
@@ -2422,6 +2437,11 @@ export const DocPage = () => {
               <strong>Адрес сайта:</strong> <a className="text-brown hover:underline" href="https://otragenie-camp.ru" target="_blank" rel="noopener noreferrer">otragenie-camp.ru</a>
               <br />
               <strong>Telegram-бот:</strong> <a className="text-brown hover:underline" href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer">@otrageniecamp_bot</a>
+              <br />
+              <strong>Супергруппа с лидами (приглашение):</strong>{" "}
+              <a className="text-brown hover:underline break-all" href="https://t.me/+Y3OkTzH32uw1Zjgy" target="_blank" rel="noopener noreferrer">
+                t.me/+Y3OkTzH32uw1Zjgy
+              </a>
             </p>
           </Section>
         </main>
