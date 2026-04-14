@@ -713,6 +713,21 @@ if (bot) {
     await ctx.reply(lines.join("\n"), { parse_mode: "HTML" } as any);
   });
 
+  bot.command(["docs", "documentation"], async (ctx) => {
+    if (ctx.chat.type !== "private") return;
+    if (!isAdminUser(ctx.from?.id)) return;
+    const url = "https://otragenie-camp.ru/doc?token=otragenie-doc-invite-2026";
+    await ctx.reply(
+      "📘 <b>Документация проекта</b>\n\nОткрыть без пароля:",
+      {
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: [[{ text: "Открыть документацию", url }]],
+        },
+      } as any
+    );
+  });
+
   bot.command("dates", async (ctx) => {
     if (ctx.chat.type !== "private") return;
     if (!isAdminUser(ctx.from?.id)) return;

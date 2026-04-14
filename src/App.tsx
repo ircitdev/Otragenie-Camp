@@ -2212,11 +2212,21 @@ export const ProcessSectionsPage = () => (
 
 const DOC_PASSWORD = "otragenie888camp";
 const DOC_STORAGE_KEY = "otragenie_doc_auth_v1";
+const DOC_MAGIC_TOKEN = "otragenie-doc-invite-2026";
 
 export const DocPage = () => {
   const [authed, setAuthed] = useState(() => {
     if (typeof window === "undefined") return false;
-    return window.sessionStorage.getItem(DOC_STORAGE_KEY) === "1";
+    if (window.sessionStorage.getItem(DOC_STORAGE_KEY) === "1") return true;
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.get("token") === DOC_MAGIC_TOKEN) {
+      window.sessionStorage.setItem(DOC_STORAGE_KEY, "1");
+      // Clean token from URL so it does not leak via screenshots/sharing
+      const cleanUrl = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, "", cleanUrl);
+      return true;
+    }
+    return false;
   });
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -2355,7 +2365,10 @@ export const DocPage = () => {
                 <a className="text-brown hover:underline" href="/">otragenie-camp.ru</a> — основной сайт для посетителей.
               </li>
               <li>
-                <a className="text-brown hover:underline" href="/v1">otragenie-camp.ru/v1</a> — замороженная первая версия дизайна, чтобы можно было сравнивать.
+                <a className="text-brown hover:underline" href="/v0">otragenie-camp.ru/v0</a> — <strong>бета-версия</strong> (самый ранний прототип, статическая HTML-страница до React-переработки).
+              </li>
+              <li>
+                <a className="text-brown hover:underline" href="/v1">otragenie-camp.ru/v1</a> — замороженная первая версия текущего дизайна, чтобы можно было сравнивать.
               </li>
               <li>
                 <a className="text-brown hover:underline" href="/sections">otragenie-camp.ru/sections</a> — индекс всех черновиков с вариантами оформления каждой секции (Hero, Авторы, Программа и т.д.).
@@ -2401,10 +2414,15 @@ export const DocPage = () => {
             </ul>
 
             <p className="text-[0.85rem] text-text-dark-muted mt-3">
-              Посмотреть первую версию сайта (для сравнения композиции) можно здесь:{" "}
+              Сравнить композиции и эволюцию дизайна:{" "}
+              <a className="text-brown hover:underline" href="https://otragenie-camp.ru/v0" target="_blank" rel="noopener noreferrer">
+                /v0
+              </a>
+              {" "}(бета) ·{" "}
               <a className="text-brown hover:underline" href="https://otragenie-camp.ru/v1" target="_blank" rel="noopener noreferrer">
-                otragenie-camp.ru/v1
-              </a>.
+                /v1
+              </a>
+              {" "}(первая React-версия).
             </p>
           </Section>
 
@@ -2468,6 +2486,7 @@ export const DocPage = () => {
 
             <p className="mt-6"><strong>Другие админ-команды бота:</strong></p>
             <ul className="list-disc pl-6 space-y-1">
+              <li><code>/docs</code> — прислать кнопку «Открыть документацию». Ссылка содержит токен, поэтому открывается без пароля.</li>
               <li><code>/prices</code> — показать текущие тарифы (База 149 000 ₽ · Полный 179 000 ₽ · Премиум 249 000 ₽).</li>
               <li><code>/dates</code> — показать дату и локацию кэмпа (19—21 июня 2026, Красная Поляна, Глэмпинг «Дзен рекавери», до 10 человек).</li>
               <li><code>/analytics</code> (или <code>/stats</code>) — статистика сайта из Яндекс.Метрики за сегодня / неделю / месяц / квартал (визиты, посетители, просмотры, длительность, % отказов).</li>
