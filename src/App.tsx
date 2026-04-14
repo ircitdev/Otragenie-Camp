@@ -2432,11 +2432,21 @@ export const DocPage = () => {
           </Section>
 
           <Section id="contacts" title="Контакты">
-            <p>По всем вопросам по сайту, боту и оплате — пишите вашему менеджеру проекта. Он передаст разработчику.</p>
+            <p>По всем вопросам по сайту, боту и оплате можно писать напрямую разработчику.</p>
             <p>
-              <strong>Адрес сайта:</strong> <a className="text-brown hover:underline" href="https://otragenie-camp.ru" target="_blank" rel="noopener noreferrer">otragenie-camp.ru</a>
+              <strong>Разработчик:</strong> Aleksandr Uspeshnyy
               <br />
-              <strong>Telegram-бот:</strong> <a className="text-brown hover:underline" href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer">@otrageniecamp_bot</a>
+              <strong>Telegram:</strong>{" "}
+              <a className="text-brown hover:underline" href="https://t.me/uspeshnyy" target="_blank" rel="noopener noreferrer">
+                t.me/uspeshnyy
+              </a>
+            </p>
+            <p>
+              <strong>Адрес сайта:</strong>{" "}
+              <a className="text-brown hover:underline" href="https://otragenie-camp.ru" target="_blank" rel="noopener noreferrer">otragenie-camp.ru</a>
+              <br />
+              <strong>Telegram-бот:</strong>{" "}
+              <a className="text-brown hover:underline" href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer">@otrageniecamp_bot</a>
               <br />
               <strong>Супергруппа с лидами (приглашение):</strong>{" "}
               <a className="text-brown hover:underline break-all" href="https://t.me/+Y3OkTzH32uw1Zjgy" target="_blank" rel="noopener noreferrer">
