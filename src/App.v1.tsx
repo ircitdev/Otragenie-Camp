@@ -4,6 +4,14 @@ import { X, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calenda
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
 import { ChatAssistant } from './components/ChatAssistant';
 
+// Yandex.Metrika goal helper
+const YM_ID = 108536568;
+const ymGoal = (name: string, params?: Record<string, any>) => {
+  try {
+    (window as any).ym?.(YM_ID, "reachGoal", name, params);
+  } catch {}
+};
+
 // --- Components ---
 
 const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale = false }: any) => (
@@ -162,7 +170,7 @@ const Navbar = ({ onOpenModal }: any) => {
             
             <div className="hidden xl:block">
               <Button 
-                variant={scrolled ? 'brown' : 'outline-light'} 
+                variant={isPastHero ? 'brown' : 'outline-light'}
                 className="!px-6 !py-2.5 !text-[0.65rem] shadow-[0_12px_30px_rgba(17,24,39,0.18)]"
                 onClick={onOpenModal}
               >
@@ -517,31 +525,43 @@ const About = () => (
     <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
       <div className="grid lg:grid-cols-[1fr_300px] gap-10 lg:gap-14 items-center">
         <div>
-          <span className="text-[0.65rem] uppercase tracking-[0.35em] text-brown font-medium block mb-4 pb-3 border-b border-brown/20">О проекте · 2026</span>
-          <h2 className="font-serif italic text-[clamp(1.8rem,4vw,2.9rem)] leading-[1.05] text-text-dark mb-5 max-w-[18ch]">
-            Место, где <span className="not-italic">честность</span> становится опорой.
-          </h2>
-          <p className="font-serif text-[1.05rem] text-text-dark leading-[1.55] mb-3 max-w-[40rem]">{ABOUT_INTRO_1}</p>
-          <p className="text-[0.92rem] text-text-dark-soft leading-[1.6] mb-6 max-w-[40rem]">{ABOUT_INTRO_2}</p>
+          <Reveal direction="up" delay={0.05}>
+            <span className="text-[0.65rem] uppercase tracking-[0.35em] text-brown font-medium block mb-4 pb-3 border-b border-brown/20">О проекте · 2026</span>
+          </Reveal>
+          <Reveal direction="up" delay={0.15}>
+            <h2 className="font-serif italic text-[clamp(1.8rem,4vw,2.9rem)] leading-[1.05] text-text-dark mb-5 max-w-[18ch]">
+              Место, где <span className="not-italic">честность</span> становится опорой.
+            </h2>
+          </Reveal>
+          <Reveal direction="up" delay={0.25}>
+            <p className="font-serif text-[1.05rem] text-text-dark leading-[1.55] mb-3 max-w-[40rem]">{ABOUT_INTRO_1}</p>
+            <p className="text-[0.92rem] text-text-dark-soft leading-[1.6] mb-6 max-w-[40rem]">{ABOUT_INTRO_2}</p>
+          </Reveal>
           <div>
             {ABOUT_ITEMS.map((item, i) => (
-              <div key={i} className="flex gap-6 py-2.5 border-b border-text-dark/10">
-                <div className="font-serif text-brown text-[0.72rem] uppercase tracking-[0.25em] pt-1 shrink-0 w-14">№ {i + 1}</div>
-                <p className="font-serif text-[0.98rem] text-text-dark leading-[1.5]">{item}</p>
-              </div>
+              <Reveal key={i} direction="up" delay={0.3 + i * 0.08}>
+                <div className="flex gap-6 py-2.5 border-b border-text-dark/10">
+                  <div className="font-serif text-brown text-[0.72rem] uppercase tracking-[0.25em] pt-1 shrink-0 w-14">№ {i + 1}</div>
+                  <p className="font-serif text-[0.98rem] text-text-dark leading-[1.5]">{item}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 mt-6">
-            <Button href="#program" className="w-full sm:w-auto">Посмотреть программу</Button>
-            <Button variant="outline-dark" href="#authors" className="w-full sm:w-auto">Познакомиться с авторами</Button>
-          </div>
+          <Reveal direction="up" delay={0.5}>
+            <div className="flex flex-col sm:flex-row gap-3 mt-6">
+              <Button href="#program" className="w-full sm:w-auto">Посмотреть программу</Button>
+              <Button variant="outline-dark" href="#authors" className="w-full sm:w-auto">Познакомиться с авторами</Button>
+            </div>
+          </Reveal>
         </div>
-        <aside>
-          <div className="aspect-[3/4] max-h-[70vh] overflow-hidden rounded-sm bg-navy mb-3">
-            <video src={ABOUT_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
-          </div>
-          <p className="font-serif italic text-[0.8rem] text-text-dark-muted leading-snug">Выездной терапевтический кэмп «Отражение», Красная Поляна.</p>
-        </aside>
+        <Reveal direction="left" delay={0.2} scale>
+          <aside>
+            <div className="aspect-[3/4] max-h-[70vh] overflow-hidden rounded-sm bg-navy mb-3">
+              <video src={ABOUT_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+            </div>
+            <p className="font-serif italic text-[0.8rem] text-text-dark-muted leading-snug">Выездной терапевтический кэмп «Отражение», Красная Поляна.</p>
+          </aside>
+        </Reveal>
       </div>
     </div>
   </section>
@@ -552,11 +572,13 @@ const Program = () => {
   return (
     <section id="program" className="min-h-screen flex items-center py-12 bg-white relative overflow-hidden">
       <div className="max-w-5xl w-full mx-auto px-6 md:px-12">
-        <div className="text-center mb-7">
-          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Программа</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Три дня трансформации</h2>
-          <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
-        </div>
+        <Reveal direction="up">
+          <div className="text-center mb-7">
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Программа</span>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Три дня трансформации</h2>
+            <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
+          </div>
+        </Reveal>
         <div className="flex justify-center gap-2 mb-7 bg-cream/50 p-1.5 rounded-full w-fit mx-auto">
           {PROGRAM.map((_, i) => (
             <button key={i} onClick={() => setActive(i)}
@@ -616,22 +638,26 @@ const Philosophy = () => (
       </svg>
     </div>
     <div className="max-w-6xl w-full mx-auto px-6 md:px-12 relative">
-      <div className="mb-10 pb-6 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div>
-          <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Философия · принципы</span>
-          <h2 className="font-serif italic text-[clamp(1.9rem,4.2vw,3rem)] leading-[1.05] text-text-dark max-w-[18ch]">
-            Глубина и <span className="not-italic">структура</span> в одной работе.
-          </h2>
+      <Reveal direction="up" delay={0.05}>
+        <div className="mb-10 pb-6 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Философия · принципы</span>
+            <h2 className="font-serif italic text-[clamp(1.9rem,4.2vw,3rem)] leading-[1.05] text-text-dark max-w-[18ch]">
+              Глубина и <span className="not-italic">структура</span> в одной работе.
+            </h2>
+          </div>
+          <p className="text-[0.9rem] text-text-dark-soft leading-[1.7] max-w-sm">{PHIL_DESC}</p>
         </div>
-        <p className="text-[0.9rem] text-text-dark-soft leading-[1.7] max-w-sm">{PHIL_DESC}</p>
-      </div>
+      </Reveal>
       <div className="grid md:grid-cols-3 gap-10">
         {PHIL_ITEMS.map((it, i) => (
-          <div key={it.title}>
-            <div className="font-serif text-[3rem] leading-none text-brown/40 mb-3">0{i + 1}</div>
-            <h3 className="font-serif text-[1.5rem] text-text-dark mb-3">{it.title}</h3>
-            <p className="text-[0.93rem] text-text-dark-soft leading-[1.7]">{it.text}</p>
-          </div>
+          <Reveal key={it.title} direction="up" delay={0.1 + i * 0.12}>
+            <div>
+              <div className="font-serif text-[3rem] leading-none text-brown/40 mb-3">0{i + 1}</div>
+              <h3 className="font-serif text-[1.5rem] text-text-dark mb-3">{it.title}</h3>
+              <p className="text-[0.93rem] text-text-dark-soft leading-[1.7]">{it.text}</p>
+            </div>
+          </Reveal>
         ))}
       </div>
     </div>
@@ -666,34 +692,39 @@ const Authors = ({ onOpenModal }: any) => (
       </svg>
     </div>
     <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative">
-      <div className="text-center mb-6">
-        <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Авторы программы</span>
-        <h2 className="font-serif text-[clamp(1.8rem,3.8vw,2.8rem)] leading-[1.1] text-white font-light mb-3">
-          Программу проводят <span className="font-semibold">Майя и Роман</span>
-        </h2>
-        <p className="font-serif italic text-[clamp(0.95rem,1.5vw,1.1rem)] text-white/65 leading-[1.55] max-w-2xl mx-auto">
-          Дуэт, который соединяет женскую и мужскую перспективу в работе с жизненными сценариями, отношениями и стратегией жизни
-        </p>
-      </div>
+      <Reveal direction="up" delay={0.05}>
+        <div className="text-center mb-6">
+          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Авторы программы</span>
+          <h2 className="font-serif text-[clamp(1.8rem,3.8vw,2.8rem)] leading-[1.1] text-white font-light mb-3">
+            Программу проводят <span className="font-semibold">Майя и Роман</span>
+          </h2>
+          <p className="font-serif italic text-[clamp(0.95rem,1.5vw,1.1rem)] text-white/65 leading-[1.55] max-w-2xl mx-auto">
+            Дуэт, который соединяет женскую и мужскую перспективу в работе с жизненными сценариями, отношениями и стратегией жизни
+          </p>
+        </div>
+      </Reveal>
       <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-6">
         {[AUTHORS[0], AUTHORS[1]].map((a, i) => (
-          <div key={a.name} className="flex gap-5 items-start">
-            <div className="relative w-[120px] sm:w-[150px] aspect-[3/4] overflow-hidden rounded-[0.75rem] shrink-0 group">
-              <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="inline-flex items-center gap-2 rounded-full bg-brown/10 border border-brown-light/25 px-2.5 py-1 mb-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-brown-light" />
-                <span className="text-[0.58rem] uppercase tracking-[0.22em] text-brown-light font-medium">{i === 0 ? "глубина" : "структура"}</span>
+          <Reveal key={a.name} direction={i === 0 ? "left" : "right"} delay={0.15 + i * 0.1}>
+            <div className="flex gap-5 items-start">
+              <div className="relative w-[120px] sm:w-[150px] aspect-[3/4] overflow-hidden rounded-[0.75rem] shrink-0 group">
+                <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
               </div>
-              <h3 className="font-serif text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.05] mb-1.5">{a.name}</h3>
-              <p className="text-brown-light/90 text-[0.62rem] uppercase tracking-[0.18em] mb-2.5">{a.role}</p>
-              <p className="text-white/75 text-[0.85rem] leading-[1.55]">{a.desc}</p>
+              <div className="flex-1 min-w-0">
+                <div className="inline-flex items-center gap-2 rounded-full bg-brown/10 border border-brown-light/25 px-2.5 py-1 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brown-light" />
+                  <span className="text-[0.58rem] uppercase tracking-[0.22em] text-brown-light font-medium">{i === 0 ? "глубина" : "структура"}</span>
+                </div>
+                <h3 className="font-serif text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.05] mb-1.5">{a.name}</h3>
+                <p className="text-brown-light/90 text-[0.62rem] uppercase tracking-[0.18em] mb-2.5">{a.role}</p>
+                <p className="text-white/75 text-[0.85rem] leading-[1.55]">{a.desc}</p>
+              </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
 
+      <Reveal direction="up" delay={0.2}>
       <div className="flex flex-col lg:flex-row items-center justify-center gap-5 pt-6 border-t border-white/10 text-center">
         <div>
           <div className="text-[0.6rem] uppercase tracking-[0.24em] text-brown-light/80 font-medium mb-1.5">доверие в цифрах</div>
@@ -722,6 +753,7 @@ const Authors = ({ onOpenModal }: any) => (
           </Button>
         </div>
       </div>
+      </Reveal>
     </div>
   </section>
 );
@@ -729,36 +761,42 @@ const Authors = ({ onOpenModal }: any) => (
 const Location = () => (
   <section id="location" className="min-h-screen flex items-center py-12 bg-cream relative overflow-hidden">
     <div className="max-w-6xl w-full mx-auto px-6 md:px-12">
-      <div className="mb-8 pb-5 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-        <div>
-          <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
-          <h2 className="font-serif italic text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] text-text-dark md:whitespace-nowrap">
-            Красная Поляна · <span className="not-italic">Глэмпинг «Лес»</span>
-          </h2>
-        </div>
-        <p className="text-[0.9rem] text-text-dark-soft leading-[1.65] max-w-sm">Горы, тишина, отсутствие шума — контекст, в котором становится видно себя.</p>
-      </div>
-      <div className="grid grid-cols-6 grid-rows-2 gap-3 h-[52vh]">
-        <div className="col-span-4 row-span-2 rounded-xl overflow-hidden bg-navy relative group">
-          <video src={LOC_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent" />
-          <div className="absolute bottom-5 left-5 text-white font-serif italic text-[1.05rem]">Место, где замедляется жизнь</div>
-        </div>
-        <div className="col-span-2 rounded-xl overflow-hidden group">
-          <img src={LOC_EXT} alt="Exterior" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
-        </div>
-        <div className="col-span-2 rounded-xl overflow-hidden group">
-          <img src={LOC_INT} alt="Interior" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
-        </div>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-6 pt-5 border-t border-brown/15">
-        {LOC_FEATURES.map((f) => (
-          <div key={f.title} className="flex items-center gap-3 group">
-            <f.icon size={20} className="text-brown shrink-0 transition-transform group-hover:scale-110" />
-            <span className="text-[0.88rem] text-text-dark-soft font-medium leading-tight">{f.title}</span>
+      <Reveal direction="up" delay={0.05}>
+        <div className="mb-8 pb-5 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+          <div>
+            <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
+            <h2 className="font-serif italic text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] text-text-dark md:whitespace-nowrap">
+              Красная Поляна · <span className="not-italic">Глэмпинг «Дзен рекавери»</span>
+            </h2>
           </div>
-        ))}
-      </div>
+          <p className="text-[0.9rem] text-text-dark-soft leading-[1.65] max-w-sm">Горы, тишина, отсутствие шума — контекст, в котором становится видно себя.</p>
+        </div>
+      </Reveal>
+      <Reveal direction="up" delay={0.2} scale>
+        <div className="grid grid-cols-6 grid-rows-2 gap-3 h-[52vh]">
+          <div className="col-span-4 row-span-2 rounded-xl overflow-hidden bg-navy relative group">
+            <video src={LOC_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/50 to-transparent" />
+            <div className="absolute bottom-5 left-5 text-white font-serif italic text-[1.05rem]">Место, где замедляется жизнь</div>
+          </div>
+          <div className="col-span-2 rounded-xl overflow-hidden group">
+            <img src={LOC_EXT} alt="Exterior" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+          </div>
+          <div className="col-span-2 rounded-xl overflow-hidden group">
+            <img src={LOC_INT} alt="Interior" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+          </div>
+        </div>
+      </Reveal>
+      <Reveal direction="up" delay={0.3}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-6 pt-5 border-t border-brown/15">
+          {LOC_FEATURES.map((f) => (
+            <div key={f.title} className="flex items-center gap-3 group">
+              <f.icon size={20} className="text-brown shrink-0 transition-transform group-hover:scale-110" />
+              <span className="text-[0.88rem] text-text-dark-soft font-medium leading-tight">{f.title}</span>
+            </div>
+          ))}
+        </div>
+      </Reveal>
     </div>
   </section>
 );
@@ -894,6 +932,7 @@ const LeadMagnet = () => (
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-navy/5 rounded-full blur-[110px]" />
     </div>
     <div className="max-w-6xl w-full mx-auto px-6 md:px-12 relative z-10">
+      <Reveal direction="up" delay={0.1} scale>
       <div className="bg-[#fdfbf9] rounded-[2rem] shadow-xl overflow-hidden border border-brown/10">
         <div className="grid lg:grid-cols-12">
           <div className="lg:col-span-5 relative min-h-[360px] lg:min-h-[520px] bg-navy overflow-hidden flex flex-col justify-end p-8 md:p-10">
@@ -943,7 +982,7 @@ const LeadMagnet = () => (
                 </div>
                 <span className="text-[0.72rem] text-text-dark-muted leading-tight"><span className="font-bold text-text-dark">1200+ человек</span> уже прошли</span>
               </div>
-              <a href="#" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
+              <a href="https://t.me/otrageniecamp_bot" target="_blank" rel="noopener noreferrer" onClick={() => ymGoal("leadmagnet_click")} className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brown text-white hover:bg-brown-dark transition">
                 <span className="font-medium text-[0.82rem]">Послушать и понять себя</span>
                 <ArrowRight size={16} />
               </a>
@@ -951,6 +990,7 @@ const LeadMagnet = () => (
           </div>
         </div>
       </div>
+      </Reveal>
     </div>
   </section>
 );
@@ -1191,68 +1231,51 @@ const Pains = () => (
   </section>
 );
 
+const SYSTEM_BGS = [
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya2.jpg",
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg",
+];
+
 const SystemProblem = () => {
-  const ref = useRef<HTMLElement>(null);
-  const [backgroundImage] = useState(() =>
-    Math.random() < 0.5
-      ? "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg"
-      : "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya2.jpg"
-  );
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
-
+  const [bg] = useState(() => SYSTEM_BGS[Math.floor(Math.random() * SYSTEM_BGS.length)]);
   return (
-    <section ref={ref} className="relative py-24 md:py-32 bg-[#f5f0eb] overflow-hidden min-h-[80vh] flex items-center">
-      {/* Background Image Aligned to Left */}
-      <Reveal direction="left" className="absolute inset-0 z-0">
-        <motion.img 
-          style={{ y }}
-          src={backgroundImage}
-          alt="Maya" 
-          className="w-full h-[130%] object-cover object-left opacity-40 lg:opacity-100 lg:w-1/2 absolute -top-[15%]"
-          referrerPolicy="no-referrer"
-        />
-        {/* Subtle fade to background color */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f5f0eb]/20 to-[#f5f0eb]" />
+  <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
+    <img src={bg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" referrerPolicy="no-referrer" />
+    <div className="absolute inset-0 bg-navy/70 mix-blend-multiply" />
+    <div className="absolute inset-0 bg-gradient-to-b from-navy via-navy/50 to-navy" />
+    <div
+      aria-hidden
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        WebkitMaskImage: "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%)",
+        maskImage: "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%)"
+      }}
+    >
+      <div className="absolute left-[10%] top-16 h-64 w-64 rounded-full bg-brown/15 blur-3xl" />
+      <div className="absolute right-[10%] bottom-16 h-72 w-72 rounded-full bg-brown-light/10 blur-3xl" />
+    </div>
+    <div className="max-w-4xl w-full mx-auto px-6 md:px-12 relative z-10 text-center">
+      <Reveal direction="up" delay={0.05}>
+        <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-6">Суть</span>
       </Reveal>
-
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full text-center flex flex-col items-center">
-      <Reveal direction="up">
-        <span className="text-[0.7rem] uppercase tracking-[0.4em] text-brown font-bold mb-8 block">Суть</span>
-        <h2 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.1] text-text-dark mb-6">
-          Проблема в системе
+      <Reveal direction="up" delay={0.15}>
+        <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
+          Проблема не в теле.
         </h2>
-        <div className="w-24 h-[1px] bg-brown/20 mx-auto mb-10" />
+        <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
+          Не в отношениях. Не в работе.
+        </h2>
+        <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-8">
+          Не в усталости.
+        </h2>
       </Reveal>
-      
-      <Reveal delay={0.2} direction="up">
-        <p className="text-lg md:text-xl text-text-dark-soft leading-relaxed mb-12 max-w-2xl mx-auto">
-          Мы привыкли решать проблемы на уровне действий: сменить работу, уехать в отпуск, найти нового партнера. Но если система (ваши внутренние сценарии) остается прежней — вы просто переносите старые проблемы в новые декорации.
+      <Reveal direction="up" delay={0.3}>
+        <div className="h-px w-16 bg-brown-light/40 mx-auto mb-8" />
+        <p className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown-light leading-[1.3] max-w-2xl mx-auto">
+          Проблема — в системе,<br />из которой ты живёшь.
         </p>
       </Reveal>
-      
-      <div className="grid sm:grid-cols-2 gap-6 w-full max-w-3xl mx-auto">
-            <Reveal delay={0.3} direction="up">
-              <div className="p-10 rounded-3xl bg-white shadow-sm border border-brown/5 text-left h-full">
-                <h4 className="font-serif text-2xl mb-6 text-brown">Сценарий «Выживание»</h4>
-                <p className="text-sm text-text-dark-soft leading-relaxed">
-                  Когда каждое достижение дается через сверхусилие, а отдых воспринимается как слабость.
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={0.4} direction="up">
-              <div className="p-10 rounded-3xl bg-white shadow-sm border border-brown/5 text-left h-full">
-                <h4 className="font-serif text-2xl mb-6 text-brown">Сценарий «Одиночество»</h4>
-                <p className="text-sm text-text-dark-soft leading-relaxed">
-                  Когда вокруг много людей, но нет ощущения близости и понимания.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
+    </div>
   </section>
   );
 };
@@ -1263,6 +1286,7 @@ const WhatHappens = () => {
     <section className="min-h-screen flex items-center py-16 bg-white relative overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <Reveal direction="left" delay={0.1} scale>
           <div className="relative">
             <div className="rounded-[2rem] overflow-hidden aspect-[4/5] relative shadow-[0_24px_60px_rgba(58,39,20,0.18)]">
               <video src={PROC_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
@@ -1280,16 +1304,20 @@ const WhatHappens = () => {
               </p>
             </div>
           </div>
+          </Reveal>
 
           <div>
+            <Reveal direction="right" delay={0.1}>
             <p className="text-[1.02rem] text-text-dark-soft leading-[1.7] mb-8 max-w-lg">
               Мы создаём пространство, где <span className="text-brown font-medium">честность становится инструментом</span>, а группа — зеркалом, в котором невозможно не увидеть правду.
             </p>
+            </Reveal>
             <div className="space-y-5">
               {WHAT_HAPPENS.map((item, i) => {
                 const Icon = icons[item.icon] || HelpCircle;
                 return (
-                  <div key={i} className="group flex gap-5 items-start">
+                  <Reveal key={i} direction="right" delay={0.15 + i * 0.08}>
+                  <div className="group flex gap-5 items-start">
                     <div className="relative shrink-0">
                       <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-brown transition-all duration-500 group-hover:bg-brown group-hover:text-white">
                         <Icon size={20} strokeWidth={1.5} />
@@ -1302,6 +1330,7 @@ const WhatHappens = () => {
                       {item.text} <span className="font-semibold text-brown">{item.bold}</span>
                     </p>
                   </div>
+                  </Reveal>
                 );
               })}
             </div>
@@ -1343,11 +1372,13 @@ const HowItWorks = () => {
       </div>
 
       <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10">
-        <div className="text-center mb-8">
-          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Методология</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Как проходит работа</h2>
-          <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
-        </div>
+        <Reveal direction="up">
+          <div className="text-center mb-8">
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Методология</span>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Как проходит работа</h2>
+            <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
+          </div>
+        </Reveal>
 
         <div className="relative">
           <div className="hidden lg:block absolute top-1/2 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-brown/15 to-transparent -translate-y-1/2 z-0" />
@@ -1357,8 +1388,8 @@ const HowItWorks = () => {
               const Icon = icons[item.icon] || HelpCircle;
               const staggered = i % 2 !== 0;
               return (
+                <Reveal key={i} direction="up" delay={i * 0.1}>
                 <div
-                  key={i}
                   className={`relative rounded-[1.5rem] p-5 md:p-6 h-full flex flex-col group transition-all duration-500
                     ${staggered ? "lg:mt-8" : ""}
                     ${item.brown
@@ -1385,11 +1416,13 @@ const HowItWorks = () => {
                     ))}
                   </div>
                 </div>
+                </Reveal>
               );
             })}
           </div>
         </div>
 
+        <Reveal direction="up" delay={0.3}>
         <div className="mt-14 text-center">
           <div className="inline-flex items-center gap-4 px-7 py-3.5 rounded-full bg-white/60 backdrop-blur-md border border-brown/10 shadow-sm bg-gradient-to-r from-white/60 to-white/60 hover:from-navy hover:to-brown hover:text-white hover:border-transparent transition-all duration-500 group cursor-default">
             <div className="relative">
@@ -1400,6 +1433,7 @@ const HowItWorks = () => {
             <span className="text-[0.78rem] font-medium tracking-wide text-text-dark group-hover:text-white transition-colors">Всего 10 мест для максимальной глубины и персонального внимания</span>
           </div>
         </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1416,14 +1450,18 @@ const ForWho = () => (
       <div className="grid lg:grid-cols-12 gap-10">
         <div className="hidden lg:block lg:col-span-6" />
         <div className="lg:col-span-6">
-          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Для кого</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark mb-8">Кому это нужно<br />сейчас</h2>
+          <Reveal direction="right" delay={0.1}>
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Для кого</span>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark mb-8">Кому это нужно<br />сейчас</h2>
+          </Reveal>
           <div className="relative pl-7 border-l border-brown/25 space-y-4">
             {FOR_WHO.map((text, i) => (
-              <div key={i} className="relative group">
-                <div className="absolute -left-[33px] top-2 w-2.5 h-2.5 rounded-full bg-brown/50 group-hover:bg-brown transition" />
-                <p className="text-[0.98rem] text-text-dark-soft leading-[1.65]">{text}</p>
-              </div>
+              <Reveal key={i} direction="right" delay={0.15 + i * 0.07}>
+                <div className="relative group">
+                  <div className="absolute -left-[33px] top-2 w-2.5 h-2.5 rounded-full bg-brown/50 group-hover:bg-brown transition" />
+                  <p className="text-[0.98rem] text-text-dark-soft leading-[1.65]">{text}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -1461,43 +1499,57 @@ const Counter = ({ value, suffix = '', duration = 2, delay = 0 }: { value: numbe
   );
 };
 
-const Results = () => (
+const RESULTS_BGS = [
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya3.jpg",
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya4.jpg",
+];
+
+const Results = () => {
+  const [bg] = useState(() => RESULTS_BGS[Math.floor(Math.random() * RESULTS_BGS.length)]);
+  return (
   <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
     <div className="absolute inset-0 z-0">
-      <img src={RES_BG} alt="" className="w-full h-full object-cover object-[center_top] opacity-30" referrerPolicy="no-referrer" />
+      <img src={bg} alt="" className="w-full h-full object-cover object-[center_top] opacity-30" referrerPolicy="no-referrer" />
       <div className="absolute inset-0 bg-navy/80 mix-blend-multiply" />
       <div className="absolute inset-0 bg-gradient-to-b from-navy via-transparent to-navy" />
     </div>
     <div className="max-w-6xl w-full mx-auto px-6 md:px-12 relative z-10">
-      <div className="text-center mb-8">
-        <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
-        <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">Что вы заберёте с собой</h2>
-        <div className="h-px w-16 bg-brown-light/40 mx-auto mt-4" />
-      </div>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        {STATS.map((s, i) => (
-          <div key={i} className="text-center group">
-            <div className="font-serif text-[2.5rem] md:text-[3rem] text-brown-light mb-1 transition-transform group-hover:scale-110">
-              <Counter value={s.value} suffix={s.suffix} delay={i * 0.1} />
+      <Reveal direction="up" delay={0.05}>
+        <div className="text-center mb-8">
+          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
+          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">Что вы заберёте с собой</h2>
+          <div className="h-px w-16 bg-brown-light/40 mx-auto mt-4" />
+        </div>
+      </Reveal>
+      <Reveal direction="up" delay={0.15}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {STATS.map((s, i) => (
+            <div key={i} className="text-center group">
+              <div className="font-serif text-[2.5rem] md:text-[3rem] text-brown-light mb-1 transition-transform group-hover:scale-110">
+                <Counter value={s.value} suffix={s.suffix} delay={i * 0.1} />
+              </div>
+              <div className="text-[0.62rem] uppercase tracking-[0.2em] text-white/45 font-medium max-w-[140px] mx-auto leading-snug">{s.label}</div>
             </div>
-            <div className="text-[0.62rem] uppercase tracking-[0.2em] text-white/45 font-medium max-w-[140px] mx-auto leading-snug">{s.label}</div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </Reveal>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {RESULTS.map((r, i) => (
-          <div key={i} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 hover:bg-white/[0.08] hover:border-brown-light/40 transition group">
-            <div className="w-11 h-11 rounded-xl bg-brown/15 flex items-center justify-center text-brown-light mb-4 group-hover:bg-brown group-hover:text-white transition">
-              <CheckCircle size={22} />
+          <Reveal key={i} direction="up" delay={0.1 + i * 0.07}>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 hover:bg-white/[0.08] hover:border-brown-light/40 transition group">
+              <div className="w-11 h-11 rounded-xl bg-brown/15 flex items-center justify-center text-brown-light mb-4 group-hover:bg-brown group-hover:text-white transition">
+                <CheckCircle size={22} />
+              </div>
+              <h4 className="font-serif text-[1.1rem] mb-1.5 group-hover:text-brown-light transition">{r.title}</h4>
+              <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
             </div>
-            <h4 className="font-serif text-[1.1rem] mb-1.5 group-hover:text-brown-light transition">{r.title}</h4>
-            <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
-          </div>
+          </Reveal>
         ))}
       </div>
     </div>
   </section>
-);
+  );
+};
 
 const FINAL_IMG_SRC = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg";
 
@@ -1510,21 +1562,27 @@ const FinalBlock = ({ onOpenModal }: any) => (
       </div>
       <div className="bg-navy text-white flex items-center px-8 md:px-12 py-14">
         <div>
-          <span className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-brown-light font-bold border border-brown-light/30 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-brown-light animate-pulse" />
-            Финальный выбор
-          </span>
-          <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] mb-4 font-light">
-            Если ничего не менять,<br />
-            <span className="italic text-brown-light">через год будет то же самое</span>
-          </h2>
-          <p className="text-[1rem] text-white/75 mb-1">Те же мысли. Те же решения. Те же сценарии.</p>
-          <p className="font-serif italic text-[1.25rem] text-brown-light mb-8">Этот выезд — точка, где можно это остановить</p>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-2 rounded-full bg-brown-light animate-pulse" />
-            <span className="text-[0.65rem] uppercase tracking-[0.2em] font-bold text-brown-light">В группе всего 10 мест</span>
-          </div>
-          <Button onClick={() => onOpenModal?.()} className="!px-8 !py-3.5">Забронировать место</Button>
+          <Reveal direction="right" delay={0.1}>
+            <span className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-brown-light font-bold border border-brown-light/30 rounded-full px-4 py-1.5 mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-brown-light animate-pulse" />
+              Финальный выбор
+            </span>
+          </Reveal>
+          <Reveal direction="right" delay={0.2}>
+            <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] mb-4 font-light">
+              Если ничего не менять,<br />
+              <span className="italic text-brown-light">через год будет то же самое</span>
+            </h2>
+            <p className="text-[1rem] text-white/75 mb-1">Те же мысли. Те же решения. Те же сценарии.</p>
+            <p className="font-serif italic text-[1.25rem] text-brown-light mb-8">Этот выезд — точка, где можно это остановить</p>
+          </Reveal>
+          <Reveal direction="right" delay={0.35}>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-2 h-2 rounded-full bg-brown-light animate-pulse" />
+              <span className="text-[0.65rem] uppercase tracking-[0.2em] font-bold text-brown-light">В группе всего 10 мест</span>
+            </div>
+            <Button onClick={() => onOpenModal?.()} className="!px-8 !py-3.5">Забронировать место</Button>
+          </Reveal>
         </div>
       </div>
     </div>

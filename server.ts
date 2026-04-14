@@ -159,7 +159,8 @@ async function startServer() {
     const { name, contact, message: userMessage, tariffName } = req.body;
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID || '-1003978251165';
-    const topicId = process.env.TELEGRAM_TOPIC_ID || '4';
+    // Topic 2 is the leads/заявки topic (t.me/c/3978251165/2)
+    const topicId = process.env.TELEGRAM_LEADS_TOPIC_ID || '2';
 
     if (!botToken) {
       return res.status(500).json({ error: "TELEGRAM_BOT_TOKEN is not configured" });

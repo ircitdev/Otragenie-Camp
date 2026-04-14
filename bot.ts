@@ -319,15 +319,22 @@ const sendAudioPractice = async (ctx: Context, userId: number, threadId?: number
   logMessage(userId, "bot_to_user", "text", undefined, threadId);
 };
 
-const ensureLeadTopic = async (user: UserRecord) => {
+const ensureLeadTopic = async (user: UserRecord): Promise<number | null> => {
   if (!bot || !GROUP_ID) return user.thread_id;
 
   if (user.thread_id) return user.thread_id;
 
-  const topic = await bot.telegram.createForumTopic(GROUP_ID, createTopicTitle(user));
-  updateUser(user.id, { thread_id: topic.message_thread_id });
-  logEvent(user.id, "topic_created", JSON.stringify({ threadId: topic.message_thread_id }));
-  return topic.message_thread_id;
+  try {
+    const topic = await bot.telegram.createForumTopic(GROUP_ID, createTopicTitle(user));
+    updateUser(user.id, { thread_id: topic.message_thread_id });
+    logEvent(user.id, "topic_created", JSON.stringify({ threadId: topic.message_thread_id }));
+    return topic.message_thread_id;
+  } catch (err: any) {
+    console.error("ensureLeadTopic: failed to create topic, falling back to leads topic", err?.description || err);
+    // Fallback: use the leads topic so message is not lost
+    const leadsTopicId = Number(process.env.TELEGRAM_LEADS_TOPIC_ID || 2);
+    return leadsTopicId || null;
+  }
 };
 
 const sendLeadCardToAdmins = async (user: UserRecord) => {
@@ -486,7 +493,35 @@ const handlePrivateText = async (ctx: Context) => {
       followup_sent: 0,
     });
     logEvent(user.id, "pain_received", text);
-    await sendAudioPractice(ctx, user.id, user.thread_id);
+
+    // Создаём топик немедленно, чтобы команда видела лид ещё до ответа о чувстве
+    const updatedUserForTopic = getUserById(user.id);
+    if (updatedUserForTopic) {
+      try {
+        const threadId = await ensureLeadTopic(updatedUserForTopic);
+        if (threadId && GROUP_ID && bot) {
+          const earlyCard = [
+            "👤 <b>Новый участник — прослушивает практику</b>",
+            "",
+            `<b>Имя:</b> ${sanitizeTopicPart(updatedUserForTopic.name, "Не указано")}`,
+            `<b>Username:</b> ${updatedUserForTopic.username ? `@${updatedUserForTopic.username}` : "нет"}`,
+            `<b>Роль:</b> ${sanitizeTopicPart(updatedUserForTopic.role, "Не указано")}`,
+            `<b>Боль:</b> ${sanitizeTopicPart(text, "Не указано")}`,
+            `<b>Контакт:</b> ${formatUserTag(updatedUserForTopic)}`,
+          ].join("\n");
+          await bot.telegram.sendMessage(GROUP_ID, earlyCard, {
+            message_thread_id: threadId,
+            parse_mode: "HTML",
+          });
+          logMessage(updatedUserForTopic.id, "bot_to_admin", "early_lead_card", undefined, threadId);
+        }
+      } catch (err) {
+        console.error("Failed to create early topic", err);
+      }
+    }
+
+    const userAfterPain = getUserById(user.id);
+    await sendAudioPractice(ctx, user.id, userAfterPain?.thread_id ?? user.thread_id);
     return;
   }
 
@@ -541,7 +576,7 @@ const handlePrivateMedia = async (ctx: Context) => {
   }
 
   const user = ensureUser(ctx);
-  if (!user || !user.thread_id) return;
+  if (!user) return;
   if (user.step !== "finished") return;
 
   await copyPrivateMessageToTopic(ctx, user);
