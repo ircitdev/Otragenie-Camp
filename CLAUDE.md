@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Справочник для агентов Claude Code по проекту **Otragenie Camp** — промо-сайт и коммуникационная платформа терапевтического кэмпа «Отражение» (19–21 июня 2026, Красная Поляна, глэмпинг «Дзен рекавери»).
+Справочник для агентов Claude Code по проекту **Otragenie Camp** — промо-сайт и коммуникационная платформа кэмпа «Отражение» (19–21 июня 2026, Красная Поляна, глэмпинг «Дзен рекавери»).
 
 ## Обзор
 
@@ -14,19 +14,23 @@
 
 ## Ключевые файлы
 
-- [server.ts](server.ts) — Express + Vite middleware + bootstrap бота. Endpoints: `/api/health`, `/api/prodamus/pay`, `/api/prodamus/webhook` (raw body + HMAC-SHA256 верификация), `/api/telegram/notify`.
-- [bot.ts](bot.ts) — Telegraf-сценарий, SQLite-состояния пользователей (таблицы `users`, `message_logs`, `events`, `settings`), forum topics, follow-up через 24ч. Админ-команды: `/setaudio`, `/cancelaudio`, `/audioinfo`, `/audiotest`, `/analytics`, `/prices`, `/dates`, `/docs`.
-- [src/App.tsx](src/App.tsx) — главный лендинг, модалки, все секции-превью (крупный, кандидат на разбиение).
+- [server.ts](server.ts) — Express + Vite middleware + bootstrap бота. Endpoints: `/api/health`, `/api/prodamus/pay`, `/api/prodamus/webhook` (raw body + HMAC-SHA256 верификация), `/api/telegram/notify`, `/api/livechat/start`, `/api/livechat/message`, `/api/livechat/poll`.
+- [bot.ts](bot.ts) — Telegraf-сценарий, SQLite-состояния пользователей (таблицы `users`, `message_logs`, `events`, `settings`, `livechat_sessions`, `livechat_messages`), forum topics, follow-up через 24ч. Админ-команды: `/setaudio`, `/cancelaudio`, `/audioinfo`, `/audiotest`, `/analytics`, `/prices`, `/dates`, `/docs`.
+- [src/App.tsx](src/App.tsx) — главный лендинг (`/`), модалки, все секции-превью (крупный, кандидат на разбиение).
+- [src/App.v3.tsx](src/App.v3.tsx) — **актуальная рабочая версия** (`/v3`): тексты по ТЗ, 14 экранов, галерея локации, LiveChat, JourneyPath, новые секции.
 - [src/App.v1.tsx](src/App.v1.tsx) — замороженный снимок первой версии, отдаётся на `/v1`.
 - [src/main.tsx](src/main.tsx) — роутер на основе `window.location.pathname` (без react-router).
 - [src/components/ChatAssistant.tsx](src/components/ChatAssistant.tsx) — голосовой AI-ассистент (микрофон FAB, Web Speech API, TTS, пульсация каждые 30 сек, автооткрытие через 2 мин).
+- [src/components/LiveChat.tsx](src/components/LiveChat.tsx) — виджет живого менеджера (FAB зелёный, имя → чат, поллинг ответов каждые 3 сек через `/api/livechat/*`).
 - [src/ai-config.ts](src/ai-config.ts) — системный промпт (полный контент сайта) и function declarations для Gemini.
 - [src/data.ts](src/data.ts) — контент: PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — подробная техническая схема.
+- [docs/ПРАВКИ_15-19-04-2026.md](docs/ПРАВКИ_15-19-04-2026.md) — журнал правок по ТЗ и переписке команды.
 
 ## Маршруты (window.location.pathname)
 
-- `/` — основной лендинг (App)
+- `/` — основной лендинг (App.tsx)
+- `/v3` — **актуальная рабочая версия** (App.v3.tsx) — тексты по ТЗ, 14 экранов, LiveChat
 - `/v1` — замороженный первый вариант
 - `/doc` — документация (пароль `otragenie888camp`)
 - `/sections` — индекс черновиков секций
@@ -44,6 +48,15 @@ npm run lint     # tsc --noEmit (без eslint)
 Тестов нет. `npm run clean` использует `rm -rf` — под Windows запускать из bash.
 
 ## Деплой на продакшен
+
+**Предпочтительный способ** — сборка прямо на сервере (esbuild установлен там):
+
+```bash
+git push origin main
+ssh root@31.44.7.144 "cd /var/www/otragenie-camp.ru && git pull origin main && npm ci && npm run build && pm2 restart otragenie-camp"
+```
+
+**Альтернатива** — локальная сборка + scp (требует esbuild локально):
 
 ```bash
 npm run build
@@ -93,6 +106,16 @@ SQLite-файл `bot.db` создаётся в корне при первом з
 - `/dates` — даты кэмпа.
 - `/docs` — ссылка на документацию (magic-token bypass).
 
+## LiveChat (живой менеджер)
+
+- FAB зелёного цвета, фиксированный `bottom-24` (над AI-ботом).
+- Фаза 1: ввод имени → фаза 2: чат с поллингом ответов каждые 3 сек.
+- `POST /api/livechat/start` → создаёт сессию и forum-topic в TG-группе.
+- `POST /api/livechat/message` → кладёт сообщение в `livechat_messages`, пересылает в топик.
+- `GET /api/livechat/poll?sessionId=&after=` → возвращает ответы менеджера.
+- Менеджер отвечает в TG-топике → `handleGroupText` в `bot.ts` определяет livechat-топик и кладёт ответ в очередь.
+- SQLite таблицы: `livechat_sessions`, `livechat_messages`.
+
 ## Голосовой AI-ассистент
 
 - FAB: микрофон в коричневом круге, фиксированный bottom-right.
@@ -105,11 +128,14 @@ SQLite-файл `bot.db` создаётся в корне при первом з
 ## Подводные камни
 
 - [src/App.tsx](src/App.tsx) большой и содержит все превью-страницы — кандидат на разбиение.
+- **Активная разработка ведётся в [src/App.v3.tsx](src/App.v3.tsx)** — не путать с `App.tsx`.
 - `better-sqlite3` — нативный модуль; при деплое на Linux нужна пересборка (`npm ci` на сервере).
+- `esbuild` установлен только на сервере (`devDependency`); локальный `npm run build` без него упадёт — деплоить через `git push` + сборку на сервере.
 - На Windows `rm -rf` из `npm run clean` работает только из bash.
 - `createForumTopic` требует прав "Manage Topics" у бота в группе. Без них — fallback на leads topic.
 - Голосовой ввод (SpeechRecognition) работает только по HTTPS и только в Chrome/Edge.
 - `index.html` содержит `user-scalable=no` для блокировки зума на мобильных.
+- Слово «терапевтическая/терапевтический» **запрещено** на сайте юридически (нет мед. лицензии) — использовать «интенсив», «глубинная работа», «выезд».
 
 ## Конвенции
 

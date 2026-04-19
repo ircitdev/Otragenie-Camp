@@ -29,7 +29,8 @@ const Page =
   : path === '/hero-sections' ? <HeroSectionsPage />
   : path === '/sections' ? <SectionsIndexPage />
   : path === '/doc' ? <DocPage />
-  : <App />;
+  : path === '/legacy' ? <App />
+  : <AppV3 />;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
