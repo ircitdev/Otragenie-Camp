@@ -2,11 +2,15 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App, {AboutSectionsPage, ProcessSectionsPage, PhilosophySectionsPage, AuthorsSectionsPage, MethodologySectionsPage, ProgramSectionsPage, TestimonialsSectionsPage, LocationSectionsPage, ForWhoSectionsPage, ResultSectionsPage, LeadMagnitSectionsPage, PricingSectionsPage, FAQSectionsPage, FinalSectionsPage, FooterSectionsPage, HeroSectionsPage, SectionsIndexPage, DocPage} from './App.tsx';
 import AppV1 from './App.v1.tsx';
+import AppV3 from './App.v3.tsx';
+import AppV4 from './App.v4.tsx';
 import './index.css';
 
 const path = window.location.pathname.replace(/\/$/, '');
 const Page =
   path === '/v1' ? <AppV1 />
+  : path === '/v3' ? <AppV3 />
+  : path === '/v4' ? <AppV4 />
   : path === '/about-sections' ? <AboutSectionsPage />
   : path === '/process-sections' ? <ProcessSectionsPage />
   : path === '/philosophy-sections' ? <PhilosophySectionsPage />

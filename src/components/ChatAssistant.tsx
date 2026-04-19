@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Mic, MicOff, X, Volume2, VolumeX, Loader2, Bot } from 'lucide-react';
+import { Mic, MicOff, X, Volume2, VolumeX, Loader2, Bot, Send, RotateCcw } from 'lucide-react';
 import { GoogleGenAI, Chat } from '@google/genai';
 import { AI_SYSTEM_INSTRUCTION, generatePaymentLinkDeclaration } from '../ai-config';
 import { PRICING } from '../data';
@@ -11,8 +11,7 @@ interface Message {
   isStreaming?: boolean;
 }
 
-// Pulse animation CSS injected once
-const PULSE_STYLE = `
+const STYLES = `
 @keyframes voicePulse {
   0%   { box-shadow: 0 0 0 0 rgba(139,90,43,0.55); }
   60%  { box-shadow: 0 0 0 18px rgba(139,90,43,0); }
@@ -23,6 +22,14 @@ const PULSE_STYLE = `
   50%  { transform: scale(1.22); opacity: 0; }
   100% { transform: scale(1); opacity: 0; }
 }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes audioBar {
+  0%, 100% { transform: scaleY(0.3); }
+  50%       { transform: scaleY(1); }
+}
 .voice-fab-pulse { animation: voicePulse 1.2s ease-out; }
 .voice-fab-ring::before {
   content: '';
@@ -32,6 +39,12 @@ const PULSE_STYLE = `
   border: 2px solid rgba(139,90,43,0.5);
   animation: voiceRing 1.2s ease-out;
 }
+.chat-panel { animation: slideUp 0.28s cubic-bezier(0.34,1.4,0.64,1) both; }
+.audio-bar { animation: audioBar 0.7s ease-in-out infinite; }
+.audio-bar:nth-child(2) { animation-delay: 0.12s; }
+.audio-bar:nth-child(3) { animation-delay: 0.24s; }
+.audio-bar:nth-child(4) { animation-delay: 0.08s; }
+.audio-bar:nth-child(5) { animation-delay: 0.2s; }
 `;
 
 declare global {
@@ -50,6 +63,7 @@ export const ChatAssistant = () => {
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [pulseActive, setPulseActive] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const [textInput, setTextInput] = useState('');
 
   const chatRef = useRef<Chat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -58,13 +72,13 @@ export const ChatAssistant = () => {
   const pulseTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const autoOpenTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasAutoOpened = useRef(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Inject pulse CSS once
   useEffect(() => {
     if (!document.getElementById('voice-assistant-styles')) {
       const style = document.createElement('style');
       style.id = 'voice-assistant-styles';
-      style.textContent = PULSE_STYLE;
+      style.textContent = STYLES;
       document.head.appendChild(style);
     }
   }, []);
@@ -77,9 +91,7 @@ export const ChatAssistant = () => {
         setTimeout(() => setPulseActive(false), 1300);
       }, 30000);
     }
-    return () => {
-      if (pulseTimerRef.current) clearInterval(pulseTimerRef.current);
-    };
+    return () => { if (pulseTimerRef.current) clearInterval(pulseTimerRef.current); };
   }, [isOpen]);
 
   // Auto-open after 2 minutes
@@ -91,33 +103,47 @@ export const ChatAssistant = () => {
         (window as any).ym?.(108536568, 'reachGoal', 'chat_auto_open');
       }
     }, 120000);
-    return () => {
-      if (autoOpenTimerRef.current) clearTimeout(autoOpenTimerRef.current);
-    };
+    return () => { if (autoOpenTimerRef.current) clearTimeout(autoOpenTimerRef.current); };
   }, []);
 
-  // Init TTS
+  const ruVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
+
+  const pickRuVoice = useCallback(() => {
+    const synth = synthRef.current;
+    if (!synth) return;
+    const voices = synth.getVoices();
+    if (!voices.length) return;
+    const preferred = ['Milena', 'Irina', 'Microsoft Irina', 'Yuri', 'Katya', 'Google русский', 'Алёна', 'Dariya'];
+    for (const name of preferred) {
+      const v = voices.find(v => v.name.includes(name));
+      if (v) { ruVoiceRef.current = v; return; }
+    }
+    const femRu = voices.find(v =>
+      v.lang.startsWith('ru') &&
+      (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman'))
+    );
+    if (femRu) { ruVoiceRef.current = femRu; return; }
+    const anyRu = voices.find(v => v.lang.startsWith('ru'));
+    if (anyRu) ruVoiceRef.current = anyRu;
+  }, []);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       synthRef.current = window.speechSynthesis;
+      pickRuVoice();
+      window.speechSynthesis.addEventListener('voiceschanged', pickRuVoice);
+      return () => window.speechSynthesis.removeEventListener('voiceschanged', pickRuVoice);
     }
-  }, []);
+  }, [pickRuVoice]);
 
-  // Scroll to bottom
   useEffect(() => {
-    if (isOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (isOpen) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen]);
 
-  // Init Gemini chat
   const initChat = useCallback(() => {
     if (chatRef.current) return;
     const apiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (process as any).env?.GEMINI_API_KEY;
-    if (!apiKey) {
-      console.error('API ключ не найден.');
-      return;
-    }
+    if (!apiKey) { console.error('API ключ не найден.'); return; }
     const ai = new GoogleGenAI({ apiKey });
     chatRef.current = ai.chats.create({
       model: 'gemini-2.5-flash',
@@ -128,6 +154,23 @@ export const ChatAssistant = () => {
       },
     });
   }, []);
+
+  const speakText = useCallback((text: string) => {
+    if (!voiceEnabled || !synthRef.current) return;
+    synthRef.current.cancel();
+    if (!ruVoiceRef.current) pickRuVoice();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ru-RU';
+    utterance.rate = 0.95;
+    utterance.pitch = 1.05;
+    if (ruVoiceRef.current) utterance.voice = ruVoiceRef.current;
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    synthRef.current.speak(utterance);
+  }, [voiceEnabled, pickRuVoice]);
+
+  const stopSpeaking = () => { synthRef.current?.cancel(); setIsSpeaking(false); };
 
   // Send greeting when opened
   useEffect(() => {
@@ -145,81 +188,31 @@ export const ChatAssistant = () => {
     }
   }, [isOpen]);
 
-  // TTS
-  const speakText = useCallback((text: string) => {
-    if (!voiceEnabled || !synthRef.current) return;
-    synthRef.current.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ru-RU';
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-
-    // Prefer a Russian female voice if available
-    const voices = synthRef.current.getVoices();
-    const ruVoice = voices.find(v => v.lang.startsWith('ru') && v.name.toLowerCase().includes('female'))
-      || voices.find(v => v.lang.startsWith('ru'));
-    if (ruVoice) utterance.voice = ruVoice;
-
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-    synthRef.current.speak(utterance);
-  }, [voiceEnabled]);
-
-  const stopSpeaking = () => {
-    synthRef.current?.cancel();
-    setIsSpeaking(false);
-  };
-
-  // STT
   const startListening = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      alert('Голосовой ввод не поддерживается вашим браузером. Попробуйте Chrome.');
-      return;
-    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { alert('Голосовой ввод не поддерживается вашим браузером. Попробуйте Chrome.'); return; }
     stopSpeaking();
-
-    const recognition = new SpeechRecognition();
+    const recognition = new SR();
     recognitionRef.current = recognition;
     recognition.lang = 'ru-RU';
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
-
-    recognition.onstart = () => {
-      setIsListening(true);
-      setTranscript('');
-    };
-
+    recognition.onstart = () => { setIsListening(true); setTranscript(''); };
     recognition.onresult = (event: any) => {
-      const result = Array.from(event.results as any[])
-        .map((r: any) => r[0].transcript)
-        .join('');
+      const result = Array.from(event.results as any[]).map((r: any) => r[0].transcript).join('');
       setTranscript(result);
       if (event.results[event.results.length - 1].isFinal) {
         setTranscript('');
         handleSend(result);
       }
     };
-
-    recognition.onerror = () => {
-      setIsListening(false);
-      setTranscript('');
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
+    recognition.onerror = () => { setIsListening(false); setTranscript(''); };
+    recognition.onend = () => setIsListening(false);
     recognition.start();
   };
 
-  const stopListening = () => {
-    recognitionRef.current?.stop();
-    setIsListening(false);
-  };
+  const stopListening = () => { recognitionRef.current?.stop(); setIsListening(false); };
 
-  // Send message to Gemini
   const handleSend = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
@@ -312,8 +305,6 @@ export const ChatAssistant = () => {
       setMessages(prev => prev.map(msg =>
         msg.id === modelMsgId ? { ...msg, isStreaming: false } : msg,
       ));
-
-      // Speak the final response
       if (fullText) speakText(fullText);
 
     } catch (error: any) {
@@ -326,6 +317,20 @@ export const ChatAssistant = () => {
     }
   };
 
+  const handleTextSubmit = () => {
+    const val = textInput.trim();
+    if (!val) return;
+    setTextInput('');
+    handleSend(val);
+  };
+
+  const handleTextKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleTextSubmit();
+    }
+  };
+
   const handleOpen = () => {
     hasAutoOpened.current = true;
     if (autoOpenTimerRef.current) clearTimeout(autoOpenTimerRef.current);
@@ -333,14 +338,12 @@ export const ChatAssistant = () => {
     setIsOpen(true);
   };
 
-  const handleClose = () => {
-    stopSpeaking();
-    stopListening();
-    setIsOpen(false);
-  };
+  const handleClose = () => { stopSpeaking(); stopListening(); setIsOpen(false); };
 
   const hasSpeechSupport = typeof window !== 'undefined'
     && (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+  const statusLabel = isListening ? 'Слушаю...' : isSpeaking ? 'Говорю...' : isLoading ? 'Думаю...' : 'Онлайн';
 
   return (
     <>
@@ -348,7 +351,7 @@ export const ChatAssistant = () => {
       {!isOpen && (
         <button
           onClick={handleOpen}
-          className={`fixed bottom-6 right-6 z-50 w-16 h-16 bg-brown text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300 relative${pulseActive ? ' voice-fab-pulse voice-fab-ring' : ''}`}
+          className={`fixed bottom-6 right-6 z-50 w-16 h-16 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300 relative${pulseActive ? ' voice-fab-pulse voice-fab-ring' : ''}`}
           style={{ backgroundColor: '#8B5A2B' }}
           aria-label="Открыть голосового ассистента"
         >
@@ -358,28 +361,38 @@ export const ChatAssistant = () => {
 
       {/* Panel */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[340px] sm:w-[380px] h-[520px] max-h-[82vh] bg-white rounded-2xl shadow-2xl border border-brown/10 overflow-hidden flex flex-col font-sans">
+        <div className="chat-panel fixed bottom-6 right-6 z-50 w-[340px] sm:w-[390px] bg-white rounded-2xl shadow-2xl border border-brown/10 overflow-hidden flex flex-col font-sans"
+          style={{ maxHeight: 'min(580px, 88vh)' }}>
+
           {/* Header */}
-          <div className="text-white p-4 flex justify-between items-center shadow-md z-10 flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8B5A2B 0%, #6B3F1E 100%)' }}>
+          <div className="text-white p-4 flex justify-between items-center shadow-md z-10 flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #8B5A2B 0%, #6B3F1E 100%)' }}>
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center relative">
-                <Bot size={20} />
-                {(isListening || isSpeaking) && (
+                {isListening ? (
+                  /* Audio wave */
+                  <div className="flex items-end gap-[3px] h-5">
+                    {[4, 7, 10, 6, 8].map((h, i) => (
+                      <div key={i} className="audio-bar w-[3px] rounded-full bg-white origin-bottom"
+                        style={{ height: `${h}px` }} />
+                    ))}
+                  </div>
+                ) : (
+                  <Bot size={20} />
+                )}
+                {(isListening || isSpeaking || isLoading) && (
                   <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse" />
                 )}
               </div>
               <div>
-                <h3 className="font-semibold text-sm">Голосовой ассистент</h3>
-                <p className="text-xs text-white/70">
-                  {isListening ? 'Слушаю...' : isSpeaking ? 'Говорю...' : isLoading ? 'Думаю...' : 'Онлайн'}
-                </p>
+                <h3 className="font-semibold text-sm">Ассистент «Отражение»</h3>
+                <p className="text-xs text-white/70">{statusLabel}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {/* TTS toggle */}
+            <div className="flex items-center gap-1">
               <button
                 onClick={() => { setVoiceEnabled(v => !v); if (isSpeaking) stopSpeaking(); }}
-                className="text-white/70 hover:text-white transition-colors p-1"
+                className="text-white/70 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10"
                 aria-label={voiceEnabled ? 'Выключить голос' : 'Включить голос'}
                 title={voiceEnabled ? 'Выключить голос' : 'Включить голос'}
               >
@@ -387,7 +400,7 @@ export const ChatAssistant = () => {
               </button>
               <button
                 onClick={handleClose}
-                className="text-white/70 hover:text-white transition-colors p-1"
+                className="text-white/70 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10"
                 aria-label="Закрыть"
               >
                 <X size={20} />
@@ -431,17 +444,30 @@ export const ChatAssistant = () => {
                     <span className="whitespace-pre-wrap">
                       {msg.text}
                       {msg.isStreaming && (
-                        <span className="inline-block w-1.5 h-4 ml-1 rounded-sm animate-pulse align-middle" style={{ backgroundColor: 'rgba(139,90,43,0.5)' }} />
+                        <span className="inline-block w-1.5 h-4 ml-1 rounded-sm animate-pulse align-middle"
+                          style={{ backgroundColor: 'rgba(139,90,43,0.5)' }} />
                       )}
                     </span>
                   )}
                 </div>
+                {/* Replay button for model messages */}
+                {msg.role === 'model' && !msg.isStreaming && msg.text && (
+                  <button
+                    onClick={() => speakText(msg.text)}
+                    className="mt-1 flex items-center gap-1 text-xs text-gray-400 hover:text-[#8B5A2B] transition-colors px-1"
+                    title="Прослушать ещё раз"
+                  >
+                    <RotateCcw size={11} />
+                    <span>повторить</span>
+                  </button>
+                )}
               </div>
             ))}
-            {/* Live transcript */}
+            {/* Live transcript bubble */}
             {transcript && (
               <div className="self-end max-w-[88%]">
-                <div className="p-3 rounded-2xl rounded-tr-sm text-sm opacity-60 italic" style={{ backgroundColor: '#8B5A2B', color: 'white' }}>
+                <div className="p-3 rounded-2xl rounded-tr-sm text-sm opacity-60 italic"
+                  style={{ backgroundColor: '#8B5A2B', color: 'white' }}>
                   {transcript}
                 </div>
               </div>
@@ -449,42 +475,78 @@ export const ChatAssistant = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Voice Controls */}
-          <div className="p-4 border-t border-brown/10 bg-white flex-shrink-0">
+          {/* Input area */}
+          <div className="p-3 border-t border-brown/10 bg-white flex-shrink-0 flex flex-col gap-2">
+            {/* Text input */}
+            <div className="flex items-end gap-2">
+              <textarea
+                ref={textareaRef}
+                value={textInput}
+                onChange={e => setTextInput(e.target.value)}
+                onKeyDown={handleTextKeyDown}
+                placeholder="Напишите вопрос..."
+                rows={1}
+                disabled={isLoading}
+                className="flex-1 resize-none rounded-xl border border-brown/20 px-3 py-2 text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#8B5A2B] transition-colors bg-[#fdfbf9] disabled:opacity-50"
+                style={{ maxHeight: '96px', lineHeight: '1.5' }}
+                onInput={e => {
+                  const el = e.currentTarget;
+                  el.style.height = 'auto';
+                  el.style.height = Math.min(el.scrollHeight, 96) + 'px';
+                }}
+              />
+              <button
+                onClick={handleTextSubmit}
+                disabled={isLoading || !textInput.trim()}
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all disabled:opacity-40 hover:scale-105 active:scale-95 flex-shrink-0"
+                style={{ backgroundColor: '#8B5A2B', color: 'white' }}
+                aria-label="Отправить"
+              >
+                {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+              </button>
+            </div>
+
+            {/* Voice button */}
             {hasSpeechSupport ? (
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-3">
                 <button
                   onMouseDown={startListening}
                   onMouseUp={stopListening}
                   onTouchStart={(e) => { e.preventDefault(); startListening(); }}
                   onTouchEnd={(e) => { e.preventDefault(); stopListening(); }}
                   disabled={isLoading}
-                  className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 select-none ${
+                  className={`flex items-center justify-center gap-2 flex-1 h-10 rounded-xl text-sm font-medium transition-all duration-200 select-none ${
                     isListening
-                      ? 'scale-110 ring-4'
-                      : 'hover:scale-105 disabled:opacity-50 disabled:hover:scale-100'
+                      ? 'ring-2 ring-offset-1'
+                      : 'hover:opacity-90 disabled:opacity-40'
                   }`}
                   style={{
                     backgroundColor: isListening ? '#6B3F1E' : '#8B5A2B',
                     color: 'white',
-                    ...(isListening ? { boxShadow: '0 0 0 8px rgba(139,90,43,0.2)' } : {}),
+                    ...(isListening ? { ringColor: '#8B5A2B' } : {}),
                   }}
-                  aria-label={isListening ? 'Остановить запись' : 'Говорить (зажмите)'}
+                  aria-label={isListening ? 'Остановить запись' : 'Говорить'}
                 >
-                  {isLoading
-                    ? <Loader2 size={24} className="animate-spin" />
-                    : isListening
-                    ? <MicOff size={24} />
-                    : <Mic size={24} />}
+                  {isListening ? (
+                    <>
+                      <div className="flex items-end gap-[2px] h-4">
+                        {[3, 6, 9, 5, 7].map((h, i) => (
+                          <div key={i} className="audio-bar w-[2.5px] rounded-full bg-white/80 origin-bottom"
+                            style={{ height: `${h}px` }} />
+                        ))}
+                      </div>
+                      <span>Говорите...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Mic size={16} />
+                      <span>Зажать и говорить</span>
+                    </>
+                  )}
                 </button>
-                <p className="text-xs text-gray-400 text-center">
-                  {isLoading ? 'Обрабатываю...' : isListening ? 'Говорите, отпустите когда закончите' : 'Зажмите и говорите'}
-                </p>
               </div>
             ) : (
-              <p className="text-xs text-gray-400 text-center">
-                Голосовой ввод не поддерживается браузером
-              </p>
+              <p className="text-xs text-gray-400 text-center">Голосовой ввод доступен только в Chrome/Edge</p>
             )}
           </div>
         </div>

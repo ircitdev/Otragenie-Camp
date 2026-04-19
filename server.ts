@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import path from "path";
 import crypto from "crypto";
-import { startBot } from "./bot";
+import { startBot, livechatCreateSession, livechatSendMessage, livechatPollReplies } from "./bot";
 
 async function startServer() {
   const app = express();
@@ -194,6 +194,33 @@ async function startServer() {
       console.error("Error sending to Telegram:", error);
       res.status(500).json({ error: "Failed to send notification" });
     }
+  });
+
+  // --- LiveChat endpoints ---
+
+  app.post("/api/livechat/start", async (req, res) => {
+    const { visitorName } = req.body;
+    if (!visitorName) return res.status(400).json({ error: "visitorName required" });
+
+    const sessionId = `lc_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const threadId = await livechatCreateSession(sessionId, visitorName);
+    res.json({ sessionId, threadId });
+  });
+
+  app.post("/api/livechat/message", async (req, res) => {
+    const { sessionId, text } = req.body;
+    if (!sessionId || !text) return res.status(400).json({ error: "sessionId and text required" });
+
+    const ok = await livechatSendMessage(sessionId, text.slice(0, 2000));
+    res.json({ ok });
+  });
+
+  app.get("/api/livechat/poll", (req, res) => {
+    const { sessionId, after } = req.query;
+    if (!sessionId) return res.status(400).json({ error: "sessionId required" });
+
+    const messages = livechatPollReplies(String(sessionId), Number(after) || 0);
+    res.json({ messages });
   });
 
   // Vite middleware for development (loaded dynamically so it is not bundled into prod)

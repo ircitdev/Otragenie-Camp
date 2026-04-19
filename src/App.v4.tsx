@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionV
 import { X, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send, MessageCircle, Menu } from 'lucide-react';
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
 import { ChatAssistant } from './components/ChatAssistant';
+import { LiveChat } from './components/LiveChat';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -266,8 +267,7 @@ const Hero = ({ onOpenModal }: any) => {
     const mobileVideos = [
       "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2_m.mp4",
       "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1_m.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro_m.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/intro3_m.mp4"
+      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro_m.mp4"
     ];
 
     const isMobile = window.innerWidth < 768;
@@ -350,6 +350,12 @@ const Hero = ({ onOpenModal }: any) => {
 
         <Reveal delay={2.9}>
             <div className="flex gap-4 justify-center flex-wrap mb-9">
+              <span className="px-5 py-2 rounded-full border border-white/30 text-white/80 text-[0.78rem] tracking-[0.03em]">
+              10 мест в группе
+            </span>
+            <span className="px-5 py-2 rounded-full border border-white/30 text-white/80 text-[0.78rem] tracking-[0.03em]">
+              Красная Поляна
+            </span>
           </div>
         </Reveal>
 
@@ -366,7 +372,7 @@ const Hero = ({ onOpenModal }: any) => {
 
         <Reveal delay={3.1}>
           <p className="font-serif italic text-white/50 text-[0.95rem] leading-[1.6] max-w-[31.25rem] mx-auto mt-8">
-            Участие проходит через индивидуальный разбор, чтобы вы точно поняли, зачем вам это и какой результат хотите получить.
+            Участие в кэмпе проходит через индивидуальный разбор, чтобы вы точно поняли, зачем вам это и какой результат хотите получить. Если вы уже понимаете, что вам нужно — можно сразу забронировать место.
           </p>
         </Reveal>
       </div>
@@ -386,6 +392,116 @@ const Hero = ({ onOpenModal }: any) => {
           </motion.div>
         </motion.div>
       </Reveal>
+    </section>
+  );
+};
+
+// --- JourneyPath (Экран 2 — пунктирный маршрут) ---
+
+const journeySteps = [
+  { day: "Вечер 1", label: "Честная диагностика", desc: "Смотришь на свою жизнь без иллюзий — как она устроена прямо сейчас" },
+  { day: "День 1", label: "Отношения как зеркало", desc: "Видишь, из какой внутренней системы ты строишь связи и принимаешь решения" },
+  { day: "День 1", label: "Глубинная практика", desc: "Работаешь с тем, что обычно остаётся фоном — сценарии, паттерны, точки потери ресурса" },
+  { day: "День 2", label: "Смысл и ценности", desc: "Проясняешь, чего ты на самом деле хочешь — не чего ждут другие" },
+  { day: "День 2", label: "Архитектура новой версии", desc: "Выстраиваешь конкретную стратегию: правила, календарь, первые шаги" },
+  { day: "Итог", label: "Первые правила новой жизни", desc: "Уезжаешь с ясным планом, а не с очередными инсайтами в голове" },
+];
+
+const JourneyPath = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <section className="bg-navy py-20 md:py-28 relative overflow-hidden">
+      {/* Ambient grain overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }} />
+
+      <div className="max-w-6xl mx-auto px-6 md:px-12 relative">
+        {/* Header */}
+        <Reveal delay={0.05}>
+          <span className="text-[0.65rem] uppercase tracking-[0.35em] text-brown font-medium block mb-4 text-center">Два дня · Красная Поляна</span>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <h2 className="font-serif text-[clamp(1.8rem,4vw,3rem)] leading-[1.1] text-white text-center mb-4 max-w-[20ch] mx-auto">
+            Путь за два дня
+          </h2>
+        </Reveal>
+        <Reveal delay={0.18}>
+          <p className="text-white/55 text-center text-[0.95rem] leading-[1.65] max-w-[38rem] mx-auto mb-16">
+            «Отражение» — это двухдневный выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
+            <br /><span className="text-white/80 font-medium">За два дня ты проходишь путь:</span>
+          </p>
+        </Reveal>
+
+        {/* Steps — vertical timeline on mobile, two columns on desktop */}
+        <div ref={ref} className="relative">
+
+          {/* Vertical dotted line — desktop only, centered */}
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 pointer-events-none">
+            <svg width="2" height="100%" className="w-full h-full" style={{ overflow: "visible" }}>
+              <line
+                x1="1" y1="0" x2="1" y2="100%"
+                stroke="rgba(154,125,90,0.25)"
+                strokeWidth="2"
+                strokeDasharray="6 10"
+              />
+            </svg>
+          </div>
+
+          {/* Mobile dotted line — left edge */}
+          <div className="lg:hidden absolute left-[22px] top-0 bottom-0 w-px pointer-events-none">
+            <svg width="2" height="100%" className="w-full h-full" style={{ overflow: "visible" }}>
+              <line
+                x1="1" y1="0" x2="1" y2="100%"
+                stroke="rgba(154,125,90,0.25)"
+                strokeWidth="2"
+                strokeDasharray="5 8"
+              />
+            </svg>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-0">
+            {journeySteps.map((step, i) => {
+              const isLeft = i % 2 === 0;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 28, x: isLeft ? -20 : 20 }}
+                  animate={isInView ? { opacity: 1, y: 0, x: 0 } : {}}
+                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.1 + i * 0.1 }}
+                  className={`flex gap-5 py-6 px-4 md:px-8 lg:px-10 ${
+                    isLeft ? "lg:pr-16 lg:text-right lg:flex-row-reverse" : "lg:pl-16"
+                  }`}
+                >
+                  {/* Dot + day badge */}
+                  <div className="flex-shrink-0 relative flex flex-col items-center lg:items-start">
+                    <div className="relative z-10 w-11 h-11 rounded-full border border-brown/40 bg-navy flex items-center justify-center">
+                      <div className="w-3 h-3 rounded-full bg-brown/70" />
+                    </div>
+                    <span className="text-[0.6rem] uppercase tracking-[0.22em] text-brown/60 mt-2 whitespace-nowrap">{step.day}</span>
+                  </div>
+                  {/* Text */}
+                  <div className={`flex-1 pt-1 ${isLeft ? "lg:items-end lg:flex lg:flex-col" : ""}`}>
+                    <h3 className="font-serif text-[1.1rem] text-white mb-1.5 leading-[1.25]">{step.label}</h3>
+                    <p className="text-white/50 text-[0.88rem] leading-[1.6] max-w-[28rem]">{step.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Arrow at the bottom */}
+          <Reveal delay={0.75}>
+            <div className="flex flex-col items-center mt-8 gap-3">
+              <div className="w-px h-10 border-l-2 border-dashed border-brown/30" />
+              <div className="w-10 h-10 rounded-full bg-brown/15 border border-brown/30 flex items-center justify-center">
+                <ArrowRight size={16} className="text-brown rotate-90" />
+              </div>
+              <p className="text-white/60 text-[0.85rem] tracking-wide font-serif italic mt-1">конкретный план действий с собой</p>
+            </div>
+          </Reveal>
+        </div>
+      </div>
     </section>
   );
 };
@@ -520,24 +636,25 @@ const AboutV4 = () => (
 const About = () => (
   <section id="about" className="min-h-screen flex items-center bg-cream relative overflow-hidden py-16">
     <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
-      <div className="grid lg:grid-cols-[1fr_440px] gap-10 lg:gap-16 items-center">
+      <div className="grid lg:grid-cols-[1fr_300px] gap-10 lg:gap-14 items-center">
         <div>
           <Reveal direction="up" delay={0.05}>
             <span className="text-[0.65rem] uppercase tracking-[0.35em] text-brown font-medium block mb-4 pb-3 border-b border-brown/20">О проекте · 2026</span>
           </Reveal>
           <Reveal direction="up" delay={0.15}>
-            <h2 className="font-serif italic text-[clamp(1.8rem,4vw,2.9rem)] leading-[1.15] text-text-dark mb-5 max-w-[16ch]">
-              Место, где <span className="not-italic">честность</span><br />становится опорой.
+            <h2 className="font-serif italic text-[clamp(1.8rem,4vw,2.9rem)] leading-[1.05] text-text-dark mb-5 max-w-[18ch]">
+              Место, где <span className="not-italic">честность</span> становится опорой.
             </h2>
           </Reveal>
           <Reveal direction="up" delay={0.25}>
+            <p className="font-serif text-[1.05rem] text-text-dark leading-[1.55] mb-3 max-w-[40rem]">{ABOUT_INTRO_1}</p>
             <p className="text-[0.92rem] text-text-dark-soft leading-[1.6] mb-6 max-w-[40rem]">{ABOUT_INTRO_2}</p>
           </Reveal>
           <div>
             {ABOUT_ITEMS.map((item, i) => (
               <Reveal key={i} direction="up" delay={0.3 + i * 0.08}>
-                <div className="flex gap-6 py-2.5 border-b border-text-dark/10 items-start">
-                  <div className="font-serif text-brown text-[1.3rem] leading-none shrink-0 w-10 pt-0.5">№{i + 1}</div>
+                <div className="flex gap-6 py-2.5 border-b border-text-dark/10">
+                  <div className="font-serif text-brown text-[0.72rem] uppercase tracking-[0.25em] pt-1 shrink-0 w-14">№ {i + 1}</div>
                   <p className="font-serif text-[0.98rem] text-text-dark leading-[1.5]">{item}</p>
                 </div>
               </Reveal>
@@ -552,22 +669,14 @@ const About = () => (
         </div>
         <Reveal direction="left" delay={0.2} scale>
           <aside>
-            <div
-              className="w-full bg-navy overflow-hidden"
-              style={{
-                aspectRatio: '3/4',
-                clipPath: 'polygon(18% 0%, 100% 0%, 100% 82%, 82% 100%, 0% 100%, 0% 18%)',
-              }}
-            >
+            <div className="aspect-[3/4] max-h-[70vh] overflow-hidden rounded-sm bg-navy mb-3">
               <video
                 src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/topview.MP4"
                 autoPlay muted loop playsInline
-                className="w-full h-full object-cover scale-[1.04]"
+                className="w-full h-full object-cover"
               />
             </div>
-            <div className="-mt-10 relative z-10 mx-4 bg-cream/95 backdrop-blur-sm rounded-xl px-5 py-4 shadow-[0_8px_32px_rgba(0,0,0,0.10)] border border-brown/10">
-              <p className="font-serif text-[0.95rem] text-text-dark leading-[1.55]">{ABOUT_INTRO_1}</p>
-            </div>
+            <p className="font-serif italic text-[0.8rem] text-text-dark-muted leading-snug">Выездной кэмп «Отражение», Красная Поляна.</p>
           </aside>
         </Reveal>
       </div>
@@ -726,7 +835,26 @@ const Authors = ({ onOpenModal }: any) => (
         </div>
       </Reveal>
       <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-6">
-        {[AUTHORS[0], AUTHORS[1]].map((a, i) => (
+        {([
+          {
+            author: AUTHORS[0],
+            side: "глубина",
+            stats: [
+              { value: "500+", label: "участников" },
+              { value: "10+",  label: "лет практики" },
+              { value: "100%", label: "честности" },
+            ],
+          },
+          {
+            author: AUTHORS[1],
+            side: "структура",
+            stats: [
+              { value: "30+",  label: "лет в бизнесе" },
+              { value: "500+", label: "клиентов" },
+              { value: "1",    label: "совладелец банка" },
+            ],
+          },
+        ] as const).map(({ author: a, side, stats }, i) => (
           <Reveal key={a.name} direction={i === 0 ? "left" : "right"} delay={0.15 + i * 0.1}>
             <div className="flex gap-5 items-start">
               <div className="relative w-[120px] sm:w-[150px] aspect-[3/4] overflow-hidden rounded-[0.75rem] shrink-0 group">
@@ -735,45 +863,33 @@ const Authors = ({ onOpenModal }: any) => (
               <div className="flex-1 min-w-0">
                 <div className="inline-flex items-center gap-2 rounded-full bg-brown/10 border border-brown-light/25 px-2.5 py-1 mb-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-brown-light" />
-                  <span className="text-[0.58rem] uppercase tracking-[0.22em] text-brown-light font-medium">{i === 0 ? "глубина" : "структура"}</span>
+                  <span className="text-[0.58rem] uppercase tracking-[0.22em] text-brown-light font-medium">{side}</span>
                 </div>
                 <h3 className="font-serif text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.05] mb-1.5">{a.name}</h3>
                 <p className="text-brown-light/90 text-[0.62rem] uppercase tracking-[0.18em] mb-2.5">{a.role}</p>
-                <p className="text-white/75 text-[0.85rem] leading-[1.55]">{a.desc}</p>
+                <p className="text-white/75 text-[0.85rem] leading-[1.55] mb-4">{a.desc}</p>
+                <div className="flex gap-5 pt-3 border-t border-white/10">
+                  {stats.map(s => (
+                    <div key={s.label}>
+                      <div className="font-serif text-[1.25rem] text-white leading-none mb-0.5">{s.value}</div>
+                      <div className="text-[0.55rem] uppercase tracking-[0.16em] text-white/40">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </Reveal>
         ))}
       </div>
 
-      <Reveal direction="up" delay={0.2}>
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-5 pt-6 border-t border-white/10 text-center">
-        <div>
-          <div className="text-[0.6rem] uppercase tracking-[0.24em] text-brown-light/80 font-medium mb-1.5">доверие в цифрах</div>
-          <div className="flex flex-wrap items-center justify-center gap-5 md:gap-7">
-            <div>
-              <div className="font-serif text-xl md:text-2xl text-white">500+</div>
-              <div className="text-[0.55rem] uppercase tracking-[0.16em] text-white/40">участников</div>
-            </div>
-            <div>
-              <div className="font-serif text-xl md:text-2xl text-white">10+</div>
-              <div className="text-[0.55rem] uppercase tracking-[0.16em] text-white/40">лет практики</div>
-            </div>
-            <div>
-              <div className="font-serif text-xl md:text-2xl text-white">100%</div>
-              <div className="text-[0.55rem] uppercase tracking-[0.16em] text-white/40">честности</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-2.5">
-          <Button variant="navy" onClick={onOpenModal} className="!px-5 !py-3 !text-[0.62rem] !min-h-0">
-            Подходит ли вам формат <ArrowRight size={14} className="ml-1 inline" />
-          </Button>
-          <Button variant="outline-light" href="#program" className="!px-5 !py-3 !text-[0.62rem] !min-h-0">
-            Как мы работаем
-          </Button>
-        </div>
+      <Reveal direction="up" delay={0.3}>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-6 border-t border-white/10">
+        <Button variant="navy" onClick={onOpenModal} className="!px-5 !py-3 !text-[0.62rem] !min-h-0">
+          Подходит ли вам формат <ArrowRight size={14} className="ml-1 inline" />
+        </Button>
+        <Button variant="outline-light" href="#program" className="!px-5 !py-3 !text-[0.62rem] !min-h-0">
+          Как мы работаем
+        </Button>
       </div>
       </Reveal>
     </div>
@@ -781,14 +897,14 @@ const Authors = ({ onOpenModal }: any) => (
 );
 
 const LOC_PHOTOS = {
-  main:   null,
-  topR:   "/images/photo_1_2026-04-19_12-01-30.jpg",
-  midR:   "/images/photo_5_2026-04-19_12-01-26.jpg",
-  botR:   "/images/photo_1_2026-04-19_12-01-26.jpg",
-  strip1: "/images/photo_6_2026-04-19_12-01-26.jpg",
-  strip2: "/images/photo_7_2026-04-19_12-01-26.jpg",
-  strip3: "/images/photo_4_2026-04-19_12-01-45.jpg",
-  strip4: "/images/photo_4_2026-04-19_12-01-51.jpg",
+  main:   null,   // заменено видео — см. ниже
+  topR:   "/images/photo_1_2026-04-19_12-01-30.jpg",   // уютный интерьер с зеркалом
+  midR:   "/images/photo_5_2026-04-19_12-01-26.jpg",   // купель с людьми и лепестками
+  botR:   "/images/photo_1_2026-04-19_12-01-26.jpg",   // пустая купель в лесу
+  strip1: "/images/photo_6_2026-04-19_12-01-26.jpg",   // баня — компания
+  strip2: "/images/photo_7_2026-04-19_12-01-26.jpg",   // интерьер домика (тёмный)
+  strip3: "/images/photo_4_2026-04-19_12-01-45.jpg",   // светлый интерьер — плетёные кресла
+  strip4: "/images/photo_4_2026-04-19_12-01-51.jpg",   // терраса, лес, шезлонги
 };
 
 const Location = () => (
@@ -806,7 +922,7 @@ const Location = () => (
         </div>
       </Reveal>
 
-      {/* Main grid: видео + 2 фото справа */}
+      {/* Main grid: большое фото + 3 маленьких справа */}
       <Reveal direction="up" delay={0.2} scale>
         <div className="grid grid-cols-6 grid-rows-2 gap-3 h-[52vh]">
           <div className="col-span-4 row-span-2 rounded-xl overflow-hidden bg-navy relative group">
@@ -829,7 +945,7 @@ const Location = () => (
 
       {/* Strip: 4 фото в ряд */}
       <Reveal direction="up" delay={0.28}>
-        <div className="grid grid-cols-4 gap-3 mt-3 h-[20vh] md:h-[24vh]">
+        <div className="grid grid-cols-4 gap-3 mt-3 h-[22vh]">
           {[LOC_PHOTOS.strip1, LOC_PHOTOS.strip2, LOC_PHOTOS.strip3, LOC_PHOTOS.strip4].map((src, i) => (
             <div key={i} className="rounded-xl overflow-hidden group cursor-zoom-in">
               <img src={src} alt="" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -852,37 +968,99 @@ const Location = () => (
   </section>
 );
 
+const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
+  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 shadow-sm border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_8px_40px_rgba(154,125,90,0.12)]" : "border-brown/8 opacity-60 scale-[0.97]"}`}>
+    <div>
+      <div className="flex items-center gap-4 mb-5">
+        <div className="w-14 h-14 rounded-xl overflow-hidden bg-brown/10 shrink-0">
+          {c.img
+            ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
+        </div>
+        <div>
+          <h3 className="font-serif text-[1.35rem] text-text-dark leading-tight">{c.name}</h3>
+          <p className="text-brown text-[0.68rem] uppercase tracking-[0.18em] font-bold mt-0.5">{c.role}</p>
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-text-dark-muted mb-2 block">До участия</span>
+        <ul className="space-y-1.5">
+          {c.before.map((x: string, j: number) => (
+            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark-soft leading-[1.5]">
+              <span className="text-brown/50 shrink-0">—</span>{x}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="p-4 rounded-xl bg-cream border border-brown/10">
+        <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-brown mb-2 block">Результат</span>
+        <ul className="space-y-1.5">
+          {c.after.map((x: string, j: number) => (
+            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark leading-[1.5] font-medium">
+              <CheckCircle size={13} className="shrink-0 mt-0.5 text-brown" />{x}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div className="bg-navy text-white p-6 md:p-7 rounded-[1.25rem] relative overflow-hidden flex flex-col justify-between">
+      <div className="absolute top-0 right-0 w-24 h-24 bg-brown/15 rounded-full blur-3xl" />
+      <div>
+        <Quote className="text-brown mb-3 opacity-70" size={28} />
+        <p className="font-serif italic text-[0.98rem] md:text-[1.08rem] leading-[1.5] mb-4">«{c.resText}»</p>
+      </div>
+      <div className="flex items-center gap-3 pt-3 border-t border-white/10">
+        <div className="h-px w-8 bg-brown" />
+        <span className="text-[0.6rem] uppercase tracking-[0.18em] text-brown-light font-bold">{c.resLabel}</span>
+      </div>
+    </div>
+  </div>
+);
+
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const flatCases = CASES.flat();
-  const c = flatCases[currentIndex];
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  const go = (dir: number) => {
-    setDirection(dir);
-    setCurrentIndex((prev) => (prev + dir + flatCases.length) % flatCases.length);
+  const go = (idx: number) => {
+    const clamped = (idx + flatCases.length) % flatCases.length;
+    setCurrentIndex(clamped);
+    if (trackRef.current) {
+      const card = trackRef.current.children[clamped] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+      }
+    }
   };
-  const prev = () => go(-1);
-  const next = () => go(1);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") go(currentIndex - 1);
+      if (e.key === "ArrowRight") go(currentIndex + 1);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentIndex]);
+
+  // sync currentIndex when user scrolls manually
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => {
+      const cardWidth = (track.children[0] as HTMLElement)?.offsetWidth ?? 0;
+      const gap = 24;
+      const idx = Math.round(track.scrollLeft / (cardWidth + gap));
+      setCurrentIndex(Math.min(idx, flatCases.length - 1));
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
   }, []);
 
-  const reveal = (delay: number) => ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -10 },
-    transition: { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }
-  });
-
   return (
-    <section id="testimonials" className="min-h-screen flex items-center py-12 bg-cream relative overflow-hidden">
+    <section id="testimonials" className="py-12 md:py-16 bg-cream relative overflow-hidden">
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
@@ -906,68 +1084,72 @@ const Testimonials = () => {
           <rect width="100%" height="100%" fill="url(#cases-waves)" />
         </svg>
       </div>
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative">
-        <div className="text-center mb-7">
-          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Кейсы</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Истории трансформации</h2>
-          <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
-        </div>
 
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div key={currentIndex} className="grid lg:grid-cols-2 gap-10 items-center">
-            <div>
-              <motion.div {...reveal(0)} className="flex items-center gap-4 mb-5">
-                <div className="w-16 h-16 rounded-xl overflow-hidden bg-brown/10 shrink-0">
-                  {c.img ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" /> : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
-                </div>
-                <div>
-                  <h3 className="font-serif text-[1.6rem] text-text-dark leading-tight">{c.name}</h3>
-                  <p className="text-brown text-[0.72rem] uppercase tracking-[0.18em] font-bold">{c.role}</p>
-                </div>
-              </motion.div>
-
-              <motion.div {...reveal(0.15)} className="mb-4">
-                <span className="text-[0.6rem] uppercase tracking-[0.2em] font-bold text-text-dark-muted mb-2 block">До участия</span>
-                <ul className="space-y-1.5">
-                  {c.before.map((x, j) => (
-                    <li key={j} className="flex gap-2 text-[0.88rem] text-text-dark-soft leading-[1.55]"><span className="text-brown/50 shrink-0">—</span>{x}</li>
-                  ))}
-                </ul>
-              </motion.div>
-
-              <motion.div {...reveal(0.3)} className="p-5 rounded-xl bg-white border border-brown/10">
-                <span className="text-[0.6rem] uppercase tracking-[0.2em] font-bold text-brown mb-2 block">Результат</span>
-                <ul className="space-y-1.5">
-                  {c.after.map((x, j) => (
-                    <li key={j} className="flex gap-2 text-[0.88rem] text-text-dark leading-[1.55] font-medium"><CheckCircle size={14} className="shrink-0 mt-0.5 text-brown" />{x}</li>
-                  ))}
-                </ul>
-              </motion.div>
-            </div>
-
-            <motion.div {...reveal(0.45)} className="bg-navy text-white p-8 md:p-10 rounded-[1.5rem] relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-brown/15 rounded-full blur-3xl" />
-              <Quote className="text-brown mb-4 opacity-70" size={34} />
-              <p className="font-serif italic text-[1.1rem] md:text-[1.25rem] leading-[1.45] mb-5">«{c.resText}»</p>
-              <div className="flex items-center gap-3 pt-3 border-t border-white/10">
-                <div className="h-px w-10 bg-brown" />
-                <span className="text-[0.62rem] uppercase tracking-[0.18em] text-brown-light font-bold">{c.resLabel}</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="flex items-center justify-center gap-4 mt-8">
-          <button onClick={prev} aria-label="Previous" className="w-11 h-11 rounded-full border border-brown/25 text-brown hover:bg-brown hover:text-white transition flex items-center justify-center group">
-            <ChevronLeft size={18} className="group-hover:-translate-x-0.5 transition-transform" />
-          </button>
-          <div className="flex items-center gap-2 mx-2">
-            {flatCases.map((_, j) => (
-              <button key={j} onClick={() => { setDirection(j > currentIndex ? 1 : -1); setCurrentIndex(j); }} aria-label={`Go to case ${j + 1}`} className={`h-1.5 rounded-full transition-all ${currentIndex === j ? "w-7 bg-brown" : "w-2 bg-brown/25 hover:bg-brown/45"}`} />
-            ))}
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
+        <Reveal direction="up">
+          <div className="text-center mb-7">
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Кейсы</span>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Истории трансформации</h2>
+            <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
-          <button onClick={next} aria-label="Next" className="w-11 h-11 rounded-full border border-brown/25 text-brown hover:bg-brown hover:text-white transition flex items-center justify-center group">
-            <ChevronRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+        </Reveal>
+      </div>
+
+      {/* Peek scroll track — overflows container on both sides, left padding aligns first card */}
+      <div
+        ref={trackRef}
+        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 px-6 md:px-12"
+        style={{
+          scrollbarWidth: "none",
+          WebkitOverflowScrolling: "touch",
+          paddingRight: "calc(15vw - 24px)",
+        }}
+      >
+        <style>{`.cases-track::-webkit-scrollbar { display: none; }`}</style>
+        {flatCases.map((c, i) => (
+          <div key={i} className="snap-start flex-shrink-0" onClick={() => go(i)}>
+            <CaseCard c={c} active={i === currentIndex} />
+          </div>
+        ))}
+        {/* ghost spacer so last card isn't flush right */}
+        <div className="flex-shrink-0 w-[15vw] min-w-[40px]" aria-hidden />
+      </div>
+
+      {/* Controls */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
+        <div className="flex flex-col items-center gap-3 mt-5">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => go(currentIndex - 1)}
+              aria-label="Предыдущий кейс"
+              className="w-11 h-11 rounded-full border border-brown/25 text-brown hover:bg-brown hover:text-white transition flex items-center justify-center group"
+            >
+              <ChevronLeft size={18} className="group-hover:-translate-x-0.5 transition-transform" />
+            </button>
+            <div className="flex items-center gap-2 mx-2">
+              {flatCases.map((_, j) => (
+                <button
+                  key={j}
+                  onClick={() => go(j)}
+                  aria-label={`Кейс ${j + 1}`}
+                  className={`h-1.5 rounded-full transition-all ${currentIndex === j ? "w-7 bg-brown" : "w-2 bg-brown/25 hover:bg-brown/45"}`}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => go(currentIndex + 1)}
+              aria-label="Следующий кейс"
+              className="w-11 h-11 rounded-full border border-brown/25 text-brown hover:bg-brown hover:text-white transition flex items-center justify-center group"
+            >
+              <ChevronRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          </div>
+          <button
+            onClick={() => go(currentIndex + 1)}
+            className="inline-flex items-center gap-1.5 text-[0.75rem] uppercase tracking-[0.18em] text-brown hover:text-brown-dark font-medium transition"
+          >
+            Смотреть кейсы <ArrowRight size={13} />
           </button>
         </div>
       </div>
@@ -1192,15 +1374,21 @@ const Pricing = ({ onOpenModal }: any) => {
       </div>
       <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10">
         <Reveal direction="up">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Стоимость</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Выберите формат участия</h2>
+          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Тарифы</h2>
           <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
+        </div>
+        </Reveal>
+        <Reveal direction="up" delay={0.1}>
+        <div className="text-center mb-10 max-w-xl mx-auto">
+          <p className="text-[1rem] font-serif font-semibold text-text-dark mb-1">В группе всего 10 мест</p>
+          <p className="text-[0.9rem] text-text-dark-soft leading-[1.6]">Это не потоковый формат и не обучение, а работа, где каждый участник проходит через личный разбор.</p>
         </div>
         </Reveal>
         <div className="grid lg:grid-cols-3 gap-5 lg:gap-6 items-stretch">
           {PRICING.map((plan, i) => {
-            const featured = plan.theme === "premium";
+            const featured = plan.theme === "full";
             return (
               <Reveal key={i} direction="up" delay={i * 0.12} scale>
               <div key={i} className={`relative flex flex-col rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl lg:scale-[1.04] z-10 border border-brown/20" : "bg-[#fdfbf9] border border-brown/10 hover:border-brown/30 hover:shadow-lg hover:-translate-y-1"}`}>
@@ -1241,7 +1429,12 @@ const Pricing = ({ onOpenModal }: any) => {
             );
           })}
         </div>
-        <div className="mt-8 text-center">
+        <Reveal direction="up" delay={0.2}>
+          <p className="font-serif italic text-[0.92rem] text-text-dark-soft text-center mt-8 max-w-xl mx-auto leading-[1.7]">
+            Участие проходит через индивидуальный разбор. Это нужно, чтобы вы точно поняли, подходит ли вам этот формат и какой результат вы хотите получить. Если вы уже готовы — вы можете сразу забронировать место.
+          </p>
+        </Reveal>
+        <div className="mt-6 text-center">
           <button
             onClick={() => onOpenModal("compare")}
             className="inline-flex items-center gap-2 text-[0.75rem] uppercase tracking-[0.2em] text-brown hover:text-brown-dark font-medium transition"
@@ -1366,26 +1559,72 @@ const Pains = () => (
         ))}
       </div>
 
-      {/* Quote block with walk.MP4 as background */}
+      {/* Quote block */}
       <Reveal direction="up" delay={0.5}>
-        <div className="relative max-w-3xl mx-auto overflow-hidden">
+        <div className="relative max-w-3xl mx-auto px-8 md:px-16 py-10 md:py-12">
+          {/* Decorative left border */}
+          <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-brown to-transparent" />
+
+          <Quote className="text-brown/40 mb-6" size={36} />
+          <p className="font-serif text-xl md:text-2xl italic text-white/70 leading-relaxed mb-8">
+            «Когда работа, деньги и даже отдых перестают приносить радость, проблема не в них. Проблема в системе, из которой вы действуете».
+          </p>
+          <div className="flex items-center gap-3">
+            <div className="h-[1px] w-8 bg-brown/60" />
+            <span className="text-[0.65rem] uppercase tracking-[0.2em] text-brown font-bold">Майя Дзодзатти</span>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* Walk video — plays once, no loop */}
+      <Reveal direction="up" delay={0.65}>
+        <div className="relative max-w-3xl mx-auto mx-6 md:mx-auto mt-2 rounded-2xl overflow-hidden">
           <video
             src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/walk.MP4"
             autoPlay muted playsInline
-            className="w-full object-cover block max-h-[60vh]"
+            className="w-full object-cover max-h-[55vh]"
           />
-          <div className="absolute inset-0 bg-[#0b1130]/65" />
-          <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-brown/40" />
-          <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-16 py-10 md:py-12">
-            <Quote className="text-brown/40 mb-6" size={36} />
-            <p className="font-serif text-xl md:text-2xl italic text-white/70 leading-relaxed mb-8">
-              «Когда работа, деньги и даже отдых перестают приносить радость, проблема не в них. Проблема в системе, из которой вы действуете».
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="h-[1px] w-8 bg-brown/60" />
-              <span className="text-[0.65rem] uppercase tracking-[0.2em] text-brown font-bold">Майя Дзодзатти</span>
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-navy/30 pointer-events-none" />
+        </div>
+      </Reveal>
+    </div>
+  </section>
+);
+
+const WhenYouNeedCamp = () => (
+  <section className="py-20 md:py-28 bg-cream relative overflow-hidden">
+    <div className="max-w-4xl mx-auto px-6 md:px-12 relative z-10">
+      <Reveal direction="up" delay={0.05}>
+        <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4 text-center">Когда это нужно</span>
+        <h2 className="font-serif text-[clamp(1.9rem,4.5vw,3rem)] leading-[1.1] text-text-dark text-center mb-3">
+          КОГДА ВЫ ПОНИМАЕТЕ,<br />ЧТО НУЖЕН КЭМП
+        </h2>
+        <div className="h-px w-16 bg-brown/30 mx-auto mb-8" />
+        <p className="text-[1rem] text-text-dark-soft text-center leading-[1.7] mb-10">Ты можешь ощущать это по-разному:</p>
+      </Reveal>
+      <div className="space-y-4 mb-10">
+        {[
+          "постоянное фоновое напряжение, которое не проходит даже на отдыхе",
+          "усталость от роли успешного человека, который держит всё на себе",
+          "отношения становятся всё формальнее",
+          "ощущение, что жизнь идёт не туда",
+        ].map((item, i) => (
+          <Reveal key={i} direction="up" delay={0.1 + i * 0.07}>
+            <div className="flex items-start gap-4 py-3.5 border-b border-brown/10">
+              <span className="text-brown font-serif text-[1.1rem] shrink-0 mt-0.5">—</span>
+              <p className="text-[1rem] text-text-dark leading-[1.65]">{item}</p>
             </div>
-          </div>
+          </Reveal>
+        ))}
+      </div>
+      <Reveal direction="up" delay={0.45}>
+        <p className="text-[1rem] text-text-dark-soft leading-[1.7] text-center mb-6">
+          Когда работа, перегрузка и внутренняя усталость начали разрушать отношения и контакт с собой.
+        </p>
+        <div className="bg-white rounded-2xl border border-brown/15 px-8 py-6 text-center shadow-sm">
+          <p className="font-serif italic text-[1.05rem] text-text-dark leading-[1.6]">
+            Если вы узнаёте себя — значит, вы уже понимаете: что-то нужно менять. Вопрос только в том, с чего начать.
+          </p>
         </div>
       </Reveal>
     </div>
@@ -1397,9 +1636,11 @@ const SYSTEM_BGS = [
   "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg",
 ];
 
-const SystemProblem = () => (
-  <section className="flex items-center py-16 md:py-24 bg-navy text-white relative overflow-hidden">
-    <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4" autoPlay muted loop playsInline aria-hidden="true" className="absolute inset-0 w-full h-full object-cover object-center opacity-30" />
+const SystemProblem = () => {
+  const [bg] = useState(() => SYSTEM_BGS[Math.floor(Math.random() * SYSTEM_BGS.length)]);
+  return (
+  <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
+    <img src={bg} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover opacity-20" referrerPolicy="no-referrer" />
     <div className="absolute inset-0 bg-navy/70 mix-blend-multiply" />
     <div className="absolute inset-0 bg-gradient-to-b from-navy via-navy/50 to-navy" />
     <div
@@ -1419,7 +1660,7 @@ const SystemProblem = () => (
       </Reveal>
       <Reveal direction="up" delay={0.15}>
         <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
-          Проблема не в теле.
+          Проблема не в тебе.
         </h2>
         <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
           Не в отношениях. Не в работе.
@@ -1430,13 +1671,24 @@ const SystemProblem = () => (
       </Reveal>
       <Reveal direction="up" delay={0.3}>
         <div className="h-px w-16 bg-brown-light/40 mx-auto mb-8" />
-        <p className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown-light leading-[1.3] max-w-2xl mx-auto">
-          Проблема — в системе,<br />из которой ты живёшь.
+        <p className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown-light leading-[1.3] max-w-2xl mx-auto mb-6">
+          Проблема в системе, из которой ты живёшь.
         </p>
+      </Reveal>
+      <Reveal direction="up" delay={0.4}>
+        <p className="text-[1rem] text-white/65 leading-[1.7] max-w-xl mx-auto mb-6">
+          Можно менять работу, партнёров, города, решения — и возвращаться в ту же точку. Потому что сценарий остаётся прежним.
+        </p>
+        <div className="inline-block px-7 py-4 rounded-2xl border border-brown-light/25 bg-white/5 max-w-xl mx-auto">
+          <p className="font-serif italic text-[1.05rem] text-brown-light leading-[1.5]">
+            Этот кэмп — про то, чтобы увидеть и изменить именно его.
+          </p>
+        </div>
       </Reveal>
     </div>
   </section>
-);
+  );
+};
 
 const WhatHappens = () => {
   const icons: any = { Eye, Scale, Infinity, Key };
@@ -1447,7 +1699,7 @@ const WhatHappens = () => {
           <Reveal direction="left" delay={0.1} scale>
           <div className="relative">
             <div className="rounded-[2rem] overflow-hidden aspect-[4/5] relative shadow-[0_24px_60px_rgba(58,39,20,0.18)]">
-              <video src={PROC_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <video src={WHAT_HAPPENS_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
               <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
                 <span className="text-[0.65rem] uppercase tracking-[0.35em] text-white/70 font-medium block mb-3">Процесс</span>
@@ -1466,8 +1718,11 @@ const WhatHappens = () => {
 
           <div>
             <Reveal direction="right" delay={0.1}>
+            <p className="text-[1.02rem] text-text-dark-soft leading-[1.7] mb-4 max-w-lg">
+              Это пространство, где ты больше не можешь не видеть правду. Не длительная терапия и не процесс «когда-нибудь станет лучше».
+            </p>
             <p className="text-[1.02rem] text-text-dark-soft leading-[1.7] mb-8 max-w-lg">
-              Мы создаём пространство, где <span className="text-brown font-medium">честность становится инструментом</span>, а группа — зеркалом, в котором невозможно не увидеть правду.
+              <span className="text-brown font-medium">Концентрированная работа</span>, в которой за два дня становится видно то, что в обычной жизни остаётся незамеченным годами.
             </p>
             </Reveal>
             <div className="space-y-5">
@@ -1532,8 +1787,9 @@ const HowItWorks = () => {
       <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10">
         <Reveal direction="up">
           <div className="text-center mb-8">
-            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Методология</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Как проходит работа</h2>
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Как проходит работа</span>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">ИНСТРУМЕНТЫ ОТРАЖЕНИЯ</h2>
+            <p className="text-[0.95rem] text-text-dark-soft mt-3 max-w-xl mx-auto">Не лекции. Не теория. Живая работа с вашей реальной ситуацией.</p>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
@@ -1588,7 +1844,7 @@ const HowItWorks = () => {
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-brown rounded-full animate-ping group-hover:bg-white" />
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-brown rounded-full group-hover:bg-white" />
             </div>
-            <span className="text-[0.78rem] font-medium tracking-wide text-text-dark group-hover:text-white transition-colors">Всего 10 мест для максимальной глубины и персонального внимания</span>
+            <span className="text-[0.78rem] font-medium tracking-wide text-text-dark group-hover:text-white transition-colors">Работа проходит в малой группе, всего 10 человек, чтобы у каждого участника было время, внимание и возможность получить личный разбор своей ситуации</span>
           </div>
         </div>
         </Reveal>
@@ -1599,8 +1855,8 @@ const HowItWorks = () => {
 
 const ForWho = () => (
   <section id="for-who" className="min-h-screen flex items-center py-12 bg-white relative overflow-hidden">
-    <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0 overflow-hidden">
-      <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/rookkreslo.MP4" autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover object-right" />
+    <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0">
+      <img src={FORWHO_IMG} alt="" aria-hidden="true" className="w-full h-full object-cover object-left" referrerPolicy="no-referrer" />
       <div className="absolute inset-0 bg-white/80 lg:hidden" />
       <div className="hidden lg:block absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-white" />
     </div>
@@ -1679,7 +1935,7 @@ const Results = () => {
       <Reveal direction="up" delay={0.05}>
         <div className="text-center mb-8">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">Что вы заберёте с собой</h2>
+          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">ЧТО ТЫ ЗАБЕРЁШЬ С СОБОЙ</h2>
           <div className="h-px w-16 bg-brown-light/40 mx-auto mt-4" />
         </div>
       </Reveal>
@@ -1716,30 +1972,30 @@ const Results = () => {
 const FINAL_IMG_SRC = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg";
 
 const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="flex items-stretch relative overflow-hidden">
-    <div className="grid lg:grid-cols-2 w-full">
-      <div className="relative overflow-hidden min-h-[35vh] lg:min-h-0">
-        <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/banya.MP4" autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover object-[center_top]" />
+  <section className="min-h-screen flex items-stretch relative overflow-hidden">
+    <div className="grid lg:grid-cols-2 w-full min-h-screen">
+      <div className="relative overflow-hidden min-h-[40vh] lg:min-h-screen">
+        <img src={FINAL_IMG_SRC} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover object-[center_top]" referrerPolicy="no-referrer" />
         <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-navy via-navy/50 lg:via-navy/20 to-navy/60 lg:to-transparent" />
       </div>
-      <div className="bg-navy text-white flex items-center px-8 md:px-12 py-10 md:py-14">
+      <div className="bg-navy text-white flex items-center px-8 md:px-12 py-14">
         <div>
           <Reveal direction="right" delay={0.1}>
-            <span className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-brown-light font-bold border border-brown-light/30 rounded-full px-4 py-1.5 mb-5">
+            <span className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-brown-light font-bold border border-brown-light/30 rounded-full px-4 py-1.5 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-brown-light animate-pulse" />
               Финальный выбор
             </span>
           </Reveal>
           <Reveal direction="right" delay={0.2}>
-            <h2 className="font-serif text-[clamp(1.7rem,3.5vw,2.6rem)] leading-[1.1] mb-3 font-light">
+            <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1.05] mb-4 font-light">
               Если ничего не менять,<br />
               <span className="italic text-brown-light">через год будет то же самое</span>
             </h2>
-            <p className="text-[0.95rem] text-white/75 mb-1">Те же мысли. Те же решения. Те же сценарии.</p>
-            <p className="font-serif italic text-[1.1rem] text-brown-light mb-6">Этот выезд — точка, где можно это остановить</p>
+            <p className="text-[1rem] text-white/75 mb-1">Те же мысли. Те же решения. Те же сценарии.</p>
+            <p className="font-serif italic text-[1.25rem] text-brown-light mb-8">Этот выезд — точка, где можно это остановить</p>
           </Reveal>
           <Reveal direction="right" delay={0.35}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-2 h-2 rounded-full bg-brown-light animate-pulse" />
               <span className="text-[0.65rem] uppercase tracking-[0.2em] font-bold text-brown-light">В группе всего 10 мест</span>
             </div>
@@ -2246,6 +2502,7 @@ const ComparisonModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
 // --- Process Variants ---
 
 const PROC_VIDEO = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2.mp4";
+const WHAT_HAPPENS_VIDEO = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/girlsswim.MP4";
 const PROC_INTRO = "Мы создаём пространство, где честность становится инструментом, а группа — зеркалом, в котором невозможно не увидеть правду.";
 
 // V1 — timeline vertical minimal
@@ -2935,7 +3192,7 @@ const HeroV1 = () => (
     <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
       <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white/70 text-[0.7rem] tracking-[0.3em] uppercase mb-8">19 — 21 июня · Красная Поляна</span>
       <h1 className="font-serif text-[clamp(3rem,8vw,6rem)] leading-[0.95] text-white mb-6">Отражение</h1>
-      <p className="font-serif italic text-[clamp(1rem,2vw,1.2rem)] text-white/75 max-w-md mx-auto mb-8 leading-[1.7]">о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает</p>
+      <p className="font-serif italic text-[clamp(1rem,2vw,1.2rem)] text-white/75 max-w-md mx-auto mb-8 leading-[1.7]">О честности с собой. о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает</p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button className="px-8 py-3.5 rounded-full bg-brown text-white text-[0.8rem] uppercase tracking-[0.12em] font-medium hover:bg-brown-dark transition">Пройти разбор</button>
         <button className="px-8 py-3.5 rounded-full border border-white/30 text-white text-[0.8rem] uppercase tracking-[0.12em] font-medium hover:bg-white/10 transition">Забронировать</button>
@@ -2958,7 +3215,7 @@ const HeroV2 = () => (
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-5">Выездной кэмп</span>
           <h1 className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.98] text-text-dark mb-5">Отражение</h1>
           <p className="font-serif italic text-[clamp(1.1rem,2vw,1.4rem)] text-brown mb-2">19 — 21 июня 2026</p>
-          <p className="text-[0.98rem] text-text-dark-soft leading-[1.75] max-w-md mb-8">о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает</p>
+          <p className="text-[0.98rem] text-text-dark-soft leading-[1.75] max-w-md mb-8">О честности с собой. о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает</p>
           <div className="flex flex-wrap gap-3">
             <button className="px-7 py-3 rounded-full bg-brown text-white text-[0.8rem] uppercase tracking-[0.12em] font-medium hover:bg-brown-dark transition">Пройти разбор</button>
             <button className="px-7 py-3 rounded-full border border-brown/30 text-brown text-[0.8rem] uppercase tracking-[0.12em] font-medium hover:bg-brown hover:text-white transition">Забронировать</button>
@@ -3048,7 +3305,7 @@ const HeroV5 = () => (
         <h1 className="font-serif text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-normal tracking-[0.02em] relative z-10">Отражение</h1>
         <h1 className="font-serif text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-normal tracking-[0.02em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>Отражение</h1>
       </div>
-      <p className="font-serif text-[clamp(1rem,2vw,1.2rem)] text-white/75 max-w-[32.5rem] mx-auto mb-5 italic leading-[1.7] font-light">о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает</p>
+      <p className="font-serif text-[clamp(1rem,2vw,1.2rem)] text-white/75 max-w-[32.5rem] mx-auto mb-5 italic leading-[1.7] font-light">О честности с собой. о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает</p>
       <div className="flex gap-4 justify-center flex-wrap mb-9">
         <span className="px-5 py-2 rounded-full border border-white/30 text-white/80 text-[0.78rem] tracking-[0.03em]">10 мест в группе</span>
         <span className="px-5 py-2 rounded-full border border-white/30 text-white/80 text-[0.78rem] tracking-[0.03em]">Красная Поляна</span>
@@ -3221,7 +3478,7 @@ const FooterV5 = () => (
         </div>
       </div>
       <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/8 pt-5 text-center text-[0.62rem] uppercase tracking-[0.24em] text-white/32 md:flex-row">
-        <p>© 2026 Терапевтический кэмп «Отражение»</p>
+        <p>© 2026 Кэмп «Отражение»</p>
         <p>Небольшая группа · Безопасное пространство · Глубинная работа с собой</p>
       </div>
     </div>
@@ -3428,7 +3685,7 @@ export const FinalSectionsPage = () => (
 const FAQ_ITEMS = [
   { q: "Как понять, подходит ли мне этот формат?", a: "Для этого мы проводим предварительный индивидуальный разбор. Это бесплатная 20-минутная встреча, где мы обсуждаем ваш запрос и понимаем, сможем ли мы быть полезны в рамках этого выезда." },
   { q: "Нужна ли специальная психологическая подготовка?", a: "Нет, специальная подготовка не требуется. Важна только ваша готовность к честному диалогу с собой и группой." },
-  { q: "Что входит в стоимость проживания?", a: "В стоимость входит проживание в премиальном глэмпинге «Дзен рекавери», трехразовое питание от шеф-повара, банный ритуал и все материалы программы." },
+  { q: "Что входит в стоимость проживания?", a: "В стоимость входит проживание в глэмпинге «Дзен рекавери», банный ритуал и все материалы программы." },
   { q: "Сколько человек будет в группе?", a: "Мы ограничиваем группу до 10 человек. Это оптимальное количество для того, чтобы каждый участник получил достаточно внимания и смог пройти глубокий личный процесс." }
 ];
 
@@ -5661,7 +5918,7 @@ export const AboutSectionsPage = () => (
 
 // --- Main App ---
 
-export default function App() {
+export default function AppV4() {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
@@ -5686,8 +5943,10 @@ export default function App() {
 
       <Navbar onOpenModal={() => handleOpenModal()} />
       <Hero onOpenModal={() => handleOpenModal()} />
+      <JourneyPath />
       <About />
       <Pains />
+      <WhenYouNeedCamp />
       <SystemProblem />
       <WhatHappens />
       <Philosophy />
@@ -5698,13 +5957,13 @@ export default function App() {
       <Testimonials />
       <ForWho />
       <Results />
-      <LeadMagnet />
       <Pricing onOpenModal={handleOpenModal} />
       <FAQ />
       <FinalBlock onOpenModal={() => handleOpenModal()} />
       <Footer />
       <ScrollToTop />
-      <ChatAssistant />
+      <LiveChat />
+      {/* <ChatAssistant /> */}
       <ComparisonModal 
         isOpen={isCompareModalOpen} 
         onClose={() => setIsCompareModalOpen(false)} 

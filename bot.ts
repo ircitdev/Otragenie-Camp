@@ -94,6 +94,23 @@ let pollersStarted = false;
 let started = false;
 
 db.exec(`
+  CREATE TABLE IF NOT EXISTS livechat_sessions (
+    session_id TEXT PRIMARY KEY,
+    thread_id INTEGER,
+    visitor_name TEXT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)
+  );
+
+  CREATE TABLE IF NOT EXISTS livechat_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id TEXT NOT NULL,
+    direction TEXT NOT NULL,
+    text TEXT NOT NULL,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)
+  );
+`);
+
+db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     username TEXT,
@@ -319,22 +336,42 @@ const sendAudioPractice = async (ctx: Context, userId: number, threadId?: number
   logMessage(userId, "bot_to_user", "text", undefined, threadId);
 };
 
+// In-flight topic creation locks: prevents duplicate topics if ensureLeadTopic
+// is called concurrently for the same user before the first call writes thread_id to DB.
+const topicCreationLocks = new Map<number, Promise<number | null>>();
+
 const ensureLeadTopic = async (user: UserRecord): Promise<number | null> => {
   if (!bot || !GROUP_ID) return user.thread_id;
 
-  if (user.thread_id) return user.thread_id;
+  // Re-read from DB — another concurrent call may have already written thread_id
+  const fresh = getUserById(user.id);
+  if (fresh?.thread_id) return fresh.thread_id;
 
-  try {
-    const topic = await bot.telegram.createForumTopic(GROUP_ID, createTopicTitle(user));
-    updateUser(user.id, { thread_id: topic.message_thread_id });
-    logEvent(user.id, "topic_created", JSON.stringify({ threadId: topic.message_thread_id }));
-    return topic.message_thread_id;
-  } catch (err: any) {
-    console.error("ensureLeadTopic: failed to create topic, falling back to leads topic", err?.description || err);
-    // Fallback: use the leads topic so message is not lost
-    const leadsTopicId = Number(process.env.TELEGRAM_LEADS_TOPIC_ID || 2);
-    return leadsTopicId || null;
-  }
+  // If a creation is already in flight for this user — wait for it
+  const existing = topicCreationLocks.get(user.id);
+  if (existing) return existing;
+
+  const promise = (async (): Promise<number | null> => {
+    try {
+      // Double-check after acquiring the "lock"
+      const recheck = getUserById(user.id);
+      if (recheck?.thread_id) return recheck.thread_id;
+
+      const topic = await bot!.telegram.createForumTopic(GROUP_ID!, createTopicTitle(user));
+      updateUser(user.id, { thread_id: topic.message_thread_id });
+      logEvent(user.id, "topic_created", JSON.stringify({ threadId: topic.message_thread_id }));
+      return topic.message_thread_id;
+    } catch (err: any) {
+      console.error("ensureLeadTopic: failed to create topic, falling back to leads topic", err?.description || err);
+      const leadsTopicId = Number(process.env.TELEGRAM_LEADS_TOPIC_ID || 2);
+      return leadsTopicId || null;
+    } finally {
+      topicCreationLocks.delete(user.id);
+    }
+  })();
+
+  topicCreationLocks.set(user.id, promise);
+  return promise;
 };
 
 const sendLeadCardToAdmins = async (user: UserRecord) => {
@@ -588,7 +625,19 @@ const handleGroupText = async (ctx: Context) => {
   if (!ctx.message.message_thread_id) return;
   if (!isAllowedAdmin(ctx)) return;
 
-  const user = getUserByThreadId(ctx.message.message_thread_id);
+  const threadId = ctx.message.message_thread_id;
+  const text = ctx.message.text;
+
+  // Check livechat sessions first
+  const livechatSession = getLivechatSessionByThread(threadId);
+  if (livechatSession) {
+    db.prepare(
+      "INSERT INTO livechat_messages (session_id, direction, text, created_at) VALUES (?, 'admin', ?, ?)"
+    ).run(livechatSession.session_id, text, Date.now());
+    return;
+  }
+
+  const user = getUserByThreadId(threadId);
   if (!user) return;
 
   await forwardGroupTextToUser(ctx, user);
@@ -867,6 +916,77 @@ if (bot) {
     console.error(`Bot error on update ${ctx.updateType}`, err);
   });
 }
+
+// --- LiveChat (website widget ↔ Telegram forum topic) ---
+
+export type LiveChatSession = {
+  session_id: string;
+  thread_id: number | null;
+  visitor_name: string | null;
+  created_at: number;
+};
+
+export const livechatCreateSession = async (sessionId: string, visitorName: string): Promise<number | null> => {
+  if (!bot || !GROUP_ID) return null;
+
+  db.prepare(
+    "INSERT OR IGNORE INTO livechat_sessions (session_id, visitor_name, created_at) VALUES (?, ?, ?)"
+  ).run(sessionId, visitorName, Date.now());
+
+  try {
+    const topic = await bot.telegram.createForumTopic(GROUP_ID, `💬 Чат: ${visitorName}`.slice(0, 128));
+    const threadId = topic.message_thread_id;
+    db.prepare("UPDATE livechat_sessions SET thread_id = ? WHERE session_id = ?").run(threadId, sessionId);
+
+    await bot.telegram.sendMessage(GROUP_ID, `💬 <b>Новый чат с сайта</b>\nПосетитель: <b>${visitorName}</b>`, {
+      message_thread_id: threadId,
+      parse_mode: "HTML",
+    } as any);
+
+    return threadId;
+  } catch (err: any) {
+    console.error("livechatCreateSession: failed to create topic", err?.description || err);
+    const fallback = Number(process.env.TELEGRAM_LEADS_TOPIC_ID || 2);
+    db.prepare("UPDATE livechat_sessions SET thread_id = ? WHERE session_id = ?").run(fallback, sessionId);
+    return fallback;
+  }
+};
+
+export const livechatSendMessage = async (sessionId: string, text: string): Promise<boolean> => {
+  const session = db
+    .prepare("SELECT * FROM livechat_sessions WHERE session_id = ?")
+    .get(sessionId) as LiveChatSession | undefined;
+
+  if (!session || !session.thread_id || !bot || !GROUP_ID) return false;
+
+  db.prepare(
+    "INSERT INTO livechat_messages (session_id, direction, text, created_at) VALUES (?, 'visitor', ?, ?)"
+  ).run(sessionId, text, Date.now());
+
+  try {
+    await bot.telegram.sendMessage(GROUP_ID, text, {
+      message_thread_id: session.thread_id,
+    } as any);
+    return true;
+  } catch (err: any) {
+    console.error("livechatSendMessage error", err?.description || err);
+    return false;
+  }
+};
+
+export const livechatPollReplies = (sessionId: string, after: number): Array<{ id: number; text: string; created_at: number }> => {
+  return db
+    .prepare(
+      "SELECT id, text, created_at FROM livechat_messages WHERE session_id = ? AND direction = 'admin' AND id > ? ORDER BY id ASC LIMIT 20"
+    )
+    .all(sessionId, after) as Array<{ id: number; text: string; created_at: number }>;
+};
+
+// In handleGroupText: if the thread belongs to a livechat session, queue the reply
+const getLivechatSessionByThread = (threadId: number): LiveChatSession | undefined =>
+  db
+    .prepare("SELECT * FROM livechat_sessions WHERE thread_id = ?")
+    .get(threadId) as LiveChatSession | undefined;
 
 const initLifecycle = () => {
   if (lifecycleInitialized || !bot) return;
