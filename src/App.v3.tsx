@@ -1691,54 +1691,84 @@ const SYSTEM_BGS = [
   "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya3.jpg",
 ];
 
-const SystemProblem = () => (
-  <section className="flex items-center py-16 md:py-24 bg-navy text-white relative overflow-hidden">
-    <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4" autoPlay muted loop playsInline aria-hidden="true" className="absolute inset-0 w-full h-full object-cover object-center opacity-30" />
-    <div className="absolute inset-0 bg-navy/70 mix-blend-multiply" />
-    <div className="absolute inset-0 bg-gradient-to-b from-navy via-navy/50 to-navy" />
-    <div
-      aria-hidden
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        WebkitMaskImage: "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%)",
-        maskImage: "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%)"
-      }}
-    >
-      <div className="absolute left-[10%] top-16 h-64 w-64 rounded-full bg-brown/15 blur-3xl" />
-      <div className="absolute right-[10%] bottom-16 h-72 w-72 rounded-full bg-brown-light/10 blur-3xl" />
-    </div>
-    <div className="max-w-4xl w-full mx-auto px-6 md:px-12 relative z-10 text-center">
-      <Reveal direction="up" delay={0.1}>
-        <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
-          Проблема не в тебе.
-        </h2>
-        <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
-          Не в отношениях. Не в работе.
-        </h2>
-        <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-8">
-          Не в усталости.
-        </h2>
-      </Reveal>
-      <Reveal direction="up" delay={0.3}>
-        <div className="h-px w-16 bg-brown-light/40 mx-auto mb-8" />
-        <p className="font-serif italic text-[clamp(1.3rem,3vw,2rem)] text-brown-light leading-[1.3] max-w-2xl mx-auto mb-6">
-          Проблема в системе, из которой ты живёшь.
-        </p>
-      </Reveal>
-      <Reveal direction="up" delay={0.4}>
-        <p className="text-[1rem] text-white/65 leading-[1.7] max-w-xl mx-auto mb-6">
-          Можно менять работу, партнёров, города, решения — и возвращаться в ту же точку. Потому что сценарий остаётся прежним.
-        </p>
-        <div className="inline-block px-7 py-4 rounded-2xl border border-brown-light/25 bg-white/5 max-w-xl mx-auto">
-          <p className="font-serif italic text-[1.05rem] text-brown-light leading-[1.5]">
-            Этот кэмп — про то, чтобы увидеть и изменить именно его.
-          </p>
-        </div>
-      </Reveal>
+const SystemProblem = () => {
+  const notItems = ["в тебе", "в отношениях", "в работе", "в усталости"];
+  return (
+    <section className="bg-[#0c1220] text-white relative overflow-hidden">
+      {/* subtle grain texture */}
+      <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
+      {/* warm glow bottom-right */}
+      <div aria-hidden className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#7d5c3a]/12 rounded-full blur-[120px] pointer-events-none" />
 
-    </div>
-  </section>
-);
+      <div className="max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-[1fr_1px_1fr] gap-0 items-stretch min-h-[80vh]">
+
+        {/* Left — the "NOT" list */}
+        <div className="py-20 md:py-28 lg:pr-16 flex flex-col justify-center">
+          <Reveal direction="left" delay={0.05}>
+            <span className="text-[0.62rem] tracking-[0.35em] uppercase text-[#9a7d5a] font-medium mb-10 block">Четвёртый экран</span>
+          </Reveal>
+          <Reveal direction="left" delay={0.1}>
+            <p className="text-white/40 text-[0.82rem] uppercase tracking-[0.2em] font-medium mb-6">Проблема не</p>
+          </Reveal>
+          <div className="space-y-0 mb-10">
+            {notItems.map((item, i) => (
+              <Reveal key={i} direction="left" delay={0.15 + i * 0.08}>
+                <div className="flex items-baseline gap-5 py-4 border-b border-white/6 group">
+                  <span className="text-[0.62rem] text-white/20 font-mono shrink-0 w-5 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-serif text-[clamp(1.6rem,3.5vw,2.4rem)] leading-[1.1] text-white/30 relative">
+                    {item}
+                    <span className="absolute left-0 right-0 top-1/2 h-[1.5px] bg-white/20" aria-hidden />
+                  </span>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal direction="left" delay={0.55}>
+            <p className="text-white/45 text-[0.9rem] leading-[1.8] max-w-[42ch]">
+              Можно менять работу, партнёров, города, решения — и возвращаться в ту же точку. Потому что сценарий остаётся прежним.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* Divider */}
+        <div aria-hidden className="hidden lg:block bg-white/6" />
+
+        {/* Right — the reveal */}
+        <div className="lg:pl-16 py-20 md:py-28 flex flex-col justify-center relative">
+          {/* video inset */}
+          <div className="absolute inset-0 lg:inset-y-8 lg:right-0 overflow-hidden lg:rounded-r-none opacity-15 pointer-events-none">
+            <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4" autoPlay muted loop playsInline className="w-full h-full object-cover object-center" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0c1220] via-[#0c1220]/60 to-transparent" />
+          </div>
+          <div className="relative z-10">
+            <Reveal direction="right" delay={0.2}>
+              <p className="text-[0.62rem] tracking-[0.35em] uppercase text-[#9a7d5a] font-medium mb-8">Проблема</p>
+            </Reveal>
+            <Reveal direction="right" delay={0.3}>
+              <h2 className="font-serif text-[clamp(2.2rem,4.5vw,3.8rem)] leading-[1.08] text-white font-light mb-8">
+                в системе,<br />
+                <em className="not-italic text-[#c4a882]">из которой<br />ты живёшь</em>
+              </h2>
+            </Reveal>
+            <Reveal direction="right" delay={0.45}>
+              <div className="h-px w-12 bg-[#9a7d5a]/50 mb-8" />
+              <p className="text-white/55 text-[0.9rem] leading-[1.85] max-w-[40ch] mb-10">
+                Этот кэмп — про то, чтобы увидеть и изменить именно его.
+              </p>
+            </Reveal>
+            <Reveal direction="right" delay={0.55}>
+              <div className="inline-flex items-center gap-3 text-[0.75rem] text-[#9a7d5a] tracking-[0.12em] uppercase">
+                <div className="w-8 h-px bg-[#9a7d5a]" />
+                глубинная работа со сценарием
+              </div>
+            </Reveal>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
 
 
 const WhatHappens = () => (
