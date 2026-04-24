@@ -2088,25 +2088,32 @@ const Footer = () => (
 const CookieBanner = () => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    if (!localStorage.getItem('cookie-consent')) setVisible(true);
+    if (!localStorage.getItem('cookie-consent')) {
+      const t = setTimeout(() => setVisible(true), 1800);
+      return () => clearTimeout(t);
+    }
   }, []);
   const accept = () => { localStorage.setItem('cookie-consent', 'accepted'); setVisible(false); };
-  if (!visible) return null;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      className="fixed bottom-6 left-4 right-4 z-[400] max-w-xl mx-auto bg-navy/96 backdrop-blur-md text-white rounded-2xl px-6 py-4 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4"
-    >
-      <p className="text-[0.78rem] leading-[1.6] text-white/75 flex-1">
-        Сайт использует файлы cookie для аналитики и корректной работы. Продолжая использование, вы соглашаетесь с{' '}
-        <a href="/oferta" className="text-brown-light underline-offset-2 underline hover:no-underline">политикой обработки данных</a>.
-      </p>
-      <button onClick={accept} className="shrink-0 px-5 py-2.5 rounded-full bg-brown text-white text-[0.75rem] font-medium hover:bg-brown-dark transition-colors whitespace-nowrap">
-        Принять
-      </button>
-    </motion.div>
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 16 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed bottom-6 left-4 right-4 z-[400] max-w-xl mx-auto bg-navy/96 backdrop-blur-md text-white rounded-2xl px-6 py-4 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4"
+        >
+          <p className="text-[0.78rem] leading-[1.6] text-white/75 flex-1">
+            Сайт использует файлы cookie для аналитики и корректной работы. Продолжая использование, вы соглашаетесь с{' '}
+            <a href="/oferta" className="text-brown-light underline-offset-2 underline hover:no-underline">политикой обработки данных</a>.
+          </p>
+          <button onClick={accept} className="shrink-0 px-5 py-2.5 rounded-full bg-brown text-white text-[0.75rem] font-medium hover:bg-brown-dark transition-colors whitespace-nowrap">
+            Принять
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -2406,13 +2413,28 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                         <CheckCircle className="absolute right-4 top-4 text-brown/20" size={18} />
                       )}
                     </div>
-                    <label className="flex items-start gap-3 cursor-pointer mt-1">
-                      <input
-                        type="checkbox"
-                        checked={formData.consent}
-                        onChange={(e) => { setFormData({ ...formData, consent: e.target.checked }); if (e.target.checked) setErrors({ ...errors, consent: '' }); }}
-                        className="mt-0.5 w-4 h-4 shrink-0 accent-[#9a7d5a] cursor-pointer"
-                      />
+                    <label className="flex items-start gap-3 cursor-pointer mt-1 group">
+                      <span className="relative shrink-0 mt-[1px]">
+                        <input
+                          type="checkbox"
+                          checked={formData.consent}
+                          onChange={(e) => { setFormData({ ...formData, consent: e.target.checked }); if (e.target.checked) setErrors({ ...errors, consent: '' }); }}
+                          className="sr-only"
+                        />
+                        <span className={`flex items-center justify-center w-[18px] h-[18px] rounded-[4px] border transition-all duration-200 ${
+                          formData.consent
+                            ? 'bg-brown border-brown'
+                            : errors.consent
+                              ? 'border-red-400 bg-red-50'
+                              : 'border-brown/30 bg-white group-hover:border-brown/60'
+                        }`}>
+                          {formData.consent && (
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                              <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          )}
+                        </span>
+                      </span>
                       <span className="text-[0.73rem] text-text-dark-soft leading-[1.55]">
                         Я согласен(-а) на{' '}
                         <a href="/oferta" target="_blank" rel="noopener noreferrer" className="text-brown underline underline-offset-2 hover:no-underline">обработку персональных данных</a>{' '}
