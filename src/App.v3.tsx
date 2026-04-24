@@ -34,12 +34,12 @@ const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale =
 );
 
 const Button = ({ variant = 'brown', href, children, className = '', onClick, type }: any) => {
-  const base = "inline-flex min-h-[3.1rem] items-center justify-center gap-2 rounded-full px-8 py-3 text-center font-sans text-[0.78rem] font-medium uppercase tracking-[0.08em] transition-all duration-400 relative overflow-hidden group hover:scale-[1.015] active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brown/40 focus-visible:ring-offset-2";
+  const base = "inline-flex min-h-[3.1rem] items-center justify-center gap-2 rounded-full px-8 py-3 text-center font-sans text-[0.85rem] font-semibold tracking-[0.02em] transition-all duration-400 relative overflow-hidden group hover:scale-[1.015] active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brown/40 focus-visible:ring-offset-2";
   const variants: any = {
     brown: "border border-brown bg-brown text-white shadow-[0_10px_28px_rgba(154,125,90,0.22)] hover:bg-brown-dark hover:border-brown-dark hover:shadow-[0_14px_32px_rgba(154,125,90,0.32)]",
     olive: "border border-[#5c6b5e] bg-[#5c6b5e] text-white shadow-[0_10px_28px_rgba(92,107,94,0.2)] hover:bg-[#4a574b] hover:border-[#4a574b] hover:shadow-[0_14px_32px_rgba(92,107,94,0.3)]",
     navy: "border border-[#16213d] bg-[#16213d] text-white shadow-[0_10px_28px_rgba(15,23,42,0.22)] hover:bg-[#1d2b4f] hover:border-[#1d2b4f] hover:shadow-[0_14px_32px_rgba(15,23,42,0.34)]",
-    "outline-light": "border border-white/45 bg-white/10 text-white shadow-[0_10px_24px_rgba(4,9,26,0.12)] backdrop-blur-sm hover:bg-white/18 hover:border-white/75 hover:text-white",
+    "outline-light": "border border-white/60 bg-white/20 text-white shadow-[0_10px_24px_rgba(4,9,26,0.12)] backdrop-blur-md hover:bg-white/35 hover:border-white/90 hover:text-white",
     "outline-dark": "border border-brown/30 bg-white/78 text-brown shadow-[0_10px_24px_rgba(125,92,58,0.08)] backdrop-blur-sm hover:bg-brown hover:border-brown hover:text-white",
     ghost: "border border-transparent bg-transparent text-brown hover:bg-brown/6 hover:text-brown-dark"
   };
@@ -1016,29 +1016,14 @@ const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
       </div>
     </div>
 
-    {/* Right — photos grid or placeholder */}
+    {/* Right — photo */}
     <div className="relative overflow-hidden bg-brown/5 min-h-[280px] lg:min-h-0">
-      {c.imgs && c.imgs.length > 1 ? (
-        <div className="grid grid-cols-2 gap-1 h-full p-1">
-          <div className="row-span-2 overflow-hidden rounded-lg">
-            <img src={c.imgs[0]} alt="" className="w-full h-full object-cover" />
-          </div>
-          <div className="overflow-hidden rounded-lg">
-            <img src={c.imgs[1]} alt="" className="w-full h-full object-cover" />
-          </div>
-          <div className="overflow-hidden rounded-lg">
-            <img src={c.imgs[2]} alt="" className="w-full h-full object-cover" />
-          </div>
-        </div>
-      ) : c.img ? (
+      {c.img ? (
         <img src={c.img} alt={c.name} className="w-full h-full object-cover object-top" />
       ) : (
         <div className="flex items-center justify-center h-full">
-          <div className="text-center p-8">
-            <div className="w-24 h-24 rounded-full bg-brown/10 mx-auto mb-4 flex items-center justify-center">
-              <span className="font-serif text-brown text-4xl font-bold">{c.name[0]}</span>
-            </div>
-            <p className="text-text-dark-muted text-[0.8rem]">{c.role}</p>
+          <div className="w-28 h-28 rounded-full bg-brown/10 flex items-center justify-center">
+            <span className="font-serif text-brown text-5xl font-bold">{c.name[0]}</span>
           </div>
         </div>
       )}
@@ -1704,9 +1689,6 @@ const SystemProblem = () => {
 
         {/* Left — the "NOT" list */}
         <div className="py-20 md:py-28 lg:pr-16 flex flex-col justify-center">
-          <Reveal direction="left" delay={0.05}>
-            <span className="text-[0.62rem] tracking-[0.35em] uppercase text-[#9a7d5a] font-medium mb-10 block">Четвёртый экран</span>
-          </Reveal>
           <Reveal direction="left" delay={0.1}>
             <p className="text-white/40 text-[0.82rem] uppercase tracking-[0.2em] font-medium mb-6">Проблема не</p>
           </Reveal>
@@ -1800,7 +1782,7 @@ const WhatHappens = () => (
         <div>
           <Reveal direction="right" delay={0.15}>
             <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-text-dark mb-6">
-              ЧТО ПРОИСХОДИТ<br />НА КЭМПЕ
+              Что происходит<br />на кэмпе
             </h2>
             <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-4">
               Это пространство, где ты больше не можешь не видеть правду. Не длительная терапия и не процесс «когда-нибудь станет лучше».
@@ -1864,7 +1846,7 @@ const HowItWorks = () => {
         <Reveal direction="up">
           <div className="text-center mb-8">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Как проходит работа</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">ИНСТРУМЕНТЫ ОТРАЖЕНИЯ</h2>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Инструменты отражения</h2>
             <p className="text-[0.95rem] text-text-dark-soft mt-3 max-w-xl mx-auto">Не лекции. Не теория. Живая работа с вашей реальной ситуацией.</p>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
@@ -1986,7 +1968,7 @@ const Results = () => {
       <Reveal direction="up" delay={0.05}>
         <div className="text-center mb-8">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">ЧТО ТЫ ЗАБЕРЁШЬ С СОБОЙ</h2>
+          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">Что ты заберёшь с собой</h2>
           <div className="h-px w-16 bg-brown-light/40 mx-auto mt-4" />
         </div>
       </Reveal>
