@@ -1993,37 +1993,51 @@ const Results = ({ onOpenModal }: any) => {
 const FINAL_IMG_SRC = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg";
 
 const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="flex items-stretch relative overflow-hidden">
-    <div className="grid lg:grid-cols-2 w-full">
-      <div className="relative overflow-hidden min-h-[35vh] lg:min-h-0">
-        <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/banya.MP4" autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover object-[center_top]" />
-        <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-navy via-navy/50 lg:via-navy/20 to-navy/60 lg:to-transparent" />
-      </div>
-      <div className="bg-navy text-white flex items-center px-8 md:px-12 py-10 md:py-14">
-        <div>
-          <Reveal direction="right" delay={0.1}>
-            <span className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.25em] text-brown-light font-bold border border-brown-light/30 rounded-full px-4 py-1.5 mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-brown-light animate-pulse" />
-              Финальный выбор
-            </span>
-          </Reveal>
-          <Reveal direction="right" delay={0.2}>
-            <h2 className="font-serif text-[clamp(1.7rem,3.5vw,2.6rem)] leading-[1.1] mb-3 font-light">
-              Если ничего не менять,<br />
-              <span className="italic text-brown-light">через год будет то же самое</span>
-            </h2>
-            <p className="text-[0.95rem] text-white/75 mb-1">Те же мысли. Те же решения. Те же сценарии.</p>
-            <p className="font-serif italic text-[1.1rem] text-brown-light mb-6">Этот выезд — точка, где можно это остановить</p>
-          </Reveal>
-          <Reveal direction="right" delay={0.35}>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-2 h-2 rounded-full bg-brown-light animate-pulse" />
-              <span className="text-[0.65rem] uppercase tracking-[0.2em] font-bold text-brown-light">В группе всего 10 мест</span>
-            </div>
-            <Button onClick={() => onOpenModal?.()} className="!px-8 !py-3.5">Забронировать место</Button>
-          </Reveal>
+  <section className="relative bg-navy text-white overflow-hidden">
+    {/* video background */}
+    <div className="absolute inset-0 z-0">
+      <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/banya.MP4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/60 to-navy/90" />
+    </div>
+
+    <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12 py-28 md:py-36 text-center">
+      <Reveal direction="up" delay={0.1}>
+        <h2 className="font-serif text-[clamp(1.8rem,4vw,3rem)] leading-[1.2] font-light mb-6">
+          Если ничего не менять —<br />
+          <em className="not-italic text-brown-light">через год будет то же самое</em>
+        </h2>
+      </Reveal>
+
+      <Reveal direction="up" delay={0.2}>
+        <p className="text-[1rem] text-white/65 leading-[1.8] mb-3">
+          Те же мысли. Те же решения. Те же сценарии.
+        </p>
+        <p className="font-serif italic text-[1.1rem] text-white/80 mb-10">
+          Этот выезд — точка, где можно это остановить.
+        </p>
+      </Reveal>
+
+      <Reveal direction="up" delay={0.3}>
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <div className="h-px w-8 bg-brown-light/50" />
+          <span className="text-[0.72rem] uppercase tracking-[0.2em] text-brown-light font-medium">19–21 июня · Красная Поляна</span>
+          <div className="h-px w-8 bg-brown-light/50" />
         </div>
-      </div>
+        <p className="text-[0.88rem] text-white/45 mb-10">
+          В группе всего 10 мест —<br className="sm:hidden" /> потому что это формат глубокой работы, где невозможно «быть одним из»
+        </p>
+      </Reveal>
+
+      <Reveal direction="up" delay={0.4}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button variant="brown" onClick={() => onOpenModal?.()} className="!px-10 shadow-2xl">
+            Пройти индивидуальный разбор
+          </Button>
+          <Button variant="outline-light" href="#pricing" className="!px-10">
+            Забронировать место
+          </Button>
+        </div>
+      </Reveal>
     </div>
   </section>
 );
