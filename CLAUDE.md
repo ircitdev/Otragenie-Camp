@@ -154,3 +154,114 @@ SQLite-файл `bot.db` создаётся в корне при первом з
 - PM2 процесс: `otragenie-camp` (id 12).
 - Деплой: `npm run build` → `scp dist/` → `pm2 restart otragenie-camp`.
 - Nginx проксирует `/` и `/api/*` на `127.0.0.1:3000`, отдаёт webhook как raw (`client_max_body_size` ≥ 1M).
+
+---
+
+## Claude Code — скиллы и команды
+
+Глобально установленные скиллы (`~/.claude/skills/`). Вызываются через `/skill-name` в чате.
+
+### Дизайн и UI — создание с нуля
+
+| Скилл | Когда использовать |
+|---|---|
+| `/impeccable teach` | Первый запуск в проекте — собирает дизайн-контекст в `.impeccable.md` |
+| `/impeccable craft [описание]` | Создать новый компонент/секцию с нуля — bold эстетика, без AI-клише |
+| `/impeccable shape [описание]` | Спланировать UX фичи перед кодом — интервью + дизайн-бриф |
+| `/frontend-design` | Альтернатива impeccable — производственный React/Tailwind UI |
+| `/ui-design-pro` | OKLCH-палитры, правила тёмной темы, 11 micro-interaction паттернов |
+| `/mobile-app-ui-design` | Мобильные макеты: thumb-zone, 8pt grid, peak-end rule |
+| `/canvas-design` | Маркетинговые ассеты (OG-изображения, постеры) — не код, а PNG/PDF |
+| `/theme-factory` | Быстро применить одну из 10 готовых цветовых тем |
+
+### Дизайн — улучшение существующего
+
+| Скилл | Когда использовать |
+|---|---|
+| `/impeccable polish` | Финальный прогон перед шипом: выравнивание, отступы, micro-детали |
+| `/impeccable bolder` | Сделать дизайн смелее и выразительнее |
+| `/impeccable quieter` | Приглушить перегруженный дизайн |
+| `/impeccable distill` | Упростить до сути — убрать лишнее |
+| `/impeccable animate` | Добавить осмысленные анимации и micro-interactions |
+| `/impeccable colorize` | Добавить цвет в монохромный интерфейс |
+| `/impeccable typeset` | Улучшить типографику: шрифты, иерархия, читаемость |
+| `/impeccable layout` | Исправить сетку, отступы, визуальный ритм |
+| `/impeccable adapt` | Адаптация под разные экраны/контексты |
+| `/impeccable optimize` | Производительность: LCP, bundle, анимации |
+
+### Дизайн — аудит и оценка
+
+| Скилл | Когда использовать |
+|---|---|
+| `/impeccable critique` | UX-оценка по эвристикам Нильсена |
+| `/impeccable audit` | Технический аудит: a11y, перф, responsive, anti-patterns |
+| `/ux-audit-rethink` | Глубокий UX-аудит с переосмыслением структуры |
+| `/don-norman-principles-audit` | Проверка по принципам Нормана (affordance, feedback, mapping) |
+| `/heuristic-evaluation` | Систематическая оценка по 10 эвристикам |
+| `/verification-before-shipping` | Финальная проверка перед деплоем — доказательная, не «я думаю» |
+
+### Конверсия и психология
+
+| Скилл | Когда использовать |
+|---|---|
+| `/ux-psychology-skill` | 65 психологических принципов с JSX-примерами для страницы тарифов и онбординга |
+| `/hooked-ux` | Hook Model (Trigger→Action→Reward→Investment) для вовлечения и удержания |
+| `/cognitive-load-assessment` | Оценка когнитивной нагрузки на экране |
+| `/error-prevention-recovery` | Проектирование состояний ошибок и восстановления |
+
+### Дизайн-система и токены
+
+| Скилл | Когда использовать |
+|---|---|
+| `/token-architecture` | Трёхуровневая система токенов (primitive/semantic/component) для Tailwind |
+| `/ds-color-system` | Построить цветовую систему с CSS-переменными |
+| `/ds-typography-scale` | Типографическая шкала |
+| `/ds-spacing-system` | Система отступов (4pt/8pt grid) |
+| `/ds-dark-mode-design` | Тёмная тема с правильными контрастами |
+| `/motion-choreography` | Easing-кривые, тайминги, stagger-паттерны для анимаций |
+| `/ds-micro-interaction-spec` | Спецификация micro-interactions |
+| `/design-token-audit` | Аудит существующих токенов на консистентность |
+
+### AI-интерфейс (ChatAssistant / LiveChat)
+
+| Скилл | Когда использовать |
+|---|---|
+| `/system-prompt-structure` | Архитектура системного промпта для `src/ai-config.ts` |
+| `/persona-architecture` | Характер, голос и модель отношений AI-ассистента |
+| `/tone-calibration` | Настройка тона под контекст (тёплый/формальный) |
+| `/conversation-patterns` | Паттерны диалогов: уточнение, подтверждение, turn-taking |
+| `/multimodal-orchestration` | Голос + текст + визуал — для ChatAssistant с микрофоном |
+| `/escalation-design` | Когда AI должен передать диалог живому менеджеру (LiveChat) |
+| `/guardrail-design` | Технические и UX-гарантии безопасного поведения AI |
+| `/error-personality` | Как AI коммуницирует ошибки в характере персонажа |
+
+### Из скриншотов референсов → React код
+
+| Команда | Когда использовать |
+|---|---|
+| `/extract-it` | Положить скриншоты в `/inspiration/` → получить анализ стиля |
+| `/expand-it` | Углубить анализ референсов |
+| `/merge-it` | Слить анализ с концепцией проекта → `styles.md` |
+| `/design-it` | По `styles.md` сгенерировать 3 варианта React+Tailwind экрана |
+
+**Рабочий процесс:** скриншоты в `/inspiration/` → `/extract-it` → `/merge-it` → `/design-it`
+
+### MCP-сервер reactbits (анимированные компоненты)
+
+Подключён локально к проекту. Даёт доступ к 135+ готовым анимированным React-компонентам с reactbits.dev.
+
+Использование: просто попросить в чате — «найди aurora background из reactbits» или «возьми BlurText из reactbits для заголовка».
+
+Особенно полезны: Aurora, Particles, Beams (фоны) — рейтинг 9.8/10. Избегать: buttons/forms (незавершены).
+
+### Доступность (a11y)
+
+| Скилл | Когда использовать |
+|---|---|
+| `/a11y-keyboard-navigation` | Порядок фокуса, skip-links, focus traps в модалках/FAB |
+| `/a11y-motion-sensitivity` | `prefers-reduced-motion` для анимаций Motion |
+| `/a11y-responsive-accessibility` | WCAG reflow при 200% zoom |
+| `/a11y-feedback-and-status` | ARIA live regions для LiveChat и статусов |
+| `/a11y-form-labelling` | Форма бронирования |
+| `/a11y-voice-interaction` | Паттерны голосового UI для ChatAssistant |
+| `/accessibility-engineer` | Общий аудит a11y компонентов |

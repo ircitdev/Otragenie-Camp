@@ -171,7 +171,7 @@ const Navbar = ({ onOpenModal }: any) => {
 
             <div className="hidden xl:block">
               <Button
-                variant={isPastHero ? 'brown' : 'outline-light'}
+                variant={isPastHero ? 'brown' : 'outline-dark'}
                 className="!px-6 !py-2.5 !text-[0.65rem] shadow-[0_12px_30px_rgba(17,24,39,0.18)]"
                 onClick={onOpenModal}
               >
@@ -393,112 +393,31 @@ const Hero = ({ onOpenModal }: any) => {
 
 // --- JourneyPath (Экран 2 — пунктирный маршрут) ---
 
-const journeySteps = [
-  { day: "Вечер 1", label: "Честная диагностика", desc: "Смотришь на свою жизнь без иллюзий — как она устроена прямо сейчас" },
-  { day: "День 1", label: "Отношения как зеркало", desc: "Видишь, из какой внутренней системы ты строишь связи и принимаешь решения" },
-  { day: "День 1", label: "Глубинная практика", desc: "Работаешь с тем, что обычно остаётся фоном — сценарии, паттерны, точки потери ресурса" },
-  { day: "День 2", label: "Смысл и ценности", desc: "Проясняешь, чего ты на самом деле хочешь — не чего ждут другие" },
-  { day: "День 2", label: "Архитектура новой версии", desc: "Выстраиваешь конкретную стратегию: правила, календарь, первые шаги" },
-  { day: "Итог", label: "Первые правила новой жизни", desc: "Уезжаешь с ясным планом, а не с очередными инсайтами в голове" },
-];
-
-const JourneyPath = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section className="bg-navy py-20 md:py-28 relative overflow-hidden">
-      {/* Ambient grain overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }} />
-
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative">
-        {/* Header */}
-        <Reveal delay={0.05}>
-          <span className="text-[0.65rem] uppercase tracking-[0.35em] text-brown font-medium block mb-4 text-center">Два дня · Красная Поляна</span>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <h2 className="font-serif text-[clamp(1.8rem,4vw,3rem)] leading-[1.1] text-white text-center mb-4 max-w-[20ch] mx-auto">
-            Путь за два дня
-          </h2>
-        </Reveal>
-        <Reveal delay={0.18}>
-          <p className="text-white/55 text-center text-[0.95rem] leading-[1.65] max-w-[38rem] mx-auto mb-16">
-            «Отражение» — это двухдневный выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
-          </p>
-        </Reveal>
-
-        {/* Steps — vertical timeline on mobile, two columns on desktop */}
-        <div ref={ref} className="relative">
-
-          {/* Vertical dotted line — desktop only, centered */}
-          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 pointer-events-none">
-            <svg width="2" height="100%" className="w-full h-full" style={{ overflow: "visible" }}>
-              <line
-                x1="1" y1="0" x2="1" y2="100%"
-                stroke="rgba(154,125,90,0.25)"
-                strokeWidth="2"
-                strokeDasharray="6 10"
-              />
-            </svg>
-          </div>
-
-          {/* Mobile dotted line — left edge */}
-          <div className="lg:hidden absolute left-[22px] top-8 bottom-4 w-px pointer-events-none">
-            <svg width="2" height="100%" className="w-full h-full" style={{ overflow: "visible" }}>
-              <line
-                x1="1" y1="0" x2="1" y2="100%"
-                stroke="rgba(154,125,90,0.25)"
-                strokeWidth="2"
-                strokeDasharray="5 8"
-              />
-            </svg>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-0">
-            {journeySteps.map((step, i) => {
-              const isLeft = i % 2 === 0;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 28, x: isLeft ? -20 : 20 }}
-                  animate={isInView ? { opacity: 1, y: 0, x: 0 } : {}}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.1 + i * 0.1 }}
-                  className={`flex gap-5 py-6 pt-6 pb-4 px-4 md:px-8 lg:px-10 ${
-                    isLeft ? "lg:pr-16 lg:text-right lg:flex-row-reverse" : "lg:pl-16"
-                  }`}
-                >
-                  {/* Dot + day badge */}
-                  <div className="flex-shrink-0 relative flex flex-col items-center lg:items-start">
-                    <div className="relative z-10 w-11 h-11 rounded-full border border-brown/40 bg-navy flex items-center justify-center">
-                      <div className="w-3 h-3 rounded-full bg-brown/70" />
-                    </div>
-                    <span className="text-[0.6rem] uppercase tracking-[0.22em] text-brown/60 mt-2 whitespace-nowrap">{step.day}</span>
-                  </div>
-                  {/* Text */}
-                  <div className={`flex-1 pt-1 ${isLeft ? "lg:items-end lg:flex lg:flex-col" : ""}`}>
-                    <h3 className="font-serif text-[1.1rem] text-white mb-1.5 leading-[1.25]">{step.label}</h3>
-                    <p className="text-white/50 text-[0.88rem] leading-[1.6] max-w-[28rem]">{step.desc}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Arrow at the bottom */}
-          <Reveal delay={0.75}>
-            <div className="flex flex-col items-center mt-8 gap-3">
-              <div className="w-px h-10 border-l-2 border-dashed border-brown/30" />
-              <div className="w-10 h-10 rounded-full bg-brown/15 border border-brown/30 flex items-center justify-center">
-                <ArrowRight size={16} className="text-brown rotate-90" />
-              </div>
-              <p className="text-white/60 text-[0.85rem] tracking-wide font-serif italic mt-1">конкретный план действий с собой</p>
+const JourneyPath = () => (
+  <section className="bg-navy py-20 md:py-28 relative overflow-hidden">
+    <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }} />
+    <div className="max-w-3xl mx-auto px-6 md:px-12 relative text-center">
+      <Reveal delay={0.05}>
+        <p className="text-[clamp(1.05rem,2vw,1.25rem)] text-white/80 leading-[1.75] mb-10 max-w-2xl mx-auto">
+          «Отражение» — это двухдневный выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
+        </p>
+      </Reveal>
+      <Reveal delay={0.18}>
+        <div className="inline-block">
+          <p className="text-[0.78rem] uppercase tracking-[0.28em] text-brown/70 mb-5 font-medium">За два дня вы проходите путь</p>
+          <div className="flex items-center gap-4 md:gap-6 justify-center">
+            <span className="font-serif italic text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug">от честной диагностики<br className="hidden sm:block" /> своей жизни</span>
+            <div className="flex items-center gap-1 text-brown shrink-0">
+              <div className="w-6 md:w-10 h-px bg-brown/50" />
+              <ArrowRight size={16} className="text-brown" />
             </div>
-          </Reveal>
+            <span className="font-serif italic text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug">к первым правилам<br className="hidden sm:block" /> новой</span>
+          </div>
         </div>
-      </div>
-    </section>
-  );
-};
+      </Reveal>
+    </div>
+  </section>
+);
 
 const ABOUT_INTRO_1 = "Мы создали «Отражение» для людей, у которых снаружи уже многое получилось, но внутри всё чаще появляется ощущение усталости, повторов и потери смысла.";
 const ABOUT_INTRO_2 = "Это пространство, где можно остановиться, увидеть свою реальность без иллюзий и найти более зрелую опору для решений, отношений и следующего этапа жизни.";
@@ -692,10 +611,10 @@ const Program = () => {
   const isEvening = active === 0;
 
   return (
-    <section id="program" className="scroll-mt-20 py-20 bg-white relative overflow-hidden">
-      <div className="max-w-5xl w-full mx-auto px-6 md:px-12">
+    <section id="program" className="scroll-mt-20 py-16 bg-[#f0ece7] relative overflow-hidden">
+      <div className="max-w-6xl w-full mx-auto px-6 md:px-12">
         <Reveal direction="up">
-          <div className="text-center mb-7">
+          <div className="text-center mb-8">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Программа</span>
             <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Три дня трансформации</h2>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
@@ -703,7 +622,7 @@ const Program = () => {
         </Reveal>
 
         {/* Tabs */}
-        <div role="tablist" aria-label="Программа по дням" className="flex justify-center gap-2 mb-7 bg-cream/50 p-1.5 rounded-full w-fit mx-auto">
+        <div role="tablist" aria-label="Программа по дням" className="flex justify-center gap-2 mb-8 bg-white/60 p-1.5 rounded-full w-fit mx-auto shadow-sm">
           {PROGRAM.map((day: any, i: number) => (
             <button
               key={i}
@@ -714,7 +633,7 @@ const Program = () => {
               aria-controls={`program-panel-${i}`}
               tabIndex={active === i ? 0 : -1}
               onClick={() => setActive(i)}
-              className={`px-5 py-2.5 rounded-full text-[0.65rem] uppercase tracking-[0.2em] font-bold transition-all whitespace-nowrap ${active === i ? "bg-[#ebe3db] text-text-dark shadow-sm" : "text-text-dark-muted hover:bg-cream"}`}>
+              className={`px-5 py-2.5 rounded-full text-[0.65rem] uppercase tracking-[0.2em] font-bold transition-all whitespace-nowrap ${active === i ? "bg-brown text-white shadow-sm" : "text-text-dark-muted hover:text-text-dark"}`}>
               {i === 0 ? "Вечер" : `День ${i}`}
             </button>
           ))}
@@ -727,78 +646,94 @@ const Program = () => {
             id={`program-panel-${active}`}
             aria-labelledby={`program-tab-${active}`}
             tabIndex={0}
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4 }}>
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35 }}>
 
-            {/* Day header */}
-            <div className={`rounded-2xl mb-6 overflow-hidden ${isEvening ? "bg-cream border border-brown/15 p-6" : "bg-white border border-brown/10 p-6"}`}>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-                <div>
-                  <h3 className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.1] text-text-dark">
-                    <span className="text-brown font-bold">{p.day}</span>
-                    {p.subtitle && <> — <span className="font-light">{p.subtitle}</span></>}
-                  </h3>
-                </div>
-                {p.theme && !isEvening && (
-                  <span className="text-[0.78rem] text-text-dark-muted font-serif italic whitespace-nowrap">{p.theme}</span>
-                )}
-              </div>
-              {/* Question tags */}
-              {p.questions && p.questions.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {p.questions.map((q: string, qi: number) => (
-                    <span key={qi} className="text-[0.72rem] border border-brown/20 rounded-full px-3 py-1 text-text-dark-soft bg-white">
-                      {String(qi + 1).padStart(2, "0")}&nbsp;&nbsp;{q}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Evening: simple numbered list */}
             {isEvening ? (
-              <div className="space-y-2 mb-5">
-                {p.blocks.map((b: any) => (
-                  <div key={b.num} className="flex items-center gap-4 px-5 py-3.5 rounded-xl bg-[#faf8f5] border border-brown/8">
-                    <span className="text-[0.62rem] font-bold text-brown/50 w-5 shrink-0">{b.num}</span>
-                    <span className="text-[0.95rem] text-text-dark">{b.title}</span>
+              /* ВЕЧЕР: split — фото слева, контент справа */
+              <div className="rounded-3xl overflow-hidden bg-white shadow-sm grid md:grid-cols-2 min-h-[480px]">
+                {/* Фото */}
+                <div className="relative min-h-[260px] md:min-h-0">
+                  <img
+                    src="/images/photo_4_2026-04-19_12-01-51.jpg"
+                    alt="Глэмпинг Дзен рекавери"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                  <div className="absolute bottom-5 left-5">
+                    <span className="text-[0.62rem] uppercase tracking-[0.2em] text-white/70 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">Программа выезда</span>
                   </div>
-                ))}
-                {p.closing && (
-                  <div className="mt-4 flex gap-3 items-start bg-brown text-white rounded-2xl px-6 py-5">
-                    <span className="text-white/50 text-lg leading-none mt-0.5">✦</span>
-                    <p className="font-serif italic text-[0.95rem] leading-snug">
-                      <span className="font-semibold not-italic">здесь начинается честность,</span>{" "}
-                      с которой всё дальше будет разворачиваться
-                    </p>
+                </div>
+                {/* Контент */}
+                <div className="p-7 md:p-10 flex flex-col justify-center">
+                  <h3 className="font-serif text-[clamp(1.8rem,3.5vw,2.4rem)] leading-[1.1] text-text-dark mb-1">
+                    <span className="text-brown font-bold">Пятница</span> <span className="font-light">вечер</span>
+                  </h3>
+                  <p className="text-[1.05rem] text-text-dark-soft font-light mb-6">{p.subtitle}</p>
+                  <div className="space-y-2 mb-5">
+                    {p.blocks.map((b: any) => (
+                      <div key={b.num} className="flex items-center gap-4 px-4 py-3 rounded-xl bg-[#f5f1ec] border border-brown/10">
+                        <span className="text-[0.65rem] font-bold text-brown/50 w-5 shrink-0">{b.num}</span>
+                        <span className="text-[0.93rem] text-text-dark">{b.title}</span>
+                      </div>
+                    ))}
                   </div>
-                )}
+                  {p.closing && (
+                    <div className="flex gap-3 items-start bg-brown text-white rounded-2xl px-5 py-4">
+                      <span className="text-white/50 text-base leading-none mt-0.5 shrink-0">✦</span>
+                      <p className="font-serif italic text-[0.92rem] leading-snug">
+                        <span className="font-semibold not-italic">здесь начинается честность,</span>{" "}
+                        с которой всё дальше будет разворачиваться
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
-              /* Day 1 & 2: 2-column grid of blocks */
-              <div className="grid md:grid-cols-2 gap-3">
-                {p.blocks.map((b: any) => (
-                  <div key={b.num} className="rounded-2xl bg-[#faf8f5] border border-brown/8 px-5 py-5 hover:border-brown/20 hover:shadow-sm transition-all">
-                    <div className="mb-3">
-                      <span className="text-[0.6rem] uppercase tracking-[0.18em] text-brown/60 font-bold">{b.num}</span>
-                      <h4 className="font-serif text-[1rem] md:text-[1.08rem] text-text-dark leading-snug mt-0.5">
-                        {b.title}
-                      </h4>
-                    </div>
-                    {b.intro && (
-                      <p className="text-[0.78rem] text-text-dark-soft mb-2">{b.intro}</p>
-                    )}
-                    {b.points && b.points.length > 0 && (
-                      <div className="flex flex-wrap gap-x-4 gap-y-1.5">
-                        {b.points.map((pt: string, pi: number) => (
-                          <span key={pi} className="flex items-start gap-1.5 text-[0.78rem] text-text-dark-soft leading-snug">
-                            <span className="text-brown mt-0.5 shrink-0">+</span>
-                            {pt}
-                          </span>
-                        ))}
-                      </div>
+              /* ДЕНЬ 1 & 2: заголовок + вопросы сверху, блоки в сетке снизу */
+              <div>
+                {/* Заголовок с вопросами */}
+                <div className="rounded-2xl bg-white p-6 md:p-8 mb-4 shadow-sm">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+                    <h3 className="font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.1] text-text-dark">
+                      <span className="text-brown font-bold">{p.day.split(' ')[0]} {p.day.split(' ')[1]}</span>
+                      {' '}<span className="font-light">— {p.subtitle}</span>
+                    </h3>
+                    {p.theme && (
+                      <span className="font-serif italic text-[1.05rem] text-text-dark-muted/60 whitespace-nowrap shrink-0">{p.theme}</span>
                     )}
                   </div>
-                ))}
+                  <div className="flex flex-wrap gap-2">
+                    {p.questions.map((q: string, qi: number) => (
+                      <span key={qi} className="text-[0.72rem] border border-brown/20 rounded-full px-3 py-1.5 text-text-dark-soft bg-[#f5f1ec]">
+                        {String(qi + 1).padStart(2, "0")}&nbsp;&nbsp;{q}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {/* Блоки 2-col grid */}
+                <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-brown/10 bg-white rounded-2xl shadow-sm overflow-hidden">
+                  {p.blocks.map((b: any, bi: number) => (
+                    <div key={b.num} className={`px-6 py-6 border-brown/10 ${bi >= 2 ? "border-t" : ""}`}>
+                      <h4 className="font-serif text-[1rem] text-text-dark leading-snug mb-3">
+                        <span className="text-brown font-semibold">{b.num}</span>
+                        {' — '}{b.title}
+                      </h4>
+                      {b.intro && (
+                        <p className="text-[0.78rem] text-text-dark-soft mb-2">{b.intro}</p>
+                      )}
+                      {b.points && b.points.length > 0 && (
+                        <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+                          {b.points.map((pt: string, pi: number) => (
+                            <span key={pi} className="flex items-start gap-1.5 text-[0.8rem] text-text-dark-soft leading-snug">
+                              <span className="text-brown mt-0.5 shrink-0 font-bold">+</span>
+                              {pt}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </motion.div>
@@ -978,14 +913,25 @@ const Location = () => (
   <section id="location" className="scroll-mt-20 min-h-screen flex items-center py-12 bg-cream relative overflow-hidden">
     <div className="max-w-6xl w-full mx-auto px-6 md:px-12">
       <Reveal direction="up" delay={0.05}>
-        <div className="mb-8 pb-5 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-          <div>
-            <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
-            <h2 className="font-serif italic text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] text-text-dark md:whitespace-nowrap">
-              Красная Поляна · <span className="not-italic">Глэмпинг «Дзен рекавери»</span>
-            </h2>
+        <div className="mb-6 pb-5 border-b border-brown/20">
+          <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
+          <h2 className="font-serif italic text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] text-text-dark">
+            Красная Поляна · <span className="not-italic">Глэмпинг «Дзен рекавери»</span>
+          </h2>
+        </div>
+      </Reveal>
+
+      <Reveal direction="up" delay={0.12}>
+        <div className="mb-8 grid md:grid-cols-[1fr_1.6fr] gap-8 md:gap-14 items-start">
+          <p className="font-serif italic text-[clamp(1.1rem,2.2vw,1.45rem)] leading-[1.4] text-text-dark">
+            Горы. Уединение.<br />Пространство, где можно<br className="hidden md:block" /> наконец остановиться.
+          </p>
+          <div className="flex flex-col gap-4">
+            <div className="w-8 h-px bg-brown/30 hidden md:block" />
+            <p className="text-[0.93rem] text-text-dark-soft leading-[1.72]">
+              Не случайно мы выбрали именно это место. Когда вокруг нет привычного контекста — работы, обязательств, бытовых ролей — именно тогда становится возможным увидеть себя по-другому.
+            </p>
           </div>
-          <p className="text-[0.9rem] text-text-dark-soft leading-[1.65] max-w-sm">Горы, тишина, отсутствие шума — контекст, в котором становится видно себя.</p>
         </div>
       </Reveal>
 
@@ -1855,60 +1801,27 @@ const HowItWorks = () => {
           </div>
         </Reveal>
 
-        <div className="relative">
-          <div className="hidden lg:block absolute top-1/2 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-brown/15 to-transparent -translate-y-1/2 z-0" />
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 relative z-10">
+        <div className="max-w-2xl mx-auto">
+          <div className="space-y-3">
             {PROCESS.map((item, i) => {
               const Icon = icons[item.icon] || HelpCircle;
-              const staggered = i % 2 !== 0;
               return (
-                <Reveal key={i} direction="up" delay={i * 0.1}>
-                <div
-                  className={`relative rounded-[1.5rem] p-5 md:p-6 h-full flex flex-col group transition-all duration-500
-                    ${staggered ? "lg:mt-8" : ""}
-                    ${item.brown
-                      ? "bg-brown text-white shadow-[0_18px_48px_rgba(154,125,90,0.3)] lg:scale-[1.04] z-20"
-                      : "bg-white border border-brown/8 shadow-sm hover:shadow-lg hover:border-brown/20"}`}
-                >
-                  <span className={`absolute top-3 right-5 font-serif text-[3.5rem] leading-none opacity-[0.08] pointer-events-none select-none ${item.brown ? "text-white" : "text-brown"}`}>
-                    0{i + 1}
-                  </span>
-
-                  <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:rotate-3 group-hover:scale-105 ${item.brown ? "bg-white/15 text-white" : "bg-brown/10 text-brown"}`}>
-                    <Icon size={20} strokeWidth={1.3} />
+                <Reveal key={i} direction="up" delay={0.08 + i * 0.07}>
+                  <div className="flex items-center gap-5 px-6 py-4 rounded-2xl bg-white border border-brown/10 shadow-sm group hover:border-brown/25 hover:shadow-md transition-all duration-300">
+                    <span className="font-serif text-[1.4rem] text-brown/20 leading-none w-7 shrink-0 text-right select-none">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="w-px h-7 bg-brown/15 shrink-0" />
+                    <p className="text-[0.97rem] text-text-dark leading-snug">
+                      <span className="font-semibold text-brown">{item.bold}</span>{' '}
+                      <span className="text-text-dark-soft">{item.rest}</span>
+                    </p>
                   </div>
-
-                  <h3 className="font-serif text-[1.15rem] leading-[1.2] mb-2">{item.title}</h3>
-                  <p className={`text-[0.82rem] leading-[1.55] mb-3 ${item.brown ? "text-white/80" : "text-text-dark-soft"}`}>{item.desc}</p>
-
-                  <div className="mt-auto space-y-1.5">
-                    {item.points?.map((p, j) => (
-                      <div key={j} className="flex items-start gap-2">
-                        <div className={`mt-[7px] w-1 h-1 rounded-full shrink-0 ${item.brown ? "bg-white/45" : "bg-brown/35"}`} />
-                        <span className={`text-[0.62rem] uppercase tracking-[0.14em] font-medium leading-tight ${item.brown ? "text-white/65" : "text-text-dark-muted"}`}>{p}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
                 </Reveal>
               );
             })}
           </div>
         </div>
-
-        <Reveal direction="up" delay={0.3}>
-        <div className="mt-14 text-center">
-          <div className="inline-flex items-center gap-4 px-7 py-3.5 rounded-full bg-white/60 backdrop-blur-md border border-brown/10 shadow-sm bg-gradient-to-r from-white/60 to-white/60 hover:from-navy hover:to-brown hover:text-white hover:border-transparent transition-all duration-500 group cursor-default">
-            <div className="relative">
-              <Users size={18} className="text-brown group-hover:text-white transition-colors" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-brown rounded-full animate-ping group-hover:bg-white" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-brown rounded-full group-hover:bg-white" />
-            </div>
-            <span className="text-[0.78rem] font-medium tracking-wide text-text-dark group-hover:text-white transition-colors">Работа проходит в малой группе, всего 10 человек, чтобы у каждого участника было время, внимание и возможность получить личный разбор своей ситуации</span>
-          </div>
-        </div>
-        </Reveal>
       </div>
     </section>
   );
@@ -1998,18 +1911,6 @@ const Results = () => {
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
           <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">ЧТО ТЫ ЗАБЕРЁШЬ С СОБОЙ</h2>
           <div className="h-px w-16 bg-brown-light/40 mx-auto mt-4" />
-        </div>
-      </Reveal>
-      <Reveal direction="up" delay={0.15}>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {STATS.map((s, i) => (
-            <div key={i} className="text-center group">
-              <div className="font-serif text-[2.5rem] md:text-[3rem] text-brown-light mb-1 transition-transform group-hover:scale-110">
-                <Counter value={s.value} suffix={s.suffix} delay={i * 0.1} />
-              </div>
-              <div className="text-[0.62rem] uppercase tracking-[0.2em] text-white/45 font-medium max-w-[140px] mx-auto leading-snug">{s.label}</div>
-            </div>
-          ))}
         </div>
       </Reveal>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -2431,7 +2332,7 @@ const ScrollToTop = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           onClick={scrollToTop}
-          className="hidden md:flex fixed bottom-24 right-8 z-[90] w-12 h-12 rounded-full bg-brown text-white shadow-lg items-center justify-center hover:bg-brown-dark transition-colors group"
+          className="hidden md:flex fixed bottom-6 right-8 z-[90] w-12 h-12 rounded-full bg-brown text-white shadow-lg items-center justify-center hover:bg-brown-dark transition-colors group"
           aria-label="Scroll to top"
         >
           <ArrowUp size={20} className="group-hover:-translate-y-1 transition-transform" />
