@@ -1631,7 +1631,7 @@ const WhenYouNeedCamp = () => (
         <Reveal direction="right" delay={0.15} className="h-full">
           <div className="relative rounded-[1.5rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.18)] h-full min-h-[480px]">
             <video
-              src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/walk.MP4"
+              src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/veranda.MP4"
               autoPlay muted loop playsInline
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -1702,7 +1702,7 @@ const SystemProblem = () => {
         <div className="lg:pl-16 py-20 md:py-28 flex flex-col justify-center relative">
           {/* video inset */}
           <div className="absolute inset-0 lg:inset-y-8 lg:right-0 overflow-hidden lg:rounded-r-none opacity-15 pointer-events-none">
-            <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4" autoPlay muted loop playsInline className="w-full h-full object-cover object-center" />
+            <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/walk.MP4" autoPlay muted playsInline className="w-full h-full object-cover object-center" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0c1220] via-[#0c1220]/60 to-transparent" />
           </div>
           <div className="relative z-10">
@@ -1870,36 +1870,77 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="scroll-mt-20 min-h-screen flex items-center py-12 bg-white relative overflow-hidden">
-    <div className="absolute inset-y-0 left-0 w-full lg:w-1/2 z-0 overflow-hidden">
-      <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/rookkreslo.MP4" autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover object-right" />
-      <div className="absolute inset-0 bg-white/80 lg:hidden" />
-      <div className="hidden lg:block absolute inset-y-0 right-0 w-1/3 bg-gradient-to-r from-transparent to-white" />
-    </div>
-    <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10">
-      <div className="grid lg:grid-cols-12 gap-10">
-        <div className="hidden lg:block lg:col-span-6" />
-        <div className="lg:col-span-6">
-          <Reveal direction="right" delay={0.1}>
-            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Для кого</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark mb-5">Кому это нужно<br />сейчас</h2>
-            <p className="font-serif italic text-[1rem] text-text-dark-soft leading-[1.7] mb-6 max-w-md">
-              Иногда в жизни наступает момент, когда внешне всё выглядит устойчиво и правильно, но внутри появляется тихий голос: «Я хочу большего от своей жизни. Но не понимаю, как это получить».
+  <section id="for-who" className="scroll-mt-20 bg-[#f3ede4] relative overflow-hidden">
+    {/* Фоновая сетка — еле заметная редакционная текстура */}
+    <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+      style={{ backgroundImage: 'repeating-linear-gradient(0deg, #9a7d5a 0px, #9a7d5a 1px, transparent 1px, transparent 80px), repeating-linear-gradient(90deg, #9a7d5a 0px, #9a7d5a 1px, transparent 1px, transparent 80px)' }} />
+
+    <div className="max-w-7xl mx-auto px-6 md:px-12">
+
+      {/* Шапка с вводным текстом */}
+      <div className="pt-20 md:pt-28 pb-14 md:pb-20 grid lg:grid-cols-[1fr_1.6fr] gap-10 lg:gap-20 items-end">
+        <Reveal direction="up" delay={0.05}>
+          <span className="text-[0.6rem] uppercase tracking-[0.38em] text-brown font-medium block mb-6">Для кого · 11 экран</span>
+          <h2 className="font-serif text-[clamp(2.8rem,6vw,5rem)] leading-[0.95] text-[#0b1130] font-light">
+            Кому это<br /><em className="italic">нужно сейчас</em>
+          </h2>
+        </Reveal>
+        <Reveal direction="up" delay={0.15}>
+          <p className="font-serif italic text-[clamp(1rem,1.6vw,1.15rem)] text-[#5c4f3d] leading-[1.75] max-w-[52ch]">
+            Иногда в жизни наступает момент, когда внешне всё выглядит устойчиво и правильно, но внутри появляется тихий голос: «Я хочу большего от своей жизни. Но не понимаю, как это получить».
+          </p>
+        </Reveal>
+      </div>
+
+      {/* Разделитель */}
+      <div className="h-px bg-[#9a7d5a]/20 mb-0" />
+
+      {/* Основная сетка: фото + список признаний */}
+      <div className="grid lg:grid-cols-[2fr_3fr] gap-0 items-stretch">
+
+        {/* Левая колонка — портрет */}
+        <div className="relative overflow-hidden" style={{ minHeight: '560px' }}>
+          <video
+            src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/rookkreslo.MP4"
+            autoPlay muted playsInline loop
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          {/* Оверлей справа для плавного перехода к списку */}
+          <div className="absolute inset-0 hidden lg:block"
+            style={{ background: 'linear-gradient(to right, transparent 60%, #f3ede4 100%)' }} />
+          {/* Оверлей снизу */}
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(to top, rgba(243,237,228,0.6) 0%, transparent 40%)' }} />
+          {/* Подпись внизу */}
+          <div className="absolute bottom-7 left-7 right-7">
+            <p className="text-[0.58rem] uppercase tracking-[0.28em] text-[#5c4f3d]/70 font-medium">
+              Этот выезд для людей, которые:
             </p>
-            <p className="text-[0.88rem] text-text-dark-muted uppercase tracking-[0.12em] mb-4">Этот выезд для людей, которые:</p>
-          </Reveal>
-          <div className="relative pl-7 border-l border-brown/25 space-y-4">
-            {FOR_WHO.map((text, i) => (
-              <Reveal key={i} direction="right" delay={0.15 + i * 0.07}>
-                <div className="relative group">
-                  <div className="absolute -left-[33px] top-2 w-2.5 h-2.5 rounded-full bg-brown/50 group-hover:bg-brown transition" />
-                  <p className="text-[0.98rem] text-text-dark-soft leading-[1.65]">{text}</p>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
+
+        {/* Правая колонка — 6 нумерованных признаний */}
+        <div className="lg:pl-12 py-0 divide-y divide-[#9a7d5a]/15">
+          {FOR_WHO.map((text, i) => (
+            <Reveal key={i} direction="right" delay={0.08 + i * 0.06}>
+              <div className="flex items-baseline gap-5 md:gap-8 py-6 md:py-7 group">
+                <span
+                  className="font-serif text-[clamp(2rem,3.5vw,2.8rem)] leading-none text-[#0b1130]/15 group-hover:text-[#0b1130]/35 transition-colors duration-300 shrink-0 select-none tabular-nums"
+                  style={{ fontStyle: 'italic', fontFeatureSettings: '"lnum"', minWidth: '2.5ch', textAlign: 'right' }}
+                >
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p className="text-[clamp(0.95rem,1.4vw,1.05rem)] text-[#3a2714] leading-[1.65] group-hover:text-[#0b1130] transition-colors duration-300">
+                  {text}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
+
+      {/* Нижний акцент */}
+      <div className="h-px bg-[#9a7d5a]/20 mt-0 mb-16 md:mb-20" />
     </div>
   </section>
 );
