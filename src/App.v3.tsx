@@ -960,63 +960,56 @@ const Location = () => (
 );
 
 const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
-  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[900px] grid lg:grid-cols-2 gap-0 bg-white rounded-[1.5rem] overflow-hidden shadow-sm border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_8px_40px_rgba(154,125,90,0.12)]" : "border-brown/8 opacity-60 scale-[0.97]"}`}>
-    {/* Left — before/after */}
-    <div className="p-6 md:p-8 flex flex-col gap-5">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-full overflow-hidden bg-brown/10 shrink-0 border-2 border-brown/15">
+  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 shadow-sm border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_8px_40px_rgba(154,125,90,0.12)]" : "border-brown/8 opacity-60 scale-[0.97]"}`}>
+    <div>
+      <div className="flex items-center gap-4 mb-5">
+        <div className="w-14 h-14 rounded-xl overflow-hidden bg-brown/10 shrink-0">
           {c.img
-            ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" />
-            : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl font-bold">{c.name[0]}</span>}
+            ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
         </div>
         <div>
-          <h3 className="font-serif text-[1.3rem] text-text-dark leading-tight">{c.name}</h3>
+          <h3 className="font-serif text-[1.35rem] text-text-dark leading-tight">{c.name}</h3>
           <p className="text-text-dark-muted text-[0.72rem] mt-0.5 leading-tight">{c.role}</p>
         </div>
       </div>
 
-      {/* Before */}
-      <div>
-        <ul className="space-y-2">
+      <div className="mb-4">
+        <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-text-dark-muted mb-2 block">До участия</span>
+        <ul className="space-y-1.5">
           {c.before.map((x: string, j: number) => (
-            <li key={j} className="flex gap-2.5 text-[0.84rem] text-text-dark-soft leading-[1.5]">
-              <span className="text-brown shrink-0 mt-[1px] font-bold text-[0.9rem]">+</span>{x}
+            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark-soft leading-[1.5]">
+              <span className="text-brown/50 shrink-0">—</span>{x}
             </li>
           ))}
         </ul>
       </div>
 
-      {/* After */}
-      <div className="rounded-xl bg-[#6b4f34] p-5 flex flex-col gap-3">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="px-3 py-1 rounded-full bg-white text-[#6b4f34] text-[0.72rem] font-semibold">После этого:</span>
-          {c.author && <span className="text-white/60 text-[0.72rem]">результат работы с {c.author}</span>}
+      <div className="p-4 rounded-xl bg-cream border border-brown/10">
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-brown">После этого</span>
+          {c.author && <span className="text-[0.58rem] text-text-dark-muted">· результат работы с {c.author}</span>}
         </div>
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
           {c.after.map((x: string, j: number) => (
-            <li key={j} className="flex gap-2.5 text-[0.84rem] text-white leading-[1.5]">
-              <span className="text-white/70 shrink-0 mt-[1px] font-bold text-[0.9rem]">+</span>{x}
+            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark leading-[1.5] font-medium">
+              <CheckCircle size={13} className="shrink-0 mt-0.5 text-brown" />{x}
             </li>
           ))}
         </ul>
-        <div className="mt-1 rounded-lg bg-white/10 px-4 py-2.5">
-          <p className="text-[0.78rem] text-white/90 leading-[1.5]"><strong className="text-white">{c.resLabel}</strong></p>
-        </div>
       </div>
     </div>
 
-    {/* Right — photo */}
-    <div className="relative overflow-hidden bg-brown/5 min-h-[280px] lg:min-h-0">
-      {c.img ? (
-        <img src={c.img} alt={c.name} className="w-full h-full object-cover object-top" />
-      ) : (
-        <div className="flex items-center justify-center h-full">
-          <div className="w-28 h-28 rounded-full bg-brown/10 flex items-center justify-center">
-            <span className="font-serif text-brown text-5xl font-bold">{c.name[0]}</span>
-          </div>
-        </div>
-      )}
+    <div className="bg-navy text-white p-6 md:p-7 rounded-[1.25rem] relative overflow-hidden flex flex-col justify-between">
+      <div className="absolute top-0 right-0 w-24 h-24 bg-brown/15 rounded-full blur-3xl" />
+      <div>
+        <Quote className="text-brown mb-3 opacity-70" size={28} />
+        <p className="font-serif italic text-[0.98rem] md:text-[1.08rem] leading-[1.5] mb-4">«{c.resText}»</p>
+      </div>
+      <div className="flex items-center gap-3 pt-3 border-t border-white/10">
+        <div className="h-px w-8 bg-brown" />
+        <span className="text-[0.6rem] uppercase tracking-[0.18em] text-brown-light font-bold">{c.resLabel}</span>
+      </div>
     </div>
   </div>
 );
