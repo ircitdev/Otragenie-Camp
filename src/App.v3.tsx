@@ -872,16 +872,6 @@ const Authors = ({ onOpenModal }: any) => (
         ))}
       </div>
 
-      <Reveal direction="up" delay={0.3}>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-6 border-t border-white/10">
-        <Button variant="navy" onClick={onOpenModal} className="!px-5 !py-3 !text-[0.62rem] !min-h-0">
-          Подходит ли вам формат <ArrowRight size={14} className="ml-1 inline" />
-        </Button>
-        <Button variant="outline-light" href="#program" className="!px-5 !py-3 !text-[0.62rem] !min-h-0">
-          Как мы работаем
-        </Button>
-      </div>
-      </Reveal>
     </div>
   </section>
 );
@@ -1955,7 +1945,7 @@ const RESULTS_BGS = [
   "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya4.jpg",
 ];
 
-const Results = () => {
+const Results = ({ onOpenModal }: any) => {
   const [bg] = useState(() => RESULTS_BGS[Math.floor(Math.random() * RESULTS_BGS.length)]);
   return (
   <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
@@ -1985,6 +1975,16 @@ const Results = () => {
           </Reveal>
         ))}
       </div>
+      <Reveal direction="up" delay={0.5}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
+          <Button variant="brown" onClick={onOpenModal} className="!px-10 shadow-2xl">
+            Пройти индивидуальный разбор
+          </Button>
+          <Button variant="outline-light" href="#pricing" className="!px-10">
+            Забронировать место
+          </Button>
+        </div>
+      </Reveal>
     </div>
   </section>
   );
@@ -5974,7 +5974,7 @@ export default function AppV3() {
       <Location />
       <Testimonials />
       <ForWho />
-      <Results />
+      <Results onOpenModal={handleOpenModal} />
       <Pricing onOpenModal={handleOpenModal} />
       <FinalBlock onOpenModal={() => handleOpenModal()} />
       <Footer />
