@@ -1732,8 +1732,7 @@ const WhatHappens = () => (
         </Reveal>
       </div>
     </section>
-  );
-};
+);
 
 const HowItWorks = () => {
   const icons: any = { Eye, RefreshCw, Zap, Compass };
