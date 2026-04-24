@@ -424,7 +424,6 @@ const JourneyPath = () => {
         <Reveal delay={0.18}>
           <p className="text-white/55 text-center text-[0.95rem] leading-[1.65] max-w-[38rem] mx-auto mb-16">
             «Отражение» — это двухдневный выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
-            <br /><span className="text-white/80 font-medium">За два дня ты проходишь путь:</span>
           </p>
         </Reveal>
 
@@ -1527,7 +1526,7 @@ const Pains = () => (
       {/* Header */}
       <Reveal direction="up">
         <div className="text-center mb-4">
-          <span className="text-[0.65rem] uppercase tracking-[0.25em] text-brown font-bold">Проблематика</span>
+          <span className="text-[0.65rem] uppercase tracking-[0.25em] text-brown font-bold">Почему это происходит</span>
         </div>
         <h2 className="font-serif text-4xl md:text-6xl text-white text-center leading-tight mb-4">
           Почему вы здесь?
@@ -1651,10 +1650,7 @@ const SystemProblem = () => (
       <div className="absolute right-[10%] bottom-16 h-72 w-72 rounded-full bg-brown-light/10 blur-3xl" />
     </div>
     <div className="max-w-4xl w-full mx-auto px-6 md:px-12 relative z-10 text-center">
-      <Reveal direction="up" delay={0.05}>
-        <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-6">Суть</span>
-      </Reveal>
-      <Reveal direction="up" delay={0.15}>
+      <Reveal direction="up" delay={0.1}>
         <h2 className="font-serif text-[clamp(2rem,5vw,3.6rem)] leading-[1.1] text-white font-light mb-2">
           Проблема не в тебе.
         </h2>
@@ -1699,7 +1695,6 @@ const WhatHappens = () => {
               <video src={WHAT_HAPPENS_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
               <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
-                <span className="text-[0.65rem] uppercase tracking-[0.35em] text-white/70 font-medium block mb-3">Процесс</span>
                 <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-white font-light">Что происходит на кэмпе</h2>
                 <div className="h-px w-14 bg-white/40 mt-4" />
               </div>
