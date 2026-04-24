@@ -399,7 +399,7 @@ const JourneyPath = () => (
     <div className="max-w-3xl mx-auto px-6 md:px-12 relative text-center">
       <Reveal delay={0.05}>
         <p className="text-[clamp(1.05rem,2vw,1.25rem)] text-white/80 leading-[1.75] mb-10 max-w-2xl mx-auto">
-          «Отражение» — это двухдневный выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
+          «Отражение» — это двухдневный терапевтический выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
         </p>
       </Reveal>
       <Reveal delay={0.18}>
@@ -1698,64 +1698,38 @@ const SystemProblem = () => (
 );
 
 
-const WhatHappens = () => {
-  const icons: any = { Eye, Scale, Infinity, Key };
-  return (
-    <section className="min-h-screen flex items-center py-16 bg-white relative overflow-hidden">
-      <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <Reveal direction="left" delay={0.1} scale>
-          <div className="relative">
-            <div className="rounded-[2rem] overflow-hidden aspect-[4/5] relative shadow-[0_24px_60px_rgba(58,39,20,0.18)]">
-              <video src={WHAT_HAPPENS_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
-              <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
-                <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-white font-light">Что происходит на кэмпе</h2>
-                <div className="h-px w-14 bg-white/40 mt-4" />
+const WhatHappens = () => (
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <div className="max-w-4xl w-full mx-auto px-6 md:px-12">
+        <Reveal direction="up" delay={0.05}>
+          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4 text-center">5 экран</span>
+          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark text-center mb-8">
+            ЧТО ПРОИСХОДИТ НА КЭМПЕ
+          </h2>
+        </Reveal>
+        <Reveal direction="up" delay={0.12}>
+          <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-4 max-w-2xl mx-auto text-center">
+            Это пространство, где ты больше не можешь не видеть правду. Не длительная терапия и не процесс «когда-нибудь станет лучше».
+          </p>
+          <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-10 max-w-2xl mx-auto text-center">
+            <span className="text-brown font-medium">Концентрированная работа</span>, в которой за два дня становится видно то, что в обычной жизни остаётся незамеченным годами.
+          </p>
+        </Reveal>
+        <Reveal direction="up" delay={0.2}>
+          <p className="text-[0.78rem] uppercase tracking-[0.25em] text-brown/70 font-medium mb-5 text-center">За 2 дня ты:</p>
+          <div className="space-y-3 max-w-xl mx-auto">
+            {WHAT_HAPPENS.map((item, i) => (
+              <div key={i} className="flex items-start gap-5 py-3 border-b border-brown/10 last:border-0">
+                <span className="font-serif text-[1.3rem] text-brown/30 leading-none w-7 shrink-0 text-right select-none mt-0.5">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <p className="text-[1rem] text-text-dark leading-[1.6]">
+                  {item.text} <span className="font-semibold text-brown">{item.bold}</span>
+                </p>
               </div>
-            </div>
-            <div className="hidden md:block absolute -bottom-6 -right-6 max-w-[280px] bg-brown text-white px-6 py-5 rounded-2xl shadow-xl">
-              <Quote className="text-white/25 mb-2" size={20} />
-              <p className="font-serif italic text-[0.98rem] leading-snug">
-                «Это не просто отдых. Это глубокая <span className="not-italic font-semibold">хирургическая работа</span> с вашей реальностью».
-              </p>
-            </div>
+            ))}
           </div>
-          </Reveal>
-
-          <div>
-            <Reveal direction="right" delay={0.1}>
-            <p className="text-[1.02rem] text-text-dark-soft leading-[1.7] mb-4 max-w-lg">
-              Это пространство, где ты больше не можешь не видеть правду. Не длительная терапия и не процесс «когда-нибудь станет лучше».
-            </p>
-            <p className="text-[1.02rem] text-text-dark-soft leading-[1.7] mb-8 max-w-lg">
-              <span className="text-brown font-medium">Концентрированная работа</span>, в которой за два дня становится видно то, что в обычной жизни остаётся незамеченным годами.
-            </p>
-            </Reveal>
-            <div className="space-y-5">
-              {WHAT_HAPPENS.map((item, i) => {
-                const Icon = icons[item.icon] || HelpCircle;
-                return (
-                  <Reveal key={i} direction="right" delay={0.15 + i * 0.08}>
-                  <div className="group flex gap-5 items-start">
-                    <div className="relative shrink-0">
-                      <div className="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-brown transition-all duration-500 group-hover:bg-brown group-hover:text-white">
-                        <Icon size={20} strokeWidth={1.5} />
-                      </div>
-                      <span className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-white border border-brown/15 flex items-center justify-center text-[0.55rem] font-bold text-brown">
-                        0{i + 1}
-                      </span>
-                    </div>
-                    <p className="pt-2 text-[1rem] text-text-dark-soft leading-snug transition-colors duration-300 group-hover:text-text-dark">
-                      {item.text} <span className="font-semibold text-brown">{item.bold}</span>
-                    </p>
-                  </div>
-                  </Reveal>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -5906,12 +5880,9 @@ export default function AppV3() {
       <Navbar onOpenModal={() => handleOpenModal()} />
       <Hero onOpenModal={() => handleOpenModal()} />
       <JourneyPath />
-      <About />
-      <Pains />
       <WhenYouNeedCamp />
       <SystemProblem />
       <WhatHappens />
-      <Philosophy />
       <Authors onOpenModal={() => handleOpenModal()} />
       <HowItWorks />
       <Program />
@@ -5920,7 +5891,6 @@ export default function AppV3() {
       <ForWho />
       <Results />
       <Pricing onOpenModal={handleOpenModal} />
-      <FAQ />
       <FinalBlock onOpenModal={() => handleOpenModal()} />
       <Footer />
       <ScrollToTop />
