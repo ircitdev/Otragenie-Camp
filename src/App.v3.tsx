@@ -1591,42 +1591,73 @@ const Pains = () => (
   </section>
 );
 
+const WHEN_PAINS = [
+  "постоянное фоновое напряжение, которое не проходит даже на отдыхе",
+  "усталость от роли успешного человека, который держит всё на себе",
+  "отношения становятся всё формальнее",
+  "ощущение, что жизнь идёт не туда",
+];
+
 const WhenYouNeedCamp = () => (
-  <section id="when" className="scroll-mt-20 py-20 md:py-28 bg-cream relative overflow-hidden">
-    <div className="max-w-4xl mx-auto px-6 md:px-12 relative z-10">
-      <Reveal direction="up" delay={0.05}>
-        <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4 text-center">Когда это нужно</span>
-        <h2 className="font-serif text-[clamp(1.9rem,4.5vw,3rem)] leading-[1.1] text-text-dark text-center mb-3">
-          КОГДА ВЫ ПОНИМАЕТЕ,<br />ЧТО НУЖЕН КЭМП
-        </h2>
-        <div className="h-px w-16 bg-brown/30 mx-auto mb-8" />
-        <p className="text-[1rem] text-text-dark-soft text-center leading-[1.7] mb-10">Ты можешь ощущать это по-разному:</p>
-      </Reveal>
-      <div className="space-y-4 mb-10">
-        {[
-          "постоянное фоновое напряжение, которое не проходит даже на отдыхе",
-          "усталость от роли успешного человека, который держит всё на себе",
-          "отношения становятся всё формальнее",
-          "ощущение, что жизнь идёт не туда",
-        ].map((item, i) => (
-          <Reveal key={i} direction="up" delay={0.1 + i * 0.07}>
-            <div className="flex items-start gap-4 py-3.5 border-b border-brown/10">
-              <span className="text-brown font-serif text-[1.1rem] shrink-0 mt-0.5">—</span>
-              <p className="text-[1rem] text-text-dark leading-[1.65]">{item}</p>
+  <section id="when" className="scroll-mt-20 bg-cream relative overflow-hidden">
+    <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+        {/* Левая колонка — текст */}
+        <div>
+          <Reveal direction="left" delay={0.05}>
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4">Когда это нужно</span>
+            <h2 className="font-serif text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.1] text-text-dark mb-6">
+              КОГДА ВЫ ПОНИМАЕТЕ,<br />ЧТО НУЖЕН КЭМП
+            </h2>
+            <p className="text-[1rem] text-text-dark-soft leading-[1.7] mb-8">Ты можешь ощущать это по-разному:</p>
+          </Reveal>
+          <div className="space-y-0 mb-8">
+            {WHEN_PAINS.map((item, i) => (
+              <Reveal key={i} direction="left" delay={0.12 + i * 0.07}>
+                <div className="flex items-start gap-4 py-4 border-b border-brown/12">
+                  <span className="text-brown font-serif text-[1.2rem] shrink-0 mt-0.5 leading-none">—</span>
+                  <p className="text-[1rem] text-text-dark leading-[1.65]">{item}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal direction="left" delay={0.5}>
+            <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-5">
+              Когда работа, перегрузка и внутренняя усталость начали разрушать отношения и контакт с собой.
+            </p>
+            <div className="bg-white rounded-2xl border border-brown/15 px-7 py-5 shadow-sm">
+              <p className="font-serif italic text-[1rem] text-text-dark leading-[1.65]">
+                Если вы узнаёте себя — значит, вы уже понимаете: что-то нужно менять. Вопрос только в том, с чего начать.
+              </p>
             </div>
           </Reveal>
-        ))}
-      </div>
-      <Reveal direction="up" delay={0.45}>
-        <p className="text-[1rem] text-text-dark-soft leading-[1.7] text-center mb-6">
-          Когда работа, перегрузка и внутренняя усталость начали разрушать отношения и контакт с собой.
-        </p>
-        <div className="bg-white rounded-2xl border border-brown/15 px-8 py-6 text-center shadow-sm">
-          <p className="font-serif italic text-[1.05rem] text-text-dark leading-[1.6]">
-            Если вы узнаёте себя — значит, вы уже понимаете: что-то нужно менять. Вопрос только в том, с чего начать.
-          </p>
         </div>
-      </Reveal>
+
+        {/* Правая колонка — видео с наложением */}
+        <Reveal direction="right" delay={0.15}>
+          <div className="relative rounded-[2rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.15)] aspect-[3/4] lg:aspect-auto lg:min-h-[580px]">
+            <video
+              src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/walk.MP4"
+              autoPlay muted loop playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
+            {/* Плашка снизу */}
+            <div className="absolute bottom-0 left-0 right-0 p-7 md:p-9">
+              <Quote className="text-white/30 mb-4" size={28} />
+              <p className="font-serif italic text-[clamp(1rem,2vw,1.25rem)] text-white leading-[1.5] mb-4">
+                «Когда работа, деньги и даже отдых перестают приносить радость — проблема не в них. Проблема в системе, из которой вы действуете».
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="h-px w-8 bg-brown-light/60" />
+                <span className="text-[0.62rem] uppercase tracking-[0.22em] text-brown-light font-bold">Майя Дзодзатти</span>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+
+      </div>
     </div>
   </section>
 );
@@ -1687,39 +1718,62 @@ const SystemProblem = () => (
 
 
 const WhatHappens = () => (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
-      <div className="max-w-4xl w-full mx-auto px-6 md:px-12">
-        <Reveal direction="up" delay={0.05}>
-          <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4 text-center">5 экран</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark text-center mb-8">
-            ЧТО ПРОИСХОДИТ НА КЭМПЕ
-          </h2>
-        </Reveal>
-        <Reveal direction="up" delay={0.12}>
-          <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-4 max-w-2xl mx-auto text-center">
-            Это пространство, где ты больше не можешь не видеть правду. Не длительная терапия и не процесс «когда-нибудь станет лучше».
-          </p>
-          <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-10 max-w-2xl mx-auto text-center">
-            <span className="text-brown font-medium">Концентрированная работа</span>, в которой за два дня становится видно то, что в обычной жизни остаётся незамеченным годами.
-          </p>
-        </Reveal>
-        <Reveal direction="up" delay={0.2}>
-          <p className="text-[0.78rem] uppercase tracking-[0.25em] text-brown/70 font-medium mb-5 text-center">За 2 дня ты:</p>
-          <div className="space-y-3 max-w-xl mx-auto">
-            {WHAT_HAPPENS.map((item, i) => (
-              <div key={i} className="flex items-start gap-5 py-3 border-b border-brown/10 last:border-0">
-                <span className="font-serif text-[1.3rem] text-brown/30 leading-none w-7 shrink-0 text-right select-none mt-0.5">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <p className="text-[1rem] text-text-dark leading-[1.6]">
-                  {item.text} <span className="font-semibold text-brown">{item.bold}</span>
-                </p>
+  <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        {/* Видео слева */}
+        <Reveal direction="left" delay={0.1} scale>
+          <div className="relative">
+            <div className="rounded-[2rem] overflow-hidden aspect-[4/5] relative shadow-[0_24px_60px_rgba(58,39,20,0.18)]">
+              <video src={WHAT_HAPPENS_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
+              <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
+                <span className="text-[0.62rem] uppercase tracking-[0.28em] text-white/60 font-medium block mb-3">Процесс</span>
+                <h2 className="font-serif text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.1] text-white font-light">Что происходит<br />на кэмпе</h2>
+                <div className="h-px w-14 bg-white/40 mt-4" />
               </div>
-            ))}
+            </div>
+            <div className="hidden md:block absolute -bottom-6 -right-6 max-w-[260px] bg-brown text-white px-6 py-5 rounded-2xl shadow-xl">
+              <Quote className="text-white/25 mb-2" size={20} />
+              <p className="font-serif italic text-[0.92rem] leading-snug">
+                «Это не просто отдых. Это глубокая <span className="not-italic font-semibold">хирургическая работа</span> с вашей реальностью».
+              </p>
+            </div>
           </div>
         </Reveal>
+
+        {/* Текст справа */}
+        <div>
+          <Reveal direction="right" delay={0.15}>
+            <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-text-dark mb-6">
+              ЧТО ПРОИСХОДИТ<br />НА КЭМПЕ
+            </h2>
+            <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-4">
+              Это пространство, где ты больше не можешь не видеть правду. Не длительная терапия и не процесс «когда-нибудь станет лучше».
+            </p>
+            <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-8">
+              <span className="text-brown font-medium">Концентрированная работа</span>, в которой за два дня становится видно то, что в обычной жизни остаётся незамеченным годами.
+            </p>
+          </Reveal>
+          <Reveal direction="right" delay={0.25}>
+            <p className="text-[0.72rem] uppercase tracking-[0.25em] text-brown/60 font-medium mb-4">За 2 дня ты:</p>
+            <div className="space-y-3">
+              {WHAT_HAPPENS.map((item, i) => (
+                <div key={i} className="flex items-start gap-4 py-3 border-b border-brown/10 last:border-0">
+                  <div className="w-10 h-10 rounded-xl bg-cream flex items-center justify-center shrink-0">
+                    <span className="font-serif text-[0.72rem] text-brown/50 font-bold">{String(i + 1).padStart(2, '0')}</span>
+                  </div>
+                  <p className="text-[0.97rem] text-text-dark leading-[1.6] pt-2">
+                    {item.text} <span className="font-semibold text-brown">{item.bold}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 );
 
 const HowItWorks = () => {
@@ -1782,6 +1836,14 @@ const HowItWorks = () => {
               );
             })}
           </div>
+          <Reveal direction="up" delay={0.5}>
+            <div className="mt-6 flex items-start gap-4 px-6 py-5 rounded-2xl bg-brown/8 border border-brown/15">
+              <Users size={18} className="text-brown shrink-0 mt-0.5" />
+              <p className="text-[0.88rem] text-text-dark-soft leading-[1.65]">
+                Работа проходит в малой группе, всего <span className="font-semibold text-text-dark">10 человек</span>, чтобы у каждого участника было время, внимание и возможность получить личный разбор своей ситуации.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
