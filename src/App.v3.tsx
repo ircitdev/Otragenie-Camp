@@ -64,7 +64,7 @@ const Button = ({ variant = 'brown', href, children, className = '', onClick, ty
 const SectionHeading = ({ subtitle, title, light = false, centered = true }: any) => (
   <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
     <Reveal delay={0.1}>
-      <span className={`text-[0.68rem] tracking-[0.25em] uppercase font-medium mb-4 block ${light ? 'text-white/60' : 'text-brown'}`}>
+      <span className={`text-[0.68rem] tracking-[0.2em] uppercase font-medium mb-4 block ${light ? 'text-white/60' : 'text-brown'}`}>
         {subtitle}
       </span>
     </Reveal>
@@ -2085,10 +2085,35 @@ const Footer = () => (
   </footer>
 );
 
+const CookieBanner = () => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (!localStorage.getItem('cookie-consent')) setVisible(true);
+  }, []);
+  const accept = () => { localStorage.setItem('cookie-consent', 'accepted'); setVisible(false); };
+  if (!visible) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      className="fixed bottom-6 left-4 right-4 z-[400] max-w-xl mx-auto bg-navy/96 backdrop-blur-md text-white rounded-2xl px-6 py-4 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4"
+    >
+      <p className="text-[0.78rem] leading-[1.6] text-white/75 flex-1">
+        Сайт использует файлы cookie для аналитики и корректной работы. Продолжая использование, вы соглашаетесь с{' '}
+        <a href="/oferta" className="text-brown-light underline-offset-2 underline hover:no-underline">политикой обработки данных</a>.
+      </p>
+      <button onClick={accept} className="shrink-0 px-5 py-2.5 rounded-full bg-brown text-white text-[0.75rem] font-medium hover:bg-brown-dark transition-colors whitespace-nowrap">
+        Принять
+      </button>
+    </motion.div>
+  );
+};
+
 const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
   const [step, setStep] = useState<'plan' | 'form' | 'confirm' | 'success'>('form');
-  const [formData, setFormData] = useState({ name: '', contact: '', message: '' });
-  const [errors, setErrors] = useState({ name: '', contact: '' });
+  const [formData, setFormData] = useState({ name: '', contact: '', message: '', consent: false });
+  const [errors, setErrors] = useState({ name: '', contact: '', consent: '' });
 
   const transition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
 
@@ -2099,13 +2124,13 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
       } else {
         setStep('form');
       }
-      setFormData({ name: '', contact: '', message: '' });
-      setErrors({ name: '', contact: '' });
+      setFormData({ name: '', contact: '', message: '', consent: false });
+      setErrors({ name: '', contact: '', consent: '' });
     }
   }, [selectedPlan, isOpen]);
 
   const validate = () => {
-    const newErrors = { name: '', contact: '' };
+    const newErrors = { name: '', contact: '', consent: '' };
     let isValid = true;
 
     if (formData.name.trim().length < 2) {
@@ -2115,6 +2140,11 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
 
     if (formData.contact.trim().length < 5) {
       newErrors.contact = 'Введите корректный номер или ник';
+      isValid = false;
+    }
+
+    if (!formData.consent) {
+      newErrors.consent = 'Необходимо согласие на обработку данных';
       isValid = false;
     }
 
@@ -2376,7 +2406,21 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                         <CheckCircle className="absolute right-4 top-4 text-brown/20" size={18} />
                       )}
                     </div>
-                    <Button type="submit" variant="brown" className="w-full mt-4 !bg-[#7a6245] !border-[#7a6245] hover:!bg-[#5e4a32] hover:!border-[#5e4a32]">Далее</Button>
+                    <label className="flex items-start gap-3 cursor-pointer mt-1">
+                      <input
+                        type="checkbox"
+                        checked={formData.consent}
+                        onChange={(e) => { setFormData({ ...formData, consent: e.target.checked }); if (e.target.checked) setErrors({ ...errors, consent: '' }); }}
+                        className="mt-0.5 w-4 h-4 shrink-0 accent-[#9a7d5a] cursor-pointer"
+                      />
+                      <span className="text-[0.73rem] text-text-dark-soft leading-[1.55]">
+                        Я согласен(-а) на{' '}
+                        <a href="/oferta" target="_blank" rel="noopener noreferrer" className="text-brown underline underline-offset-2 hover:no-underline">обработку персональных данных</a>{' '}
+                        согласно публичной оферте
+                      </span>
+                    </label>
+                    {errors.consent && <p className="text-[0.65rem] text-red-500 ml-7 -mt-1">{errors.consent}</p>}
+                    <Button type="submit" variant="brown" className="w-full mt-2 !bg-[#7a6245] !border-[#7a6245] hover:!bg-[#5e4a32] hover:!border-[#5e4a32]">Далее</Button>
                   </form>
                 </motion.div>
               )}
@@ -6007,6 +6051,7 @@ export default function AppV3() {
       <Footer />
       <ScrollToTop />
       <LiveChat />
+      <CookieBanner />
       {/* <ChatAssistant /> */}
       <ComparisonModal 
         isOpen={isCompareModalOpen} 
@@ -6014,9 +6059,158 @@ export default function AppV3() {
       />
       <Modal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        onClose={() => setIsModalOpen(false)}
         selectedPlan={selectedPlan}
       />
     </div>
   );
 }
+
+// ─── Oferta Page ────────────────────────────────────────────────────────────
+
+export const OfertaPage = () => {
+  const Section = ({ num, title, children }: { num: string; title: string; children: React.ReactNode }) => (
+    <section className="mb-10">
+      <h2 className="font-serif text-[1.25rem] md:text-[1.45rem] text-[#2c1f14] mb-3 flex items-baseline gap-2">
+        <span className="text-brown/50 font-sans text-[0.85rem] font-semibold shrink-0">{num}.</span>
+        {title}
+      </h2>
+      <div className="space-y-2 text-[0.92rem] leading-relaxed text-[#3d2e21]/80">{children}</div>
+    </section>
+  );
+
+  const P = ({ children }: { children: React.ReactNode }) => (
+    <p className="pl-4 border-l border-brown/15">{children}</p>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#faf7f3]">
+      <header className="sticky top-0 z-40 bg-[#faf7f3]/90 backdrop-blur-sm border-b border-brown/10">
+        <div className="max-w-3xl mx-auto px-5 h-14 flex items-center justify-between">
+          <a href="/v3" className="text-[0.78rem] uppercase tracking-[0.18em] text-brown/60 hover:text-brown transition font-semibold">
+            ← На сайт
+          </a>
+          <span className="font-serif text-[0.95rem] text-[#2c1f14]/70">Публичная оферта</span>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-5 py-12 md:py-16">
+        <div className="mb-10">
+          <h1 className="font-serif text-[clamp(1.8rem,4vw,2.6rem)] text-[#2c1f14] leading-tight mb-3">
+            Публичная оферта
+          </h1>
+          <p className="text-[0.88rem] text-[#3d2e21]/55 leading-relaxed">
+            на участие в интенсиве «Отражение» (19–21 июня 2026)
+          </p>
+          <div className="mt-4 h-px bg-gradient-to-r from-brown/25 to-transparent" />
+        </div>
+
+        <Section num="1" title="Общие положения">
+          <P>Настоящий документ является публичной офертой (далее — «Оферта») и адресован любому физическому лицу, выразившему намерение принять участие в интенсиве «Отражение» (далее — «Мероприятие»).</P>
+          <P>Акцептом настоящей Оферты является оплата участия в Мероприятии любым из предложенных способов. С момента поступления оплаты Договор считается заключённым на условиях, изложенных в настоящей Оферте.</P>
+          <P>Организатор оставляет за собой право в одностороннем порядке изменять условия настоящей Оферты. Актуальная редакция всегда размещена на сайте otragenie-camp.ru/oferta. Оплата, произведённая до изменения условий, регулируется редакцией, действовавшей на момент оплаты.</P>
+        </Section>
+
+        <Section num="2" title="Организатор">
+          <P><span className="font-medium text-[#2c1f14]">[РЕКВИЗИТЫ ОРГАНИЗАТОРА]</span></P>
+          <p className="pl-4 text-[0.82rem] text-brown/50 italic">Заполнить: полное наименование / ФИО, ИНН, ОГРНИП/ОГРН, адрес, e-mail для обращений.</p>
+        </Section>
+
+        <Section num="3" title="Предмет договора">
+          <P>Организатор обязуется провести Мероприятие — выездной интенсив «Отражение» — в период с 19 по 21 июня 2026 года включительно на базе глэмпинга «Дзен рекавери», Красная Поляна, и обеспечить Участнику доступ к программе в соответствии с оплаченным тарифом.</P>
+          <P>Состав услуг, включённых в каждый тариф («База», «Полный», «Премиум»), определяется описанием на сайте otragenie-camp.ru и является частью настоящего Договора.</P>
+        </Section>
+
+        <Section num="4" title="Стоимость и порядок оплаты">
+          <P>Стоимость участия определяется выбранным тарифом:</P>
+          <ul className="pl-4 space-y-1 list-none">
+            {[
+              { name: 'База', price: '149 000 ₽' },
+              { name: 'Полный', price: '179 000 ₽' },
+              { name: 'Премиум', price: '249 000 ₽' },
+            ].map(t => (
+              <li key={t.name} className="flex items-baseline gap-2 text-[0.92rem]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+                <span>«{t.name}» — <strong className="text-[#2c1f14]">{t.price}</strong></span>
+              </li>
+            ))}
+          </ul>
+          <P>Оплата производится в рублях через платёжный сервис Prodamus. Место нахождения оферты (акцепт) — Российская Федерация.</P>
+          <P>Оплата подтверждается электронным чеком, направляемым на указанный Участником контакт.</P>
+        </Section>
+
+        <Section num="5" title="Права и обязанности сторон">
+          <p className="pl-4 font-medium text-[#2c1f14]">Организатор обязуется:</p>
+          <ul className="pl-4 space-y-1 list-none">
+            {[
+              'провести Мероприятие в заявленные сроки;',
+              'обеспечить размещение и питание в соответствии с выбранным тарифом;',
+              'информировать Участника об изменениях программы не позднее чем за 5 дней до начала.',
+            ].map((t, i) => (
+              <li key={i} className="flex items-baseline gap-2 text-[0.92rem]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+                {t}
+              </li>
+            ))}
+          </ul>
+          <p className="pl-4 font-medium text-[#2c1f14] mt-3">Участник обязуется:</p>
+          <ul className="pl-4 space-y-1 list-none">
+            {[
+              'своевременно произвести оплату;',
+              'прибыть в место проведения в установленное время;',
+              'соблюдать правила проживания на территории глэмпинга;',
+              'не записывать и не распространять материалы программы без согласия Организатора и других Участников.',
+            ].map((t, i) => (
+              <li key={i} className="flex items-baseline gap-2 text-[0.92rem]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+                {t}
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        <Section num="6" title="Отказ от участия и возврат средств">
+          <P>Участник вправе отказаться от участия, направив уведомление Организатору в письменной форме (e-mail).</P>
+          <ul className="pl-4 space-y-1 list-none">
+            {[
+              'Более чем за 30 дней до начала — возврат 90% стоимости.',
+              'От 14 до 30 дней включительно — возврат 50% стоимости.',
+              'Менее чем за 14 дней — возврат не производится.',
+            ].map((t, i) => (
+              <li key={i} className="flex items-baseline gap-2 text-[0.92rem]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+                {t}
+              </li>
+            ))}
+          </ul>
+          <P>Возврат осуществляется в течение 10 рабочих дней с момента получения уведомления тем же способом, которым была произведена оплата.</P>
+          <P>В случае отмены Мероприятия по инициативе Организатора Участнику возвращается полная стоимость участия в течение 10 рабочих дней.</P>
+        </Section>
+
+        <Section num="7" title="Ограничение ответственности">
+          <P>Организатор не несёт ответственности за неисполнение обязательств, вызванное обстоятельствами непреодолимой силы (форс-мажор): стихийные бедствия, эпидемии, действия государственных органов, иные события, находящиеся вне разумного контроля сторон.</P>
+          <P>Интенсив не является медицинской, психотерапевтической или иной лицензируемой услугой в области здравоохранения. Организатор не несёт ответственности за субъективное восприятие результатов программы каждым Участником.</P>
+        </Section>
+
+        <Section num="8" title="Персональные данные">
+          <P>Акцептируя настоящую Оферту, Участник выражает согласие на обработку своих персональных данных (имя, контактный номер телефона, адрес электронной почты) в целях исполнения Договора, информирования о Мероприятии и направления организационных материалов.</P>
+          <P>Обработка данных осуществляется в соответствии с Федеральным законом № 152-ФЗ «О персональных данных». Данные не передаются третьим лицам, за исключением случаев, необходимых для исполнения Договора (платёжный сервис, средство размещения).</P>
+          <P>Участник вправе отозвать согласие, направив соответствующее уведомление Организатору.</P>
+        </Section>
+
+        <Section num="9" title="Разрешение споров">
+          <P>Все споры и разногласия, возникающие из настоящего Договора, стороны стремятся урегулировать путём переговоров.</P>
+          <P>При недостижении соглашения спор передаётся в суд по месту нахождения Организатора в соответствии с действующим законодательством Российской Федерации.</P>
+        </Section>
+
+        <Section num="10" title="Срок действия оферты">
+          <P>Настоящая Оферта вступает в силу с момента публикации на сайте otragenie-camp.ru и действует до момента отзыва или замены новой редакцией.</P>
+        </Section>
+
+        <div className="mt-12 pt-6 border-t border-brown/15 text-[0.8rem] text-[#3d2e21]/45 leading-relaxed">
+          <p>Редакция от апреля 2026 г. По вопросам: info@otragenie-camp.ru</p>
+        </div>
+      </main>
+    </div>
+  );
+};
