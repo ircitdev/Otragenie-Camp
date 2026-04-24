@@ -171,7 +171,7 @@ const Navbar = ({ onOpenModal }: any) => {
 
             <div className="hidden xl:block">
               <Button
-                variant={isPastHero ? 'brown' : 'outline-dark'}
+                variant="brown"
                 className="!px-6 !py-2.5 !text-[0.65rem] shadow-[0_12px_30px_rgba(17,24,39,0.18)]"
                 onClick={onOpenModal}
               >
@@ -1601,29 +1601,29 @@ const WHEN_PAINS = [
 const WhenYouNeedCamp = () => (
   <section id="when" className="scroll-mt-20 bg-cream relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
 
         {/* Левая колонка — текст */}
-        <div>
+        <div className="flex flex-col">
           <Reveal direction="left" delay={0.05}>
-            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4">Когда это нужно</span>
-            <h2 className="font-serif text-[clamp(1.8rem,4vw,2.8rem)] leading-[1.1] text-text-dark mb-6">
-              КОГДА ВЫ ПОНИМАЕТЕ,<br />ЧТО НУЖЕН КЭМП
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4">О проекте · 2026</span>
+            <h2 className="font-serif italic text-[clamp(1.8rem,4vw,3rem)] leading-[1.1] text-text-dark mb-6">
+              Когда вы понимаете,<br />что нужен кэмп
             </h2>
             <p className="text-[1rem] text-text-dark-soft leading-[1.7] mb-8">Ты можешь ощущать это по-разному:</p>
           </Reveal>
-          <div className="space-y-0 mb-8">
+          <div className="space-y-0 mb-8 flex-1">
             {WHEN_PAINS.map((item, i) => (
               <Reveal key={i} direction="left" delay={0.12 + i * 0.07}>
-                <div className="flex items-start gap-4 py-4 border-b border-brown/12">
-                  <span className="text-brown font-serif text-[1.2rem] shrink-0 mt-0.5 leading-none">—</span>
+                <div className="flex items-start gap-4 py-4 border-b border-brown/15">
+                  <span className="text-brown/50 font-serif text-[0.75rem] shrink-0 mt-1 leading-none font-bold">№ {i + 1}</span>
                   <p className="text-[1rem] text-text-dark leading-[1.65]">{item}</p>
                 </div>
               </Reveal>
             ))}
           </div>
           <Reveal direction="left" delay={0.5}>
-            <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-5">
+            <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-5">
               Когда работа, перегрузка и внутренняя усталость начали разрушать отношения и контакт с собой.
             </p>
             <div className="bg-white rounded-2xl border border-brown/15 px-7 py-5 shadow-sm">
@@ -1635,23 +1635,22 @@ const WhenYouNeedCamp = () => (
         </div>
 
         {/* Правая колонка — видео с наложением */}
-        <Reveal direction="right" delay={0.15}>
-          <div className="relative rounded-[2rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.15)] aspect-[3/4] lg:aspect-auto lg:min-h-[580px]">
+        <Reveal direction="right" delay={0.15} className="h-full">
+          <div className="relative rounded-[1.5rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.18)] h-full min-h-[480px]">
             <video
               src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/walk.MP4"
               autoPlay muted loop playsInline
-              className="absolute inset-0 w-full h-full object-cover"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent" />
-            {/* Плашка снизу */}
-            <div className="absolute bottom-0 left-0 right-0 p-7 md:p-9">
-              <Quote className="text-white/30 mb-4" size={28} />
-              <p className="font-serif italic text-[clamp(1rem,2vw,1.25rem)] text-white leading-[1.5] mb-4">
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.82) 0%, rgba(15,23,42,0.15) 55%, transparent 100%)' }} />
+            <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
+              <Quote className="text-white/30 mb-4" size={24} />
+              <p className="font-serif italic text-[clamp(0.95rem,1.8vw,1.15rem)] text-white leading-[1.6] mb-5">
                 «Когда работа, деньги и даже отдых перестают приносить радость — проблема не в них. Проблема в системе, из которой вы действуете».
               </p>
               <div className="flex items-center gap-3">
                 <div className="h-px w-8 bg-brown-light/60" />
-                <span className="text-[0.62rem] uppercase tracking-[0.22em] text-brown-light font-bold">Майя Дзодзатти</span>
+                <span className="text-[0.6rem] uppercase tracking-[0.22em] text-brown-light font-bold">Майя Дзодзатти</span>
               </div>
             </div>
           </div>
