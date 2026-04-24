@@ -1423,20 +1423,6 @@ const Pricing = ({ onOpenModal }: any) => {
             );
           })}
         </div>
-        <Reveal direction="up" delay={0.2}>
-          <p className="font-serif italic text-[0.92rem] text-text-dark-soft text-center mt-8 max-w-xl mx-auto leading-[1.7]">
-            Участие проходит через индивидуальный разбор. Это нужно, чтобы вы точно поняли, подходит ли вам этот формат и какой результат вы хотите получить. Если вы уже готовы — вы можете сразу забронировать место.
-          </p>
-        </Reveal>
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => onOpenModal("compare")}
-            className="inline-flex items-center gap-2 text-[0.75rem] uppercase tracking-[0.2em] text-brown hover:text-brown-dark font-medium transition"
-          >
-            Сравнение тарифов
-            <ArrowRight size={14} />
-          </button>
-        </div>
       </div>
     </section>
   );
