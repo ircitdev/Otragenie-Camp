@@ -162,7 +162,7 @@ const Navbar = ({ onOpenModal }: any) => {
                 <a
                   key={i}
                   href={`#${item.id}`}
-                  className={`rounded-full px-4 py-2 text-[0.62rem] uppercase tracking-[0.22em] font-semibold transition-all duration-300 hover:bg-white/70 hover:text-brown ${isPastHero ? 'text-text-dark/75' : 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]'}`}
+                  className={`rounded-full px-4 py-2 text-[0.67rem] uppercase tracking-[0.22em] font-semibold transition-all duration-300 hover:bg-white/70 hover:text-brown ${isPastHero ? 'text-text-dark/75' : 'text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]'}`}
                 >
                   {item.name}
                 </a>
@@ -349,10 +349,6 @@ const Hero = ({ onOpenModal }: any) => {
           </p>
         </Reveal>
 
-        <Reveal delay={2.9}>
-            <div className="flex gap-4 justify-center flex-wrap mb-9">
-          </div>
-        </Reveal>
 
         <Reveal delay={3.0}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -671,8 +667,8 @@ const Program = () => {
                   <p className="text-[1.05rem] text-text-dark-soft font-light mb-6">{p.subtitle}</p>
                   <div className="space-y-2 mb-5">
                     {p.blocks.map((b: any) => (
-                      <div key={b.num} className="flex items-center gap-4 px-4 py-3 rounded-xl bg-[#f5f1ec] border border-brown/10">
-                        <span className="text-[0.65rem] font-bold text-brown/50 w-5 shrink-0">{b.num}</span>
+                      <div key={b.num} className="flex items-center gap-4 py-3 border-b border-brown/10 last:border-0">
+                        <span className="font-serif text-[0.72rem] text-brown/40 tabular-nums select-none shrink-0 w-5">{b.num}</span>
                         <span className="text-[0.93rem] text-text-dark">{b.title}</span>
                       </div>
                     ))}
@@ -839,33 +835,33 @@ const Authors = ({ onOpenModal }: any) => (
       <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-6">
         {AUTHORS.map((a: any, i: number) => (
           <Reveal key={a.name} direction={i === 0 ? "left" : "right"} delay={0.15 + i * 0.1}>
-            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col gap-6 h-full">
-              {/* Фото + имя */}
-              <div className="flex gap-5 items-start">
-                <div className="relative w-[100px] sm:w-[120px] aspect-[3/4] overflow-hidden rounded-2xl shrink-0 group">
-                  <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
-                </div>
-                <div className="flex-1 min-w-0 pt-1">
-                  <h3 className="font-serif text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.1] mb-1.5">{a.name}</h3>
-                  <p className="text-brown-light/80 text-[0.72rem] leading-[1.5]">{a.role}</p>
+            <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex flex-col h-full group">
+              {/* Фото — полное, имя поверх */}
+              <div className="relative aspect-[3/2] overflow-hidden shrink-0">
+                <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="font-serif text-[clamp(1.4rem,2.5vw,1.9rem)] leading-[1.05] text-white mb-1.5">{a.name}</h3>
+                  <p className="text-brown-light/80 text-[0.72rem] tracking-wide leading-[1.5]">{a.role}</p>
                 </div>
               </div>
-              {/* Буллеты */}
-              <ul className="space-y-2">
-                {a.points.map((pt: string, j: number) => (
-                  <li key={j} className="flex items-start gap-2.5 text-[0.88rem] text-white/70 leading-[1.55]">
-                    <span className="text-brown-light mt-1 shrink-0">—</span>
-                    {pt}
-                  </li>
-                ))}
-              </ul>
-              {/* Теги */}
-              <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
-                {a.tags.map((tag: string) => (
-                  <span key={tag} className="px-3 py-1.5 rounded-full text-[0.7rem] font-medium bg-brown/20 border border-brown-light/20 text-brown-light tracking-wide">
-                    {tag}
-                  </span>
-                ))}
+              {/* Контент */}
+              <div className="p-6 md:p-8 flex flex-col gap-5 flex-1">
+                <ul className="space-y-2.5 flex-1">
+                  {a.points.map((pt: string, j: number) => (
+                    <li key={j} className="flex items-start gap-3 text-[0.88rem] text-white/70 leading-[1.6]">
+                      <span className="font-serif text-[0.7rem] text-brown-light/50 shrink-0 tabular-nums select-none mt-0.5">{String(j + 1).padStart(2, '0')}</span>
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                  {a.tags.map((tag: string) => (
+                    <span key={tag} className="px-3 py-1.5 rounded-full text-[0.7rem] font-medium bg-brown/20 border border-brown-light/20 text-brown-light tracking-wide">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </Reveal>
@@ -963,7 +959,7 @@ const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
   <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 shadow-sm border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_8px_40px_rgba(154,125,90,0.12)]" : "border-brown/8 opacity-60 scale-[0.97]"}`}>
     <div>
       <div className="flex items-center gap-4 mb-5">
-        <div className="w-14 h-14 rounded-xl overflow-hidden bg-brown/10 shrink-0">
+        <div className="w-14 h-14 rounded-full overflow-hidden bg-brown/10 shrink-0">
           {c.img
             ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
@@ -985,7 +981,7 @@ const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
         </ul>
       </div>
 
-      <div className="p-4 rounded-xl bg-cream border border-brown/10">
+      <div className="p-4 rounded-xl bg-brown/6">
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-brown">После этого</span>
           {c.author && <span className="text-[0.58rem] text-text-dark-muted">· результат работы с {c.author}</span>}
@@ -1379,7 +1375,7 @@ const Pricing = ({ onOpenModal }: any) => {
         </div>
         </Reveal>
         <Reveal direction="up" delay={0.1}>
-        <div className="text-center mb-10 max-w-xl mx-auto border border-brown/15 rounded-2xl px-8 py-5">
+        <div className="text-center mb-10 max-w-xl mx-auto bg-brown/5 rounded-2xl px-8 py-5">
           <p className="text-[1rem] font-serif font-semibold text-text-dark mb-1">В группе всего 10 мест</p>
           <p className="text-[0.9rem] text-text-dark-soft leading-[1.6]">Это не потоковый формат и не обучение, а работа, где каждый участник проходит через личный разбор.</p>
         </div>
@@ -1619,8 +1615,8 @@ const WhenYouNeedCamp = () => (
             <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-5">
               Когда работа, перегрузка и внутренняя усталость начали разрушать отношения и контакт с собой.
             </p>
-            <div className="bg-white rounded-2xl border border-brown/15 px-7 py-5 shadow-sm">
-              <p className="font-serif italic text-[1rem] text-text-dark leading-[1.65]">
+            <div className="pt-6 border-t border-brown/20">
+              <p className="font-serif italic text-[1.1rem] text-text-dark leading-[1.7]">
                 Если вы узнаёте себя — значит, вы уже понимаете: что-то нужно менять. Вопрос только в том, с чего начать.
               </p>
             </div>
@@ -1631,7 +1627,7 @@ const WhenYouNeedCamp = () => (
         <Reveal direction="right" delay={0.15} className="h-full">
           <div className="relative rounded-[1.5rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.18)] h-full min-h-[480px]">
             <video
-              src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/veranda.MP4"
+              src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4"
               autoPlay muted loop playsInline
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -1737,7 +1733,7 @@ const SystemProblem = () => {
 
 
 const WhatHappens = () => (
-  <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+  <section className="py-16 md:py-24 bg-cream relative overflow-hidden">
     <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Видео слева */}
@@ -1779,9 +1775,9 @@ const WhatHappens = () => (
             <div className="space-y-3">
               {WHAT_HAPPENS.map((item, i) => (
                 <div key={i} className="flex items-start gap-4 py-3 border-b border-brown/10 last:border-0">
-                  <div className="w-10 h-10 rounded-xl bg-cream flex items-center justify-center shrink-0">
-                    <span className="font-serif text-[0.72rem] text-brown/50 font-bold">{String(i + 1).padStart(2, '0')}</span>
-                  </div>
+                  <span className="font-serif text-[1.5rem] leading-none text-brown/25 shrink-0 select-none tabular-nums min-w-[2rem] text-right pt-1">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                   <p className="text-[0.97rem] text-text-dark leading-[1.6] pt-2">
                     {item.text} <span className="font-semibold text-brown">{item.bold}</span>
                   </p>
@@ -1836,12 +1832,12 @@ const HowItWorks = () => {
         </Reveal>
 
         <div className="max-w-2xl mx-auto">
-          <div className="space-y-3">
+          <div className="space-y-4">
             {PROCESS.map((item, i) => {
               const Icon = icons[item.icon] || HelpCircle;
               return (
                 <Reveal key={i} direction="up" delay={0.08 + i * 0.07}>
-                  <div className="flex items-center gap-5 px-6 py-4 rounded-2xl bg-white border border-brown/10 shadow-sm group hover:border-brown/25 hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center gap-5 px-6 py-5 rounded-2xl bg-white border border-brown/10 group hover:border-brown/30 hover:shadow-sm transition-all duration-300">
                     <span className="font-serif text-[1.4rem] text-brown/20 leading-none w-7 shrink-0 text-right select-none">
                       {String(i + 1).padStart(2, '0')}
                     </span>
@@ -1993,15 +1989,14 @@ const Results = ({ onOpenModal }: any) => {
         <div className="text-center mb-8">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
           <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">Что ты заберёшь с собой</h2>
-          <div className="h-px w-16 bg-brown-light/40 mx-auto mt-4" />
         </div>
       </Reveal>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {RESULTS.map((r, i) => (
           <Reveal key={i} direction="up" delay={0.1 + i * 0.07}>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 hover:bg-white/[0.08] hover:border-brown-light/40 transition group">
-              <div className="w-11 h-11 rounded-xl bg-brown/15 flex items-center justify-center text-brown-light mb-4 group-hover:bg-brown group-hover:text-white transition">
-                <CheckCircle size={22} />
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 hover:bg-white/[0.08] hover:border-brown-light/30 transition group">
+              <div className="font-serif text-[2rem] text-brown-light/30 leading-none mb-4 group-hover:text-brown-light/60 transition tabular-nums select-none">
+                {String(i + 1).padStart(2, '0')}
               </div>
               <h4 className="font-serif text-[1.1rem] mb-1.5 group-hover:text-brown-light transition">{r.title}</h4>
               <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
@@ -2052,10 +2047,8 @@ const FinalBlock = ({ onOpenModal }: any) => (
       </Reveal>
 
       <Reveal direction="up" delay={0.3}>
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <div className="h-px w-8 bg-brown-light/50" />
+        <div className="flex items-center justify-center mb-2">
           <span className="text-[0.72rem] uppercase tracking-[0.2em] text-brown-light font-medium">19–21 июня · Красная Поляна</span>
-          <div className="h-px w-8 bg-brown-light/50" />
         </div>
         <p className="text-[0.88rem] text-white/45 mb-10">
           В группе всего 10 мест —<br className="sm:hidden" /> потому что это формат глубокой работы, где невозможно «быть одним из»
@@ -2098,7 +2091,7 @@ const Footer = () => (
           <p className="text-[0.78rem] text-white/50">Глэмпинг «Дзен рекавери», Красная Поляна</p>
         </div>
       </div>
-      <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.62rem] uppercase tracking-[0.24em] text-white/35">
+      <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.65rem] uppercase tracking-[0.24em] text-white/35">
         <p>© 2026 «Отражение»</p>
         <p>Безопасное пространство · Глубинная работа с собой</p>
       </div>
@@ -3485,7 +3478,7 @@ const FooterV3 = () => (
           <p className="text-[0.78rem] text-white/50">Глэмпинг «Дзен рекавери», Красная Поляна</p>
         </div>
       </div>
-      <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.62rem] uppercase tracking-[0.24em] text-white/35">
+      <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.65rem] uppercase tracking-[0.24em] text-white/35">
         <p>© 2026 «Отражение»</p>
         <p>Безопасное пространство · Глубинная работа с собой</p>
       </div>
