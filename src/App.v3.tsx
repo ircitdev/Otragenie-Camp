@@ -837,47 +837,35 @@ const Authors = ({ onOpenModal }: any) => (
         </div>
       </Reveal>
       <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-6">
-        {([
-          {
-            author: AUTHORS[0],
-            side: "глубина",
-            stats: [
-              { value: "500+", label: "участников" },
-              { value: "10+",  label: "лет практики" },
-              { value: "100%", label: "честности" },
-            ],
-          },
-          {
-            author: AUTHORS[1],
-            side: "структура",
-            stats: [
-              { value: "30+",  label: "лет в бизнесе" },
-              { value: "500+", label: "клиентов" },
-              { value: "1",    label: "совладелец банка" },
-            ],
-          },
-        ] as const).map(({ author: a, side, stats }, i) => (
+        {AUTHORS.map((a: any, i: number) => (
           <Reveal key={a.name} direction={i === 0 ? "left" : "right"} delay={0.15 + i * 0.1}>
-            <div className="flex gap-5 items-start">
-              <div className="relative w-[120px] sm:w-[150px] aspect-[3/4] overflow-hidden rounded-[0.75rem] shrink-0 group">
-                <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col gap-6 h-full">
+              {/* Фото + имя */}
+              <div className="flex gap-5 items-start">
+                <div className="relative w-[100px] sm:w-[120px] aspect-[3/4] overflow-hidden rounded-2xl shrink-0 group">
+                  <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+                </div>
+                <div className="flex-1 min-w-0 pt-1">
+                  <h3 className="font-serif text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.1] mb-1.5">{a.name}</h3>
+                  <p className="text-brown-light/80 text-[0.72rem] leading-[1.5]">{a.role}</p>
+                </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="inline-flex items-center gap-2 rounded-full bg-brown/10 border border-brown-light/25 px-2.5 py-1 mb-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-brown-light" />
-                  <span className="text-[0.58rem] uppercase tracking-[0.22em] text-brown-light font-medium">{side}</span>
-                </div>
-                <h3 className="font-serif text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.05] mb-1.5">{a.name}</h3>
-                <p className="text-brown-light/90 text-[0.62rem] uppercase tracking-[0.18em] mb-2.5">{a.role}</p>
-                <p className="text-white/75 text-[0.85rem] leading-[1.55] mb-4">{a.desc}</p>
-                <div className="flex gap-6 pt-3 border-t border-white/10">
-                  {stats.map(s => (
-                    <div key={s.label}>
-                      <div className="font-serif text-[1.4rem] font-light text-white leading-none mb-0.5">{s.value}</div>
-                      <div className="text-[0.55rem] uppercase tracking-[0.16em] text-white/40">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
+              {/* Буллеты */}
+              <ul className="space-y-2">
+                {a.points.map((pt: string, j: number) => (
+                  <li key={j} className="flex items-start gap-2.5 text-[0.88rem] text-white/70 leading-[1.55]">
+                    <span className="text-brown-light mt-1 shrink-0">—</span>
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+              {/* Теги */}
+              <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                {a.tags.map((tag: string) => (
+                  <span key={tag} className="px-3 py-1.5 rounded-full text-[0.7rem] font-medium bg-brown/20 border border-brown-light/20 text-brown-light tracking-wide">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
           </Reveal>
