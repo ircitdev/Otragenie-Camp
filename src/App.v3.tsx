@@ -688,6 +688,9 @@ const About = () => (
 
 const Program = () => {
   const [active, setActive] = useState(0);
+  const p = PROGRAM[active] as any;
+  const isEvening = active === 0;
+
   return (
     <section id="program" className="scroll-mt-20 py-20 bg-white relative overflow-hidden">
       <div className="max-w-5xl w-full mx-auto px-6 md:px-12">
@@ -698,8 +701,10 @@ const Program = () => {
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
+
+        {/* Tabs */}
         <div role="tablist" aria-label="Программа по дням" className="flex justify-center gap-2 mb-7 bg-cream/50 p-1.5 rounded-full w-fit mx-auto">
-          {PROGRAM.map((_, i) => (
+          {PROGRAM.map((day: any, i: number) => (
             <button
               key={i}
               type="button"
@@ -709,11 +714,12 @@ const Program = () => {
               aria-controls={`program-panel-${i}`}
               tabIndex={active === i ? 0 : -1}
               onClick={() => setActive(i)}
-              className={`px-6 py-2.5 rounded-full text-[0.65rem] uppercase tracking-[0.2em] font-bold transition-all ${active === i ? "bg-[#ebe3db] text-text-dark shadow-sm" : "text-text-dark-muted hover:bg-cream"}`}>
-              День {i + 1}
+              className={`px-5 py-2.5 rounded-full text-[0.65rem] uppercase tracking-[0.2em] font-bold transition-all whitespace-nowrap ${active === i ? "bg-[#ebe3db] text-text-dark shadow-sm" : "text-text-dark-muted hover:bg-cream"}`}>
+              {i === 0 ? "Вечер" : `День ${i}`}
             </button>
           ))}
         </div>
+
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -722,20 +728,79 @@ const Program = () => {
             aria-labelledby={`program-tab-${active}`}
             tabIndex={0}
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.4 }}>
-            <h3 className="font-serif text-[1.25rem] text-brown text-center italic mb-5">{PROGRAM[active].day}</h3>
-            <div className="grid gap-3">
-              {PROGRAM[active].items.map((it, j) => (
-                <div key={j} className="px-5 py-4 md:px-6 md:py-5 rounded-2xl bg-[#faf8f5] border border-brown/8 flex flex-col md:flex-row gap-3 md:gap-6 md:items-center hover:border-brown/25 hover:shadow-sm transition-all">
-                  <div className="md:w-28 shrink-0">
-                    <span className="text-[0.62rem] uppercase tracking-[0.2em] font-bold text-brown/70">{it.label}</span>
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-serif text-[1.05rem] md:text-[1.15rem] text-text-dark leading-snug mb-1">{it.title}</h4>
-                    {it.desc && <p className="text-[0.82rem] text-text-dark-soft leading-[1.55]">{it.desc}</p>}
-                  </div>
+
+            {/* Day header */}
+            <div className={`rounded-2xl mb-6 overflow-hidden ${isEvening ? "bg-cream border border-brown/15 p-6" : "bg-white border border-brown/10 p-6"}`}>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+                <div>
+                  <h3 className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.1] text-text-dark">
+                    <span className="text-brown font-bold">{p.day}</span>
+                    {p.subtitle && <> — <span className="font-light">{p.subtitle}</span></>}
+                  </h3>
                 </div>
-              ))}
+                {p.theme && !isEvening && (
+                  <span className="text-[0.78rem] text-text-dark-muted font-serif italic whitespace-nowrap">{p.theme}</span>
+                )}
+              </div>
+              {/* Question tags */}
+              {p.questions && p.questions.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {p.questions.map((q: string, qi: number) => (
+                    <span key={qi} className="text-[0.72rem] border border-brown/20 rounded-full px-3 py-1 text-text-dark-soft bg-white">
+                      {String(qi + 1).padStart(2, "0")}&nbsp;&nbsp;{q}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
+
+            {/* Evening: simple numbered list */}
+            {isEvening ? (
+              <div className="space-y-2 mb-5">
+                {p.blocks.map((b: any) => (
+                  <div key={b.num} className="flex items-center gap-4 px-5 py-3.5 rounded-xl bg-[#faf8f5] border border-brown/8">
+                    <span className="text-[0.62rem] font-bold text-brown/50 w-5 shrink-0">{b.num}</span>
+                    <span className="text-[0.95rem] text-text-dark">{b.title}</span>
+                  </div>
+                ))}
+                {p.closing && (
+                  <div className="mt-4 flex gap-3 items-start bg-brown text-white rounded-2xl px-6 py-5">
+                    <span className="text-white/50 text-lg leading-none mt-0.5">✦</span>
+                    <p className="font-serif italic text-[0.95rem] leading-snug">
+                      <span className="font-semibold not-italic">здесь начинается честность,</span>{" "}
+                      с которой всё дальше будет разворачиваться
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Day 1 & 2: 2-column grid of blocks */
+              <div className="grid md:grid-cols-2 gap-3">
+                {p.blocks.map((b: any) => (
+                  <div key={b.num} className="rounded-2xl bg-[#faf8f5] border border-brown/8 px-5 py-5 hover:border-brown/20 hover:shadow-sm transition-all">
+                    <div className="mb-3">
+                      <span className="text-[0.6rem] uppercase tracking-[0.18em] text-brown/60 font-bold">{b.num}</span>
+                      <h4 className="font-serif text-[1rem] md:text-[1.08rem] text-text-dark leading-snug mt-0.5">
+                        {b.title}
+                      </h4>
+                    </div>
+                    {b.intro && (
+                      <p className="text-[0.78rem] text-text-dark-soft mb-2">{b.intro}</p>
+                    )}
+                    {b.points && b.points.length > 0 && (
+                      <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+                        {b.points.map((pt: string, pi: number) => (
+                          <span key={pi} className="flex items-start gap-1.5 text-[0.78rem] text-text-dark-soft leading-snug">
+                            <span className="text-brown mt-0.5 shrink-0">+</span>
+                            {pt}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
