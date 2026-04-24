@@ -1175,7 +1175,7 @@ const Testimonials = () => {
       >
         <style>{`.cases-track::-webkit-scrollbar { display: none; }`}</style>
         {flatCases.map((c, i) => (
-          <div key={i} className="snap-start flex-shrink-0" onClick={() => go(i)}>
+          <div key={i} className="snap-start flex-shrink-0 cursor-pointer" onClick={() => go(i)}>
             <CaseCard c={c} active={i === currentIndex} />
           </div>
         ))}
@@ -1185,39 +1185,43 @@ const Testimonials = () => {
 
       {/* Controls */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
-        <div className="flex flex-col items-center gap-3 mt-5">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => go(currentIndex - 1)}
-              aria-label="Предыдущий кейс"
-              className="w-11 h-11 rounded-full border border-brown/25 text-brown hover:bg-brown hover:text-white transition flex items-center justify-center group"
-            >
-              <ChevronLeft size={18} className="group-hover:-translate-x-0.5 transition-transform" />
-            </button>
-            <div className="flex items-center gap-2 mx-2">
-              {flatCases.map((_, j) => (
-                <button
-                  key={j}
-                  onClick={() => go(j)}
-                  aria-label={`Кейс ${j + 1}`}
-                  className={`h-1.5 rounded-full transition-all ${currentIndex === j ? "w-7 bg-brown" : "w-2 bg-brown/25 hover:bg-brown/45"}`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() => go(currentIndex + 1)}
-              aria-label="Следующий кейс"
-              className="w-11 h-11 rounded-full border border-brown/25 text-brown hover:bg-brown hover:text-white transition flex items-center justify-center group"
-            >
-              <ChevronRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
-          <button
-            onClick={() => go(currentIndex + 1)}
-            className="inline-flex items-center gap-1.5 text-[0.75rem] uppercase tracking-[0.18em] text-brown hover:text-brown-dark font-medium transition"
+        <div className="flex items-center justify-center gap-6 mt-6">
+          <motion.button
+            onClick={() => go(currentIndex - 1)}
+            aria-label="Предыдущий кейс"
+            whileHover={{ scale: 1.08, backgroundColor: "#9a7d5a", color: "#fff" }}
+            whileTap={{ scale: 0.93 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="w-14 h-14 rounded-full border-2 border-brown/35 bg-white text-brown shadow-[0_4px_16px_rgba(154,125,90,0.12)] flex items-center justify-center"
+            style={{ color: "#9a7d5a" }}
           >
-            Смотреть кейсы <ArrowRight size={13} />
-          </button>
+            <ChevronLeft size={22} strokeWidth={1.8} />
+          </motion.button>
+
+          <div className="flex items-center gap-2">
+            {flatCases.map((_, j) => (
+              <motion.button
+                key={j}
+                onClick={() => go(j)}
+                aria-label={`Кейс ${j + 1}`}
+                animate={{ width: currentIndex === j ? 28 : 8, backgroundColor: currentIndex === j ? "#9a7d5a" : "rgba(154,125,90,0.25)" }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="h-2 rounded-full"
+              />
+            ))}
+          </div>
+
+          <motion.button
+            onClick={() => go(currentIndex + 1)}
+            aria-label="Следующий кейс"
+            whileHover={{ scale: 1.08, backgroundColor: "#9a7d5a", color: "#fff" }}
+            whileTap={{ scale: 0.93 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="w-14 h-14 rounded-full border-2 border-brown/35 bg-white text-brown shadow-[0_4px_16px_rgba(154,125,90,0.12)] flex items-center justify-center"
+            style={{ color: "#9a7d5a" }}
+          >
+            <ChevronRight size={22} strokeWidth={1.8} />
+          </motion.button>
         </div>
       </div>
     </section>
