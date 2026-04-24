@@ -80,7 +80,7 @@ body {
 .font-serif,
 h1, h2, h3, h4, h5, h6,
 blockquote, q, cite {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
 }
 
 .font-sans,
@@ -91,7 +91,7 @@ p, span, a, li, button, input, textarea, select, label, div {
 .font-serif, .font-serif *,
 h1, h2, h3, h4, h5, h6,
 blockquote, q, cite {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
 }
 
 ::-webkit-scrollbar {
