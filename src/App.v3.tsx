@@ -1396,8 +1396,8 @@ const Pricing = ({ onOpenModal }: any) => {
                   <p className={`text-[0.82rem] leading-[1.55] ${featured ? "text-white/60" : "text-text-dark-soft"}`}>{plan.desc}</p>
                 </div>
                 <div className="mb-5 flex items-baseline gap-1.5">
-                  <span className="font-serif text-[2.2rem] md:text-[2.6rem] text-brown-light leading-none">{plan.price.split(" ")[0]}</span>
-                  <span className={`text-sm font-serif ${featured ? "text-white/40" : "text-text-dark-muted"}`}>{plan.price.split(" ").slice(1).join(" ")}</span>
+                  <span className="font-serif text-[3rem] md:text-[3.6rem] text-brown-light leading-none">{plan.price.split(" ")[0]}</span>
+                  <span className={`text-base font-serif ${featured ? "text-white/40" : "text-text-dark-muted"}`}>{plan.price.split(" ").slice(1).join(" ")}</span>
                 </div>
                 <ul className="flex-1 space-y-3 mb-6">
                   {plan.feats.map((f: any, j: number) => (
