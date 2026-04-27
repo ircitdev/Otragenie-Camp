@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, animate } from 'motion/react';
-import { X, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send, MessageCircle, Menu } from 'lucide-react';
+import { X, Check, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calendar, Users, Star, ArrowRight, ArrowUp, ArrowDown, Quote, Info, Play, Pause, Volume2, VolumeX, AlertTriangle, Home, Coffee, Bus, Video, Zap, Target, HelpCircle, Brain, Flame, MessageSquare, Eye, RefreshCw, Compass, Clock, Scale, Infinity, Key, Send, MessageCircle, Menu } from 'lucide-react';
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
 import { ChatAssistant } from './components/ChatAssistant';
 import { LiveChat } from './components/LiveChat';
@@ -2000,30 +2000,82 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="scroll-mt-20 bg-cream-soft py-20 md:py-28">
-    <div className="max-w-6xl mx-auto px-6 md:px-12">
+  <section id="for-who" className="scroll-mt-20 relative overflow-hidden bg-navy py-24 md:py-32">
+    {/* Тёплый radial halo по центру */}
+    <div
+      aria-hidden
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[60vh] rounded-full pointer-events-none"
+      style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.15) 0%, transparent 65%)', filter: 'blur(60px)' }}
+    />
+    {/* Едва различимый шум для глубины */}
+    <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: '200px 200px' }} />
 
+    <div className="max-w-2xl mx-auto px-6 md:px-12 relative z-10">
+      {/* Шапка — left-aligned, не центр */}
       <Reveal delay={0.05}>
-        <span className="text-[0.68rem] tracking-[0.22em] uppercase font-medium text-brown block mb-5">Для кого</span>
+        <div className="flex items-center gap-3 mb-5">
+          <span className="text-[0.62rem] tracking-[0.32em] uppercase font-medium text-brown-light/80 tabular-nums">Для кого</span>
+          <div className="h-px w-10 bg-brown-light/30" />
+        </div>
       </Reveal>
       <Reveal delay={0.15}>
-        <h2 className="text-[clamp(1.9rem,4.5vw,3.2rem)] font-bold leading-[1.08] heading-gradient mb-10 max-w-[20ch]">
-          Кому это <span style={{WebkitTextFillColor: 'oklch(56.4% 0.072 52)'}}>нужно сейчас</span>
+        <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-cream mb-2 max-w-[22ch]">
+          Кому это <span className="text-brown-light">нужно сейчас</span>
         </h2>
       </Reveal>
+      <Reveal delay={0.22}>
+        <div className="h-px w-16 bg-gradient-to-r from-brown-light/60 to-transparent mb-12 md:mb-14" />
+      </Reveal>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {/* Вертикальный список «галочек узнавания» */}
+      <ul className="space-y-0">
         {FOR_WHO.map((text, i) => (
-          <Reveal key={i} delay={0.05 + i * 0.06}>
-            <div className="bg-cream-card rounded-xl border border-tag-border px-5 py-4 flex gap-3 items-start">
-              <span className="text-[0.55rem] font-bold text-brown/40 tabular-nums shrink-0 mt-1 tracking-[0.1em]">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <p className="text-[0.88rem] text-text-dark-soft leading-[1.65]">{text}</p>
-            </div>
-          </Reveal>
+          <motion.li
+            key={i}
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 }}
+            className="group relative flex items-start gap-5 py-5 md:py-6 transition-all duration-300 hover:translate-x-1"
+          >
+            {/* Чекбокс */}
+            <span
+              className="shrink-0 mt-0.5 w-5 h-5 rounded-full border border-brown-light/40 bg-transparent flex items-center justify-center transition-all duration-300 group-hover:bg-brown-light group-hover:border-brown-light"
+              aria-hidden
+            >
+              <Check
+                size={11}
+                strokeWidth={3}
+                className="text-navy opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              />
+            </span>
+            <p className="text-[clamp(1rem,1.6vw,1.18rem)] text-white/75 leading-[1.65] group-hover:text-white transition-colors duration-300">
+              {text}
+            </p>
+            {/* Hairline divider — не у последнего */}
+            {i < FOR_WHO.length - 1 && (
+              <span aria-hidden className="absolute bottom-0 left-10 right-0 h-px bg-brown-light/12" />
+            )}
+          </motion.li>
         ))}
-      </div>
+      </ul>
+
+      {/* Якорь — мостик к Results */}
+      <Reveal delay={0.4}>
+        <div className="mt-16 md:mt-20 pt-10 border-t border-brown-light/12 flex items-center justify-center">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector('section.bg-navy.text-white')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="inline-flex flex-col items-center gap-3 text-brown-light/70 hover:text-brown-light transition-colors group"
+          >
+            <span className="text-[0.7rem] uppercase tracking-[0.26em] font-medium">что ты получишь</span>
+            <ArrowDown size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
+          </a>
+        </div>
+      </Reveal>
     </div>
   </section>
 );
