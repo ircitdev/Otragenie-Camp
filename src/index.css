@@ -63,6 +63,13 @@
   .text-balance {
     text-wrap: balance;
   }
+  /* Диагональный градиент для заголовков светлых секций */
+  .heading-gradient {
+    background: linear-gradient(to top right, #b49d88, #a1846d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   /* Плашка-тег в стиле презентации */
   .tag-pill {
     display: inline-flex;
