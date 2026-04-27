@@ -2677,28 +2677,57 @@ const Results = ({ onOpenModal }: any) => {
 
 const FINAL_IMG_SRC = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romamaya.jpg";
 
-const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="relative bg-navy text-white overflow-hidden">
-    {/* Статичное фото с медленным Ken-Burns */}
+const FINAL_BGS = [
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/footerbg.jpg",
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/footerbg2.jpg",
+  "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/footerbg3.jpg",
+];
+
+const FinalBlockBackground = () => {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useEffect(() => {
+    // Прелоад остальных
+    FINAL_BGS.forEach(src => { const img = new Image(); img.src = src; });
+    const id = setInterval(() => {
+      setActiveIdx(i => (i + 1) % FINAL_BGS.length);
+    }, 8000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      <motion.img
-        src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/footerbg.jpg"
-        alt=""
-        aria-hidden="true"
-        className="w-full h-full object-cover"
-        referrerPolicy="no-referrer"
-        initial={{ scale: 1.0 }}
-        whileInView={{ scale: 1.08 }}
-        viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 22, ease: 'linear' }}
-        style={{ opacity: 0.28 }}
-      />
+      {FINAL_BGS.map((src, i) => (
+        <motion.img
+          key={src}
+          src={src}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+          referrerPolicy="no-referrer"
+          initial={false}
+          animate={{
+            opacity: i === activeIdx ? 0.28 : 0,
+            scale: i === activeIdx ? 1.08 : 1.0,
+          }}
+          transition={{
+            opacity: { duration: 2.2, ease: 'easeInOut' },
+            scale: { duration: 9.5, ease: 'linear' },
+          }}
+        />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-b from-navy/85 via-navy/70 to-navy/95" />
       {/* Тёплый halo за центральной фразой */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh] rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(40px)' }}
       />
     </div>
+  );
+};
+
+const FinalBlock = ({ onOpenModal }: any) => (
+  <section className="relative bg-navy text-white overflow-hidden">
+    <FinalBlockBackground />
 
     <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 py-32 md:py-44">
       {/* Развилка: два сценария */}
