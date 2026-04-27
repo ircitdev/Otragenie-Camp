@@ -11,9 +11,9 @@ import ScrollReveal from './components/ScrollReveal';
 import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
-import DarkVeil from './components/DarkVeil';
 import SoftAurora from './components/SoftAurora';
 import ColorBends from './components/ColorBends';
+import { useScrollLock } from './hooks/useScrollLock';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -127,6 +127,7 @@ const Navbar = ({ onOpenModal }: any) => {
   const [scrolled, setScrolled] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  useScrollLock(isMobileMenuOpen);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -209,32 +210,45 @@ const Navbar = ({ onOpenModal }: any) => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[99] bg-navy/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
+            className="fixed inset-0 z-[99] bg-navy/96 backdrop-blur-xl flex flex-col md:hidden overflow-y-auto"
+            style={{ paddingTop: 'max(5rem, env(safe-area-inset-top, 0px))', paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 0px))' }}
           >
             <button
-              className="absolute top-6 right-6 text-white/70 hover:text-white"
+              className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/8 hover:bg-white/15 text-white/85 flex items-center justify-center transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
               aria-label="Закрыть меню"
             >
-              <X size={28} />
+              <X size={22} />
             </button>
-            {navLinks.map((item, i) => (
-              <a
-                key={i}
-                href={`#${item.id}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="font-serif text-3xl text-white/90 hover:text-brown transition-colors tracking-wide"
+            <div className="flex flex-col items-center justify-center flex-1 gap-1 px-6">
+              {navLinks.map((item, i) => (
+                <motion.a
+                  key={i}
+                  href={`#${item.id}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.06 + i * 0.05, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="block w-full max-w-xs text-center py-4 text-[1.4rem] font-bold tracking-[0.02em] text-white/90 hover:text-brown-light transition-colors border-b border-white/10 last:border-0"
+                >
+                  {item.name}
+                </motion.a>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.06 + navLinks.length * 0.05, duration: 0.4 }}
+                className="w-full max-w-xs mt-8"
               >
-                {item.name}
-              </a>
-            ))}
-            <Button variant="brown" onClick={() => { setIsMobileMenuOpen(false); onOpenModal(); }} className="mt-4">
-              Участвовать
-            </Button>
+                <Button variant="brown" onClick={() => { setIsMobileMenuOpen(false); onOpenModal(); }} className="w-full">
+                  Участвовать
+                </Button>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1558,37 +1572,42 @@ const PricingTable = () => {
 };
 
 const OfertaModal = ({ onClose }: { onClose: () => void }) => {
+  useScrollLock(true);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+    return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
   return (
     <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-navy/70 backdrop-blur-md" />
       <div
-        className="relative z-10 bg-cream-card w-full sm:max-w-2xl sm:rounded-3xl max-h-[90dvh] overflow-y-auto shadow-2xl"
+        className="relative z-10 bg-cream-card w-full sm:max-w-2xl rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+        style={{ maxHeight: '92dvh' }}
         onClick={e => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-cream-card/95 backdrop-blur-sm border-b border-brown/10 flex items-center justify-between px-6 py-4">
-          <span className="font-serif text-[1rem] text-text-dark/80">Публичная оферта</span>
-          <button onClick={onClose} className="text-brown/50 hover:text-brown transition text-[0.75rem] uppercase tracking-widest font-semibold">Закрыть ✕</button>
+        <div className="sticky top-0 bg-cream-card/95 backdrop-blur-sm border-b border-brown/10 flex items-center justify-between px-5 sm:px-6 py-4 z-10">
+          <span className="text-[0.95rem] sm:text-base font-bold text-text-dark">Публичная оферта</span>
+          <button onClick={onClose} className="w-9 h-9 rounded-full bg-cream-card-alt/80 hover:bg-brown hover:text-white text-text-dark/50 flex items-center justify-center transition-colors" aria-label="Закрыть">
+            <X size={18} />
+          </button>
         </div>
-        <div className="px-6 py-8 text-[0.88rem] leading-relaxed text-text-dark-soft/80 space-y-4">
-          <p className="text-[0.78rem] text-brown/50 uppercase tracking-widest">Полный текст оферты</p>
+        <div className="px-5 sm:px-6 py-6 sm:py-8 text-[0.92rem] leading-[1.65] text-text-dark-soft space-y-4 overflow-y-auto overscroll-contain"
+          style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}
+        >
+          <p className="text-[0.7rem] text-brown/60 uppercase tracking-[0.22em] font-bold">Полный текст оферты</p>
           <p>Оплачивая участие в интенсиве «Отражение», вы акцептируете публичную оферту ИП Дусенко Роман Владимирович (ИНН 272700125009, ОГРНИП 316774600124940).</p>
           <p>Полный текст оферты, включая условия возврата средств и порядок оплаты в рассрочку, размещён на странице:</p>
           <a
             href="/oferta"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-brown font-medium underline underline-offset-4 hover:text-brown-light transition"
+            className="inline-flex items-center gap-2 text-brown font-medium underline underline-offset-4 hover:text-brown-light transition text-base"
           >
             otragenie-camp.ru/oferta →
           </a>
-          <p className="pt-2 border-t border-brown/10 text-[0.78rem] text-text-dark-soft/50">По вопросам: roman@dusenko.ru</p>
+          <p className="pt-3 border-t border-brown/10 text-[0.82rem] text-text-dark-soft/70">По вопросам: roman@dusenko.ru</p>
         </div>
       </div>
     </div>
@@ -2249,39 +2268,26 @@ const HowItWorks = () => {
 
 const ForWho = () => (
   <section id="for-who" className="scroll-mt-20 relative overflow-hidden bg-navy py-24 md:py-32">
-    {/* DarkVeil WebGL — глубинная текстура */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none opacity-30">
-      <DarkVeil
-        hueShift={28}
-        noiseIntensity={0.03}
-        scanlineIntensity={0.06}
-        scanlineFrequency={1.2}
-        warpAmount={0.4}
-        speed={0.35}
-        resolutionScale={1}
-      />
-    </div>
-    {/* ColorBends — тёплые цветные ленты в палитре сайта */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none opacity-55 mix-blend-screen">
+    {/* ColorBends WebGL — тёплые цветные ленты в палитре сайта */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none">
       <ColorBends
-        colors={['#9a7d5a', '#b89a6e', '#c9a97a', '#7a6245', '#e6d5c3']}
-        rotation={120}
-        autoRotate={3}
-        speed={0.18}
-        scale={1.2}
-        frequency={0.85}
-        warpStrength={1.3}
-        mouseInfluence={0.6}
-        parallax={0.3}
-        noise={0.08}
-        iterations={2}
-        intensity={1.2}
-        bandWidth={5}
+        colors={['#c9a97a', '#9a7d5a', '#e6d5c3', '#7a6245', '#b89a6e']}
+        rotation={90}
+        speed={0.2}
+        scale={1}
+        frequency={1}
+        warpStrength={1}
+        mouseInfluence={1}
+        noise={0.15}
+        parallax={0.5}
+        iterations={1}
+        intensity={1.5}
+        bandWidth={6}
         transparent
       />
     </div>
-    {/* Затемнение поверх veil для читаемости текста */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none bg-gradient-to-b from-navy/80 via-navy/70 to-navy/88" />
+    {/* Затемнение для читаемости текста */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none bg-gradient-to-b from-navy/55 via-navy/40 to-navy/70" />
     {/* Тёплый radial halo по центру */}
     <div
       aria-hidden
@@ -2631,6 +2637,8 @@ const CookieBanner = () => {
 };
 
 const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
+  useScrollLock(isOpen);
+
   const [step, setStep] = useState<'plan' | 'form' | 'confirm' | 'success'>('form');
   const [formData, setFormData] = useState({ name: '', contact: '', message: '', consent: false });
   const [errors, setErrors] = useState({ name: '', contact: '', consent: '' });
@@ -2750,23 +2758,24 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
-            onClick={onClose} 
-            className="absolute inset-0 bg-navy/80 backdrop-blur-md" 
+        <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-navy/80 backdrop-blur-md"
           />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 40 }} 
-            animate={{ opacity: 1, scale: 1, y: 0 }} 
-            exit={{ opacity: 0, scale: 0.95, y: 20, filter: 'blur(10px)' }}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 60 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 40, filter: 'blur(8px)' }}
             transition={transition}
-            className="relative z-10 bg-cream w-full max-w-lg rounded-3xl p-10 shadow-2xl overflow-hidden"
+            className="relative z-10 bg-cream w-full sm:max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl overflow-y-auto overscroll-contain"
+            style={{ maxHeight: '92dvh', paddingBottom: 'max(1.25rem, env(safe-area-inset-bottom))' }}
           >
-            <button onClick={onClose} className="absolute top-6 right-6 text-text-dark/40 hover:text-text-dark transition-colors z-20">
-              <X size={24} />
+            <button onClick={onClose} className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 rounded-full bg-cream-card-alt/80 hover:bg-brown hover:text-white text-text-dark/50 transition-colors z-20 flex items-center justify-center" aria-label="Закрыть">
+              <X size={18} />
             </button>
 
             <AnimatePresence mode="wait">
@@ -2787,19 +2796,19 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                   >
                     <CheckCircle size={48} />
                   </motion.div>
-                  <motion.h3 
+                  <motion.h3
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="font-serif text-3xl md:text-4xl text-text-dark mb-4"
+                    className="text-2xl md:text-3xl font-bold text-text-dark mb-3"
                   >
                     Спасибо за заявку!
                   </motion.h3>
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-text-dark-soft text-base md:text-lg max-w-sm mx-auto leading-relaxed"
+                    className="text-text-dark-soft text-[0.95rem] md:text-base max-w-sm mx-auto leading-[1.6]"
                   >
                     Мы уже получили ваши данные. В ближайшее время с вами свяжется наш менеджер для подтверждения деталей и ответа на вопросы.
                   </motion.p>
@@ -2813,10 +2822,10 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                   transition={transition}
                   className="py-6"
                 >
-                  <h3 className="font-serif text-2xl text-text-dark mb-2 px-2">
+                  <h3 className="text-[1.35rem] md:text-2xl font-bold text-text-dark mb-2">
                     Всё готово — отправляем заявку
                   </h3>
-                  <p className="text-text-dark-soft text-sm mb-6 px-2 leading-relaxed">
+                  <p className="text-text-dark-soft text-[0.88rem] md:text-sm mb-6 leading-[1.6]">
                     Проверьте данные. После подтверждения мы получим вашу заявку и свяжемся в ближайшее время.
                   </p>
 
@@ -2824,7 +2833,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                     {selectedPlan && (
                       <div className="p-4 rounded-2xl bg-white/50 border border-brown/10">
                         <p className="text-[0.6rem] uppercase tracking-widest text-brown font-bold mb-1">Выбранный тариф</p>
-                        <p className="font-serif text-base text-text-dark">{selectedPlan.name} · {selectedPlan.price}</p>
+                        <p className="text-base font-bold text-text-dark tabular-nums">{selectedPlan.name} · {selectedPlan.price}</p>
                       </div>
                     )}
                     <div className="p-4 rounded-2xl bg-white/30 border border-brown/5 text-xs text-text-dark-soft space-y-2">
@@ -2878,18 +2887,18 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                   transition={transition}
                   className="py-6"
                 >
-                  <h3 className="font-serif text-3xl text-text-dark mb-6">Подтверждение выбора</h3>
-                  <motion.div 
+                  <h3 className="text-2xl md:text-3xl font-bold text-text-dark mb-5">Подтверждение выбора</h3>
+                  <motion.div
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="p-6 rounded-2xl bg-white border border-brown/10 mb-8 shadow-sm"
+                    className="p-5 md:p-6 rounded-2xl bg-white border border-brown/10 mb-6 shadow-sm"
                   >
-                    <h4 className="font-serif text-xl text-brown mb-2">{selectedPlan?.name}</h4>
-                    <p className="text-2xl font-serif mb-4">{selectedPlan?.price}</p>
-                    <p className="text-sm text-text-dark-soft">{selectedPlan?.desc}</p>
+                    <h4 className="text-lg font-bold text-brown mb-1.5">{selectedPlan?.name}</h4>
+                    <p className="text-2xl font-bold text-text-dark mb-3 tabular-nums">{selectedPlan?.price}</p>
+                    <p className="text-[0.88rem] text-text-dark-soft leading-[1.55]">{selectedPlan?.desc}</p>
                   </motion.div>
-                  <p className="text-text-dark-soft text-sm mb-8 leading-relaxed">
+                  <p className="text-text-dark-soft text-[0.88rem] mb-7 leading-[1.6]">
                     Вы выбрали тариф <strong>«{selectedPlan?.name}»</strong>. Мы зафиксируем ваш выбор и свяжемся для уточнения деталей.
                   </p>
                   <div className="flex flex-col gap-3">
@@ -2905,11 +2914,11 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                   exit={{ opacity: 0, scale: 0.98, y: -10 }}
                   transition={transition}
                 >
-                  <h3 className="font-serif text-3xl text-text-dark mb-4">Оставить заявку</h3>
-                  <p className="text-text-dark-soft text-sm mb-8 leading-relaxed">
+                  <h3 className="text-2xl md:text-3xl font-bold text-text-dark mb-3">Оставить заявку</h3>
+                  <p className="text-text-dark-soft text-[0.88rem] md:text-sm mb-6 leading-[1.6]">
                     Оставьте свои контакты, и мы свяжемся с вами, чтобы назначить время для индивидуального разбора.
                   </p>
-                  <form onSubmit={handleInitialSubmit} className="space-y-5">
+                  <form onSubmit={handleInitialSubmit} className="space-y-4">
                     <div className="space-y-1.5 relative">
                       <input
                         type="text"
@@ -2921,7 +2930,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                           setFormData({ ...formData, name: e.target.value });
                           if (e.target.value.trim().length >= 2) setErrors({ ...errors, name: '' });
                         }}
-                        className={`w-full px-6 py-4 rounded-xl bg-white border ${errors.name ? 'border-red-400 focus:border-red-500' : formData.name.trim().length >= 2 ? 'border-green-400 focus:border-green-500' : 'border-brown/10 focus:border-brown'} outline-none transition-all text-sm`}
+                        className={`w-full px-4 md:px-5 py-3.5 rounded-xl bg-white border ${errors.name ? 'border-red-400 focus:border-red-500' : formData.name.trim().length >= 2 ? 'border-green-400 focus:border-green-500' : 'border-brown/10 focus:border-brown'} outline-none transition-all text-base`}
                       />
                       {formData.name.trim().length >= 2 && !errors.name && (
                         <CheckCircle className="absolute right-4 top-4 text-green-500" size={18} />
@@ -2954,7 +2963,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                         placeholder="Ваш запрос (коротко)"
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className={`w-full px-6 py-4 rounded-xl bg-white border ${formData.message.trim().length > 0 ? 'border-brown/30' : 'border-brown/10'} focus:border-brown outline-none transition-all text-sm h-32 resize-none`}
+                        className={`w-full px-4 md:px-5 py-3.5 rounded-xl bg-white border ${formData.message.trim().length > 0 ? 'border-brown/30' : 'border-brown/10'} focus:border-brown outline-none transition-all text-base h-28 resize-none`}
                       />
                       {formData.message.trim().length > 10 && (
                         <CheckCircle className="absolute right-4 top-4 text-brown/20" size={18} />
@@ -3041,35 +3050,39 @@ const ScrollToTop = () => {
 };
 
 const ComparisonModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  useScrollLock(isOpen);
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
-            onClick={onClose} 
-            className="absolute inset-0 bg-navy/80 backdrop-blur-md" 
+        <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-navy/80 backdrop-blur-md"
           />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 20 }} 
-            animate={{ opacity: 1, scale: 1, y: 0 }} 
-            exit={{ opacity: 0, scale: 0.95, y: 20 }} 
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 40 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 40 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-5xl max-h-[90vh] bg-cream rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
+            className="relative w-full sm:max-w-5xl bg-cream rounded-t-3xl sm:rounded-[2rem] shadow-2xl overflow-hidden flex flex-col"
+            style={{ maxHeight: '92dvh' }}
           >
-            <button 
+            <button
               onClick={onClose}
-              className="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 hover:bg-white rounded-full flex items-center justify-center text-text-dark transition-colors"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-9 h-9 sm:w-10 sm:h-10 bg-white/80 hover:bg-brown hover:text-white rounded-full flex items-center justify-center text-text-dark transition-colors shadow-sm"
+              aria-label="Закрыть"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
-            
-            <div className="p-8 md:p-12 overflow-y-auto no-scrollbar">
-              <div className="text-center mb-12">
-                <h2 className="font-serif text-3xl md:text-4xl text-text-dark mb-4">Тарифы на выбор</h2>
-                <p className="text-text-dark-soft">Выберите удобный уровень участия в насыщенной двухдневной программе</p>
+
+            <div className="p-5 sm:p-8 md:p-12 overflow-y-auto overscroll-contain" style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}>
+              <div className="text-center mb-8 md:mb-12">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-dark mb-3 md:mb-4">Тарифы на выбор</h2>
+                <p className="text-text-dark-soft text-[0.92rem] md:text-base leading-[1.55]">Выберите удобный уровень участия в насыщенной двухдневной программе</p>
               </div>
               
               <div className="md:hidden text-center mb-4 text-brown/60 text-sm flex items-center justify-center gap-2">
