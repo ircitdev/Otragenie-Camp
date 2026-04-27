@@ -11,6 +11,7 @@ import ScrollReveal from './components/ScrollReveal';
 import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
+import SplitText from './components/SplitText';
 import SoftAurora from './components/SoftAurora';
 import DarkVeil from './components/DarkVeil';
 import { useScrollLock } from './hooks/useScrollLock';
@@ -354,17 +355,19 @@ const Hero = ({ onOpenModal }: any) => {
 
         <Reveal delay={0.4}>
             <div className="relative mb-5 md:mb-8">
-              <h1 className="text-[clamp(3.2rem,15vw,7rem)] leading-[0.95] font-bold tracking-[-0.015em] relative z-10">
-                <ShinyText
-                  text="Отражение"
-                  color="#f0e8db"
-                  shineColor="#fff7ea"
-                  speed={3.5}
-                  delay={1.5}
-                  spread={110}
-                />
-              </h1>
-              <h1 className="hidden md:block text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-bold tracking-[-0.01em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>
+              <SplitText
+                tag="h1"
+                text="Отражение"
+                splitType="chars"
+                delay={80}
+                duration={0.9}
+                ease="power3.out"
+                from={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
+                to={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                textAlign="center"
+                className="text-[clamp(3.2rem,15vw,7rem)] leading-[0.95] font-bold tracking-[-0.015em] relative z-10 text-[#f0e8db] w-full"
+              />
+              <h1 className="hidden md:block text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-bold tracking-[-0.01em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none text-center" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>
                 Отражение
               </h1>
           </div>
@@ -380,7 +383,18 @@ const Hero = ({ onOpenModal }: any) => {
         <Reveal delay={1.0}>
           <div className="flex flex-col items-center gap-4 md:gap-5">
             <Button variant="brown" href="#pricing" className="!px-10 md:!px-12 !py-3.5 md:!py-4 shadow-[0_18px_50px_rgba(154,125,90,0.32)] w-full max-w-[18rem] sm:w-auto">
-              Забронировать место
+              <SplitText
+                tag="span"
+                text="Забронировать место"
+                splitType="chars"
+                delay={28}
+                duration={0.6}
+                ease="power3.out"
+                from={{ opacity: 0, y: 14 }}
+                to={{ opacity: 1, y: 0 }}
+                textAlign="center"
+                className="relative z-10"
+              />
             </Button>
             <button
               onClick={onOpenModal}
