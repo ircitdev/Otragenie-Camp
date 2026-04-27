@@ -335,16 +335,17 @@ const Hero = ({ onOpenModal }: any) => {
         
       </motion.div>
 
-      <div className="relative z-10 max-w-[72rem] mx-auto px-6 text-center">
-        <Reveal delay={2.4} direction="down">
-          <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white/70 text-[0.72rem] tracking-[0.3em] uppercase mb-9">
-            19 — 21 июня • Красная Поляна
+      <div className="relative z-10 max-w-[72rem] mx-auto px-5 md:px-6 text-center">
+        <Reveal delay={0.2} direction="down">
+          <span className="inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full border border-white/25 bg-white/8 backdrop-blur-md text-white/85 text-[0.78rem] md:text-[0.85rem] tracking-[0.22em] uppercase mb-10 md:mb-12 font-medium">
+            <MapPin size={13} className="text-brown-light" />
+            19 — 21 июня · Красная Поляна
           </span>
         </Reveal>
-        
-        <Reveal delay={2.6}>
-            <div className="relative mb-7">
-              <h1 className="text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] font-bold tracking-[-0.01em] relative z-10">
+
+        <Reveal delay={0.4}>
+            <div className="relative mb-7 md:mb-8">
+              <h1 className="text-[clamp(4rem,12vw,7rem)] leading-[0.95] font-bold tracking-[-0.01em] relative z-10">
                 <ShinyText
                   text="Отражение"
                   color="#f0e8db"
@@ -354,38 +355,43 @@ const Hero = ({ onOpenModal }: any) => {
                   spread={110}
                 />
               </h1>
-              <h1 className="text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-bold tracking-[-0.01em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>
+              <h1 className="hidden md:block text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-bold tracking-[-0.01em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>
                 Отражение
               </h1>
           </div>
         </Reveal>
 
-        <Reveal delay={2.8}>
-          <p className="font-serif text-[clamp(1rem,2vw,1.2rem)] text-white/75 max-w-[32.5rem] mx-auto mb-5 italic leading-[1.7] font-light">
-            о честности с собой, о том, как увидеть свою жизнь без иллюзий и изменить то, что в ней не работает
+        <Reveal delay={0.7}>
+          <p className="text-[clamp(1.05rem,1.8vw,1.25rem)] text-white/85 max-w-[38rem] mx-auto mb-10 md:mb-12 leading-[1.55] font-light">
+            о честности с собой, о том, как увидеть свою жизнь <span className="text-brown-light font-medium">без иллюзий</span> и изменить то, что в ней не работает
           </p>
         </Reveal>
 
 
-        <Reveal delay={3.0}>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="brown" onClick={onOpenModal} className="!px-10 shadow-2xl">
-              Пройти индивидуальный разбор
-            </Button>
-            <Button variant="outline-light" href="#pricing" className="!px-10">
+        <Reveal delay={1.0}>
+          <div className="flex flex-col items-center gap-5">
+            <Button variant="brown" href="#pricing" className="!px-12 !py-4 shadow-[0_18px_50px_rgba(154,125,90,0.32)] w-full max-w-[20rem] sm:w-auto">
               Забронировать место
             </Button>
+            <button
+              onClick={onOpenModal}
+              className="text-[0.8rem] text-white/65 hover:text-brown-light transition-colors underline-offset-4 underline decoration-white/25 hover:decoration-brown-light"
+            >
+              ‹ Сначала — индивидуальный разбор ›
+            </button>
           </div>
         </Reveal>
 
-        <Reveal delay={3.1}>
-          <p className="font-serif italic text-white/50 text-[0.95rem] leading-[1.6] max-w-[31.25rem] mx-auto mt-8">
-            Участие в кэмпе проходит через индивидуальный разбор, чтобы вы точно поняли, зачем вам это и какой результат хотите получить. Если вы уже понимаете, что вам нужно — можно сразу забронировать место.
-          </p>
+        <Reveal delay={1.2}>
+          <div className="mt-10 md:mt-12 flex items-center justify-center gap-3 text-[0.7rem] md:text-[0.74rem] uppercase tracking-[0.24em] text-white/50 font-medium tabular-nums">
+            <div className="h-px w-8 bg-white/20" />
+            <span>Майя Дзодзатти · Роман Дусенко</span>
+            <div className="h-px w-8 bg-white/20" />
+          </div>
         </Reveal>
       </div>
 
-      <Reveal delay={3.2} className="absolute bottom-10 left-1/2 -translate-x-1/2">
+      <Reveal delay={1.5} className="hidden md:block absolute bottom-10 left-1/2 -translate-x-1/2">
         <motion.div 
           animate={{ y: [0, 10, 0] }} 
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
@@ -657,36 +663,73 @@ const About = () => (
 const Program = () => {
   const [active, setActive] = useState(0);
   const p = PROGRAM[active] as any;
-  const isEvening = active === 0;
+
+  // Метаданные дней
+  const dayMeta = [
+    { label: 'Пятница', date: '19 июня', mood: 'Открытие', icon: 'Moon', bg: 'bg-cream-card-alt', accent: 'brown-dark' },
+    { label: 'Суббота', date: '20 июня', mood: 'Глубинная работа', icon: 'Sun', bg: 'bg-cream', accent: 'brown' },
+    { label: 'Воскресенье', date: '21 июня', mood: 'Интеграция', icon: 'Compass', bg: 'bg-cream-soft', accent: 'brown-light' },
+  ];
+  const meta = dayMeta[active];
+
+  // Фото-обложки по дням
+  const dayPhotos = [
+    '/images/photo_4_2026-04-19_12-01-51.jpg',
+    '/images/photo_5_2026-04-19_12-01-26.jpg',
+    '/images/photo_1_2026-04-19_12-01-26.jpg',
+  ];
 
   return (
-    <section id="program" className="scroll-mt-20 py-16 bg-cream-soft relative overflow-hidden">
+    <section id="program" className={`scroll-mt-20 py-20 md:py-28 ${meta.bg} relative overflow-hidden transition-colors duration-700`}>
       <div className="max-w-6xl w-full mx-auto px-6 md:px-12">
         <Reveal direction="up">
-          <div className="text-center mb-8">
-            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Программа</span>
+          <div className="text-center mb-10">
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3 tabular-nums">Программа · 3 дня</span>
             <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] heading-gradient">Три дня трансформации</h2>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
 
-        {/* Tabs */}
-        <div role="tablist" aria-label="Программа по дням" className="flex justify-center gap-2 mb-8 bg-white/60 p-1.5 rounded-full w-fit mx-auto shadow-sm">
-          {PROGRAM.map((day: any, i: number) => (
-            <button
-              key={i}
-              type="button"
-              role="tab"
-              id={`program-tab-${i}`}
-              aria-selected={active === i}
-              aria-controls={`program-panel-${i}`}
-              tabIndex={active === i ? 0 : -1}
-              onClick={() => setActive(i)}
-              className={`px-5 py-2.5 rounded-full text-[0.65rem] uppercase tracking-[0.2em] font-bold transition-all whitespace-nowrap ${active === i ? "bg-brown text-white shadow-sm" : "text-text-dark-muted hover:text-text-dark"}`}>
-              {i === 0 ? "Вечер" : `День ${i}`}
-            </button>
-          ))}
-        </div>
+        {/* Табы дней — крупные с датой и mood */}
+        <Reveal direction="up" delay={0.1}>
+          <div role="tablist" aria-label="Программа по дням" className="grid grid-cols-3 gap-2 md:gap-4 mb-10 md:mb-12 max-w-3xl mx-auto">
+            {dayMeta.map((d, i) => {
+              const isActive = active === i;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  id={`program-tab-${i}`}
+                  aria-selected={isActive}
+                  aria-controls={`program-panel-${i}`}
+                  tabIndex={isActive ? 0 : -1}
+                  onClick={() => setActive(i)}
+                  className={`group relative px-3 md:px-5 py-4 md:py-5 rounded-2xl text-left transition-all duration-300 ${
+                    isActive
+                      ? 'bg-brown text-white shadow-[0_10px_30px_rgba(154,125,90,0.28)] scale-[1.02]'
+                      : 'bg-white/70 text-text-dark hover:bg-white hover:shadow-sm border border-brown/10'
+                  }`}
+                >
+                  <div className={`text-[0.58rem] md:text-[0.62rem] uppercase tracking-[0.22em] font-medium mb-1 tabular-nums ${isActive ? 'text-brown-light' : 'text-brown/70'}`}>
+                    {d.date}
+                  </div>
+                  <div className="text-[0.95rem] md:text-[1.1rem] font-bold leading-tight">{d.label}</div>
+                  <div className={`text-[0.7rem] md:text-[0.75rem] mt-1 leading-snug ${isActive ? 'text-white/65' : 'text-text-dark-muted'}`}>
+                    {d.mood}
+                  </div>
+                  {isActive && (
+                    <motion.div
+                      layoutId="program-tab-indicator"
+                      className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-brown"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </Reveal>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -695,96 +738,112 @@ const Program = () => {
             id={`program-panel-${active}`}
             aria-labelledby={`program-tab-${active}`}
             tabIndex={0}
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.35 }}>
-
-            {isEvening ? (
-              /* ВЕЧЕР: split — фото слева, контент справа */
-              <div className="rounded-3xl overflow-hidden bg-white shadow-sm grid md:grid-cols-2 min-h-[480px]">
-                {/* Фото */}
-                <div className="relative min-h-[260px] md:min-h-0">
-                  <img
-                    src="/images/photo_4_2026-04-19_12-01-51.jpg"
-                    alt="Глэмпинг Дзен рекавери"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                  <div className="absolute bottom-5 left-5">
-                    <span className="text-[0.62rem] uppercase tracking-[0.2em] text-white/70 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">Программа выезда</span>
+            initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12"
+          >
+            {/* LEFT: фото-обложка + theme/subtitle */}
+            <div className="relative">
+              <div className="relative rounded-2xl overflow-hidden aspect-[3/4] lg:aspect-auto lg:h-full lg:min-h-[460px] shadow-[0_18px_50px_-20px_rgba(58,39,20,0.25)]">
+                <img src={dayPhotos[active]} alt="" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <div className={`inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.28em] text-white/80 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1.5 mb-4 font-medium tabular-nums`}>
+                    {meta.date} · {meta.label}
                   </div>
-                </div>
-                {/* Контент */}
-                <div className="p-7 md:p-10 flex flex-col justify-center">
-                  <h3 className="text-[clamp(1.8rem,3.5vw,2.4rem)] font-bold leading-[1.1] heading-gradient mb-1">
-                    <span style={{WebkitTextFillColor: 'oklch(56.4% 0.072 52)'}}>Пятница</span> вечер
-                  </h3>
-                  <p className="text-[1.05rem] text-text-dark-soft font-light mb-6">{p.subtitle}</p>
-                  <div className="space-y-2 mb-5">
-                    {p.blocks.map((b: any) => (
-                      <div key={b.num} className="flex items-center gap-4 py-3 border-b border-brown/10 last:border-0">
-                        <span className="font-serif text-[0.72rem] text-brown/40 tabular-nums select-none shrink-0 w-5">{b.num}</span>
-                        <span className="text-[0.93rem] text-text-dark">{b.title}</span>
-                      </div>
-                    ))}
-                  </div>
-                  {p.closing && (
-                    <div className="flex gap-3 items-start bg-brown text-white rounded-2xl px-5 py-4">
-                      <span className="text-white/50 text-base leading-none mt-0.5 shrink-0">✦</span>
-                      <p className="font-serif italic text-[0.92rem] leading-snug">
-                        <span className="font-semibold not-italic">здесь начинается честность,</span>{" "}
-                        с которой всё дальше будет разворачиваться
-                      </p>
-                    </div>
+                  <p className="text-[clamp(1.15rem,1.7vw,1.45rem)] text-white font-bold leading-[1.3]">
+                    {p.subtitle}
+                  </p>
+                  {p.theme && (
+                    <p className="text-[0.85rem] text-brown-light/90 mt-2 font-medium tracking-wide">
+                      {p.theme}
+                    </p>
                   )}
                 </div>
               </div>
-            ) : (
-              /* ДЕНЬ 1 & 2: заголовок + вопросы сверху, блоки в сетке снизу */
-              <div>
-                {/* Заголовок с вопросами */}
-                <div className="rounded-2xl bg-white p-6 md:p-8 mb-4 shadow-sm">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
-                    <h3 className="text-[clamp(1.8rem,4vw,2.6rem)] font-bold leading-[1.1] heading-gradient">
-                      <span style={{WebkitTextFillColor: 'oklch(56.4% 0.072 52)'}}>{p.day.split(' ')[0]} {p.day.split(' ')[1]}</span>
-                      {' '}<span className="font-normal" style={{WebkitTextFillColor: 'oklch(57.0% 0.020 50)'}}>— {p.subtitle}</span>
-                    </h3>
-                    {p.theme && (
-                      <span className="font-serif italic text-[1.05rem] text-text-dark-muted/60 whitespace-nowrap shrink-0">{p.theme}</span>
-                    )}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {p.questions.map((q: string, qi: number) => (
-                      <span key={qi} className="text-[0.72rem] border border-brown/20 rounded-full px-3 py-1.5 text-text-dark-soft bg-cream-card-alt">
-                        {String(qi + 1).padStart(2, "0")}&nbsp;&nbsp;{q}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                {/* Блоки 2-col grid */}
-                <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-brown/10 bg-white rounded-2xl shadow-sm overflow-hidden">
-                  {p.blocks.map((b: any, bi: number) => (
-                    <div key={b.num} className={`px-6 py-6 border-brown/10 ${bi >= 2 ? "border-t" : ""}`}>
-                      <h4 className="font-serif text-[1rem] text-text-dark leading-snug mb-3">
-                        <span className="text-brown font-semibold">{b.num}</span>
-                        {' — '}{b.title}
-                      </h4>
-                      {b.intro && (
-                        <p className="text-[0.78rem] text-text-dark-soft mb-2">{b.intro}</p>
-                      )}
-                      {b.points && b.points.length > 0 && (
-                        <div className="flex flex-wrap gap-x-5 gap-y-1.5">
-                          {b.points.map((pt: string, pi: number) => (
-                            <span key={pi} className="flex items-start gap-1.5 text-[0.8rem] text-text-dark-soft leading-snug">
-                              <span className="text-brown mt-0.5 shrink-0 font-bold">+</span>
-                              {pt}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+            </div>
+
+            {/* RIGHT: вертикальный timeline блоков */}
+            <div className="flex flex-col">
+              {/* Вопросы (если есть) — пилюли вверху */}
+              {p.questions && p.questions.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-7">
+                  {p.questions.map((q: string, qi: number) => (
+                    <motion.span
+                      key={qi}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.1 + qi * 0.06 }}
+                      className="text-[0.75rem] border border-brown/25 rounded-full px-3.5 py-1.5 text-text-dark-soft bg-white/70 backdrop-blur-sm"
+                    >
+                      {q}
+                    </motion.span>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
+
+              {/* Timeline блоков */}
+              <ol className="relative">
+                {/* Вертикальная линия */}
+                <span aria-hidden className="absolute left-[15px] top-3 bottom-3 w-px bg-gradient-to-b from-brown/40 via-brown/20 to-transparent" />
+
+                {p.blocks.map((b: any, bi: number) => (
+                  <motion.li
+                    key={b.num}
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.55, delay: 0.15 + bi * 0.09, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative pl-12 pb-7 last:pb-0 group"
+                  >
+                    {/* Точка таймлайна */}
+                    <span aria-hidden className="absolute left-0 top-1.5 w-[31px] h-[31px] rounded-full bg-white border border-brown/30 shadow-[0_4px_12px_rgba(154,125,90,0.15)] flex items-center justify-center text-[0.6rem] uppercase tracking-[0.1em] tabular-nums text-brown font-bold transition-all duration-300 group-hover:bg-brown group-hover:text-white group-hover:border-brown">
+                      {bi + 1}
+                    </span>
+
+                    <div>
+                      <div className="text-[0.62rem] uppercase tracking-[0.22em] font-bold text-brown/60 mb-1.5 tabular-nums">
+                        {b.num}
+                      </div>
+                      <h4 className="text-[clamp(1.02rem,1.4vw,1.18rem)] font-bold text-text-dark leading-snug mb-2">
+                        {b.title}
+                      </h4>
+                      {b.intro && (
+                        <p className="text-[0.82rem] text-text-dark-soft mb-2 italic">{b.intro}</p>
+                      )}
+                      {b.points && b.points.length > 0 && (
+                        <ul className="flex flex-col gap-1.5 mt-2">
+                          {b.points.map((pt: string, pi: number) => (
+                            <li key={pi} className="flex items-start gap-2 text-[0.85rem] text-text-dark-soft leading-[1.55]">
+                              <span className="text-brown/60 mt-1.5 shrink-0 w-1 h-1 rounded-full bg-brown/60" />
+                              <span>{pt}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </motion.li>
+                ))}
+              </ol>
+
+              {/* Closing-плашка */}
+              {p.closing && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-8 pt-6 border-t border-brown/15"
+                >
+                  <div className="flex items-start gap-3">
+                    <Star size={14} strokeWidth={2.2} className="text-brown-light fill-brown-light shrink-0 mt-1" />
+                    <p className="text-[0.95rem] text-text-dark font-bold leading-[1.5]">
+                      {p.closing}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
