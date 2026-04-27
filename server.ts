@@ -124,38 +124,42 @@ async function startServer() {
   app.post("/api/prodamus/pay", (req, res) => {
     const { tariffName, price, contact, name, installment } = req.body;
     const prodamusUrl = process.env.PRODAMUS_URL; // e.g., https://yourdomain.payform.ru
+    const prodamusSecret = process.env.PRODAMUS_SECRET_KEY;
 
     if (!prodamusUrl) {
       return res.status(500).json({ error: "PRODAMUS_URL is not configured" });
     }
 
-    // Construct Prodamus payment link
-    const url = new URL(prodamusUrl);
-    url.searchParams.append('products[0][name]', tariffName);
-    url.searchParams.append('products[0][price]', price.toString());
-    url.searchParams.append('products[0][quantity]', '1');
+    // Build params as a plain object first (Prodamus signature needs ordered map)
+    const params: Record<string, any> = {
+      products: [
+        { name: tariffName, price: price.toString(), quantity: '1' },
+      ],
+      customer_extra: JSON.stringify({ name, contact }),
+      order_id: `ORDER_${Date.now()}`,
+    };
 
     if (contact) {
       if (contact.includes('@')) {
-        url.searchParams.append('customer_email', contact);
+        params.customer_email = contact;
       } else {
-        url.searchParams.append('customer_phone', contact);
+        params.customer_phone = contact;
       }
     }
 
-    // Pass name and contact in customer_extra so we get it back in the webhook
-    const extraData = JSON.stringify({ name, contact });
-    url.searchParams.append('customer_extra', extraData);
-
-    // Add a unique order ID
-    const orderId = `ORDER_${Date.now()}`;
-    url.searchParams.append('order_id', orderId);
-
-    // BNPL / Prodamus Частями — pre-select installment payment method on payform
     if (installment) {
-      url.searchParams.append('paid_content', 'bnpl');
-      url.searchParams.append('payment_method', 'bnpl');
+      params.paid_content = 'bnpl';
+      params.payment_method = 'bnpl';
     }
+
+    // Prodamus HMAC-SHA256 signature: recursive ksort → JSON encode (UNESCAPED_UNICODE | UNESCAPED_SLASHES) → hmac
+    if (prodamusSecret) {
+      params.signature = prodamusSign(params, prodamusSecret);
+    }
+
+    // Flatten to query string (PHP-style brackets for nested arrays)
+    const url = new URL(prodamusUrl);
+    appendNested(url.searchParams, params);
 
     res.json({ paymentUrl: url.toString() });
   });
@@ -248,6 +252,52 @@ async function startServer() {
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
+}
+
+// ─── Prodamus signature helpers ──────────────────────────────────────────────
+// Replicate PHP Hmac::create(): recursive ksort → JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES → HMAC-SHA256
+
+function prodamusSerialize(value: any): string {
+  if (value === null || value === undefined) return 'null';
+  if (Array.isArray(value)) {
+    // PHP json_encode for indexed arrays produces JSON arrays
+    return '[' + value.map(prodamusSerialize).join(',') + ']';
+  }
+  if (typeof value === 'object') {
+    const sortedKeys = Object.keys(value).sort();
+    const parts = sortedKeys.map(k => JSON.stringify(k) + ':' + prodamusSerialize(value[k]));
+    return '{' + parts.join(',') + '}';
+  }
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  // String — JSON.stringify handles UNESCAPED_UNICODE by default in JS,
+  // but escapes forward slashes. PHP UNESCAPED_SLASHES → strip the escape.
+  return JSON.stringify(String(value)).replace(/\\\//g, '/');
+}
+
+function prodamusSign(params: Record<string, any>, secret: string): string {
+  const { signature, ...rest } = params;
+  void signature;
+  const json = prodamusSerialize(rest);
+  return crypto.createHmac('sha256', secret).update(json, 'utf8').digest('hex');
+}
+
+function appendNested(searchParams: URLSearchParams, obj: any, prefix = ''): void {
+  if (obj === null || obj === undefined) return;
+  if (Array.isArray(obj)) {
+    obj.forEach((item, i) => {
+      const key = prefix ? `${prefix}[${i}]` : String(i);
+      appendNested(searchParams, item, key);
+    });
+    return;
+  }
+  if (typeof obj === 'object') {
+    for (const [k, v] of Object.entries(obj)) {
+      const key = prefix ? `${prefix}[${k}]` : k;
+      appendNested(searchParams, v, key);
+    }
+    return;
+  }
+  searchParams.append(prefix, String(obj));
 }
 
 startServer();
