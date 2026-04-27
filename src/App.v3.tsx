@@ -1958,10 +1958,30 @@ const WhenYouNeedCamp = () => {
               className="text-[clamp(1.9rem,4vw,3rem)] font-bold leading-[1.08] heading-gradient mb-5 w-full"
             />
 
-            <Reveal direction="left" delay={0.35}>
-              <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-2 font-semibold">Иногда жизнь начинает подавать очень явные сигналы.</p>
-              <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-8">Внешне всё может выглядеть нормально — работа, проекты, ответственность</p>
-            </Reveal>
+            <ScrollReveal
+              baseOpacity={0.15}
+              baseRotation={2.5}
+              blurStrength={6}
+              enableBlur
+              rotationEnd="bottom 70%"
+              wordAnimationEnd="bottom 65%"
+              containerClassName="!m-0 mb-2"
+              textClassName="!text-[0.95rem] text-text-dark-soft !leading-[1.7] !font-semibold"
+            >
+              Иногда жизнь начинает подавать очень явные сигналы.
+            </ScrollReveal>
+            <ScrollReveal
+              baseOpacity={0.12}
+              baseRotation={2}
+              blurStrength={5}
+              enableBlur
+              rotationEnd="bottom 70%"
+              wordAnimationEnd="bottom 65%"
+              containerClassName="!m-0 mb-8"
+              textClassName="!text-[0.93rem] text-text-dark-soft !leading-[1.7] !font-normal"
+            >
+              Внешне всё может выглядеть нормально — работа, проекты, ответственность
+            </ScrollReveal>
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -2012,9 +2032,18 @@ const WhenYouNeedCamp = () => {
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse at top right, rgba(255,247,234,0.18) 0%, transparent 60%)' }}
               />
-              <p className="text-[0.88rem] text-white/80 leading-[1.7] mb-3 relative">
+              <ScrollReveal
+                baseOpacity={0.25}
+                baseRotation={1.5}
+                blurStrength={5}
+                enableBlur
+                rotationEnd="bottom 70%"
+                wordAnimationEnd="bottom 60%"
+                containerClassName="!m-0 mb-3 relative"
+                textClassName="!text-[0.88rem] text-white/80 !leading-[1.7] !font-normal"
+              >
                 Очень часто именно в этот момент человек понимает: если я не остановлюсь и честно не посмотрю на свою жизнь, она продолжит двигаться по той же траектории
-              </p>
+              </ScrollReveal>
               <motion.p
                 initial={{ opacity: 0, x: -8 }}
                 whileInView={{ opacity: 1, x: 0 }}
