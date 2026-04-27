@@ -122,7 +122,7 @@ async function startServer() {
 
   // Generate payment link endpoint
   app.post("/api/prodamus/pay", (req, res) => {
-    const { tariffName, price, contact, name } = req.body;
+    const { tariffName, price, contact, name, installment } = req.body;
     const prodamusUrl = process.env.PRODAMUS_URL; // e.g., https://yourdomain.payform.ru
 
     if (!prodamusUrl) {
@@ -134,7 +134,7 @@ async function startServer() {
     url.searchParams.append('products[0][name]', tariffName);
     url.searchParams.append('products[0][price]', price.toString());
     url.searchParams.append('products[0][quantity]', '1');
-    
+
     if (contact) {
       if (contact.includes('@')) {
         url.searchParams.append('customer_email', contact);
@@ -142,14 +142,20 @@ async function startServer() {
         url.searchParams.append('customer_phone', contact);
       }
     }
-    
+
     // Pass name and contact in customer_extra so we get it back in the webhook
     const extraData = JSON.stringify({ name, contact });
     url.searchParams.append('customer_extra', extraData);
-    
+
     // Add a unique order ID
     const orderId = `ORDER_${Date.now()}`;
     url.searchParams.append('order_id', orderId);
+
+    // BNPL / Prodamus Частями — pre-select installment payment method on payform
+    if (installment) {
+      url.searchParams.append('paid_content', 'bnpl');
+      url.searchParams.append('payment_method', 'bnpl');
+    }
 
     res.json({ paymentUrl: url.toString() });
   });

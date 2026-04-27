@@ -2614,6 +2614,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
   const [step, setStep] = useState<'plan' | 'form' | 'confirm' | 'success'>('form');
   const [formData, setFormData] = useState({ name: '', contact: '', message: '', consent: false });
   const [errors, setErrors] = useState({ name: '', contact: '', consent: '' });
+  const [paymentMode, setPaymentMode] = useState<'full' | 'installment'>('full');
 
   const transition = { duration: 0.6, ease: [0.22, 1, 0.36, 1] };
 
@@ -2626,6 +2627,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
       }
       setFormData({ name: '', contact: '', message: '', consent: false });
       setErrors({ name: '', contact: '', consent: '' });
+      setPaymentMode('full');
     }
   }, [selectedPlan, isOpen]);
 
@@ -2679,7 +2681,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
 
     // If plan selected — try to redirect to payment
     if (selectedPlan) {
-      ymGoal("payment_start", { plan: selectedPlan.name, price: selectedPlan.price });
+      ymGoal("payment_start", { plan: selectedPlan.name, price: selectedPlan.price, mode: paymentMode });
       try {
         const response = await fetch('/api/prodamus/pay', {
           method: 'POST',
@@ -2688,7 +2690,8 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
             tariffName: selectedPlan.name,
             price: parseInt(selectedPlan.price.replace(/\D/g, '')),
             contact: formData.contact,
-            name: formData.name
+            name: formData.name,
+            installment: paymentMode === 'installment'
           })
         });
 
@@ -2808,10 +2811,41 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                       <p><span className="opacity-60 uppercase tracking-wider mr-2">Имя:</span> <span className="text-text-dark font-medium">{formData.name}</span></p>
                       <p><span className="opacity-60 uppercase tracking-wider mr-2">Контакт:</span> <span className="text-text-dark font-medium">{formData.contact}</span></p>
                     </div>
+
+                    {selectedPlan && (
+                      <div className="p-4 rounded-2xl bg-white/50 border border-brown/10">
+                        <p className="text-[0.6rem] uppercase tracking-widest text-brown font-bold mb-3">Способ оплаты</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setPaymentMode('full')}
+                            className={`text-left p-3 rounded-xl border transition-all ${paymentMode === 'full' ? 'border-brown bg-brown/5' : 'border-brown/10 bg-white hover:border-brown/30'}`}
+                          >
+                            <p className={`text-[0.78rem] font-bold mb-0.5 ${paymentMode === 'full' ? 'text-brown' : 'text-text-dark'}`}>Сразу полностью</p>
+                            <p className="text-[0.7rem] text-text-dark-muted leading-tight tabular-nums">{selectedPlan.price}</p>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPaymentMode('installment')}
+                            className={`text-left p-3 rounded-xl border transition-all ${paymentMode === 'installment' ? 'border-brown bg-brown/5' : 'border-brown/10 bg-white hover:border-brown/30'}`}
+                          >
+                            <p className={`text-[0.78rem] font-bold mb-0.5 ${paymentMode === 'installment' ? 'text-brown' : 'text-text-dark'}`}>Частями</p>
+                            <p className="text-[0.7rem] text-text-dark-muted leading-tight tabular-nums">от {Math.ceil(parseInt(selectedPlan.price.replace(/\D/g, '')) / 4 / 1000)} 000 ₽ × 4</p>
+                          </button>
+                        </div>
+                        {paymentMode === 'installment' && (
+                          <p className="mt-3 text-[0.68rem] text-text-dark-muted leading-snug">
+                            Первый платёж сейчас, остальные 3 — раз в 14 дней. Условия — в <a href="/oferta" target="_blank" rel="noopener noreferrer" className="text-brown underline underline-offset-2">оферте</a>.
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    <Button variant="brown" onClick={handleFinalSubmit} className="w-full !bg-[#7a6245] !border-[#7a6245] hover:!bg-[#5e4a32] hover:!border-[#5e4a32]">Подтвердить</Button>
+                    <Button variant="brown" onClick={handleFinalSubmit} className="w-full !bg-[#7a6245] !border-[#7a6245] hover:!bg-[#5e4a32] hover:!border-[#5e4a32]">
+                      {selectedPlan ? (paymentMode === 'installment' ? 'Перейти к оплате частями' : 'Перейти к оплате') : 'Подтвердить'}
+                    </Button>
                     <Button variant="outline-dark" onClick={handleCancel} className="w-full">Назад</Button>
                   </div>
                 </motion.div>
