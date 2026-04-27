@@ -2288,12 +2288,12 @@ const ForWho = () => (
     {/* DarkVeil WebGL — анимированный CPPN-фон в палитре сайта */}
     <div aria-hidden className="absolute inset-0 pointer-events-none z-0">
       <DarkVeil
-        hueShift={210}
-        noiseIntensity={0.05}
+        hueShift={200}
+        noiseIntensity={0.03}
         scanlineIntensity={0}
-        speed={0.6}
+        speed={0.7}
         scanlineFrequency={0}
-        warpAmount={0.8}
+        warpAmount={0.08}
         resolutionScale={1}
       />
     </div>

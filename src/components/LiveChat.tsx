@@ -21,10 +21,31 @@ export const LiveChat: React.FC = () => {
   const [lastMsgId, setLastMsgId] = useState(0);
   const [sending, setSending] = useState(false);
   const [starting, setStarting] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    if (isDesktop) {
+      setVisible(true);
+      return;
+    }
+    const checkScroll = () => {
+      const authors = document.getElementById('authors');
+      if (!authors) return;
+      const rect = authors.getBoundingClientRect();
+      if (rect.bottom <= window.innerHeight * 0.5) {
+        setVisible(true);
+        window.removeEventListener('scroll', checkScroll);
+      }
+    };
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+    return () => window.removeEventListener('scroll', checkScroll);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -117,6 +138,8 @@ export const LiveChat: React.FC = () => {
     }
   };
 
+  if (!visible && !isOpen) return null;
+
   return (
     <>
       {/* FAB */}
@@ -124,6 +147,9 @@ export const LiveChat: React.FC = () => {
         onClick={() => setIsOpen(v => !v)}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="fixed right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-[#5c6b5e] text-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] flex items-center justify-center"
         style={{ bottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))' }}
         aria-label="Живой чат"
@@ -158,8 +184,10 @@ export const LiveChat: React.FC = () => {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="fixed right-4 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-[340px] bg-white rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.18)] border border-stone-200/60 overflow-hidden flex flex-col"
-            style={{ bottom: 'calc(11rem + env(safe-area-inset-bottom, 0px))' }}
-            style={{ maxHeight: '70vh' }}
+            style={{
+              bottom: 'calc(11rem + env(safe-area-inset-bottom, 0px))',
+              maxHeight: '70vh',
+            }}
           >
             {/* Header */}
             <div className="bg-[#5c6b5e] px-4 py-3 flex items-center gap-3">
