@@ -17,15 +17,16 @@ const ymGoal = (name: string, params?: Record<string, any>) => {
 
 const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale = false }: any) => (
   <motion.div
-    initial={{ 
-      opacity: 0, 
-      y: direction === 'up' ? 30 : direction === 'down' ? -30 : 0, 
-      x: direction === 'left' ? -30 : direction === 'right' ? 30 : 0, 
-      scale: scale ? 0.95 : 1 
+    initial={{
+      opacity: 0,
+      y: direction === 'up' ? 22 : direction === 'down' ? -22 : 0,
+      x: direction === 'left' ? -22 : direction === 'right' ? 22 : 0,
+      scale: scale ? 0.97 : 1,
+      filter: 'blur(2px)',
     }}
-    whileInView={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-    viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay }}
+    whileInView={{ opacity: 1, y: 0, x: 0, scale: 1, filter: 'blur(0px)' }}
+    viewport={{ once: true, margin: "-80px" }}
+    transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay }}
     className={className}
     style={{ willChange: "transform, opacity" }}
   >
@@ -607,7 +608,7 @@ const Program = () => {
   const isEvening = active === 0;
 
   return (
-    <section id="program" className="scroll-mt-20 py-16 bg-[#f0ece7] relative overflow-hidden">
+    <section id="program" className="scroll-mt-20 py-16 bg-cream-soft relative overflow-hidden">
       <div className="max-w-6xl w-full mx-auto px-6 md:px-12">
         <Reveal direction="up">
           <div className="text-center mb-8">
@@ -700,7 +701,7 @@ const Program = () => {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {p.questions.map((q: string, qi: number) => (
-                      <span key={qi} className="text-[0.72rem] border border-brown/20 rounded-full px-3 py-1.5 text-text-dark-soft bg-[#f5f1ec]">
+                      <span key={qi} className="text-[0.72rem] border border-brown/20 rounded-full px-3 py-1.5 text-text-dark-soft bg-cream-card-alt">
                         {String(qi + 1).padStart(2, "0")}&nbsp;&nbsp;{q}
                       </span>
                     ))}
@@ -1193,11 +1194,11 @@ const LeadMagnet = () => {
     </div>
     <div className="max-w-6xl w-full mx-auto px-6 md:px-12 relative z-10">
       <Reveal direction="up" delay={0.1} scale>
-      <div className="bg-[#fdfbf9] rounded-[2rem] shadow-xl overflow-hidden border border-brown/10">
+      <div className="bg-cream-card rounded-[2rem] shadow-xl overflow-hidden border border-brown/10">
         <div className="grid lg:grid-cols-12">
           <div className="lg:col-span-5 relative min-h-[360px] lg:min-h-[520px] bg-navy overflow-hidden flex flex-col justify-end p-8 md:p-10">
             <video src={LM_VIDEO} muted loop autoPlay playsInline className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1510]/95 via-[#1a1510]/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/50 to-transparent" />
             <div className="relative z-10">
               <p className="font-serif italic text-[1.25rem] md:text-[1.4rem] text-white leading-snug mb-5 font-light">
                 «Она задаёт вопросы, от которых невозможно отвернуться»
@@ -1356,14 +1357,14 @@ const OfertaModal = ({ onClose }: { onClose: () => void }) => {
     <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative z-10 bg-[#faf7f3] w-full sm:max-w-2xl sm:rounded-3xl max-h-[90dvh] overflow-y-auto shadow-2xl"
+        className="relative z-10 bg-cream-card w-full sm:max-w-2xl sm:rounded-3xl max-h-[90dvh] overflow-y-auto shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-[#faf7f3]/95 backdrop-blur-sm border-b border-brown/10 flex items-center justify-between px-6 py-4">
-          <span className="font-serif text-[1rem] text-[#2c1f14]/80">Публичная оферта</span>
+        <div className="sticky top-0 bg-cream-card/95 backdrop-blur-sm border-b border-brown/10 flex items-center justify-between px-6 py-4">
+          <span className="font-serif text-[1rem] text-text-dark/80">Публичная оферта</span>
           <button onClick={onClose} className="text-brown/50 hover:text-brown transition text-[0.75rem] uppercase tracking-widest font-semibold">Закрыть ✕</button>
         </div>
-        <div className="px-6 py-8 text-[0.88rem] leading-relaxed text-[#3d2e21]/80 space-y-4">
+        <div className="px-6 py-8 text-[0.88rem] leading-relaxed text-text-dark-soft/80 space-y-4">
           <p className="text-[0.78rem] text-brown/50 uppercase tracking-widest">Полный текст оферты</p>
           <p>Оплачивая участие в интенсиве «Отражение», вы акцептируете публичную оферту ИП Дусенко Роман Владимирович (ИНН 272700125009, ОГРНИП 316774600124940).</p>
           <p>Полный текст оферты, включая условия возврата средств и порядок оплаты в рассрочку, размещён на странице:</p>
@@ -1375,7 +1376,7 @@ const OfertaModal = ({ onClose }: { onClose: () => void }) => {
           >
             otragenie-camp.ru/oferta →
           </a>
-          <p className="pt-2 border-t border-brown/10 text-[0.78rem] text-[#3d2e21]/50">По вопросам: roman@dusenko.ru</p>
+          <p className="pt-2 border-t border-brown/10 text-[0.78rem] text-text-dark-soft/50">По вопросам: roman@dusenko.ru</p>
         </div>
       </div>
     </div>
@@ -1402,7 +1403,7 @@ const Pricing = ({ onOpenModal }: any) => {
 
   return (
     <>
-    <section id="pricing" className="scroll-mt-20 min-h-screen flex items-center py-12 bg-white relative overflow-hidden">
+    <section id="pricing" className="scroll-mt-20 min-h-screen flex items-center py-12 bg-cream-card-alt relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
         <svg className="w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
           <path d="M0 1000 L200 800 L400 900 L600 700 L800 850 L1000 600 L1000 1000 Z" fill="currentColor" className="text-brown" />
@@ -1428,7 +1429,7 @@ const Pricing = ({ onOpenModal }: any) => {
             const featured = plan.theme === "full";
             return (
               <Reveal key={i} direction="up" delay={i * 0.12} scale>
-              <div key={i} className={`relative flex flex-col rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl lg:scale-[1.04] z-10 border border-brown/20" : "bg-[#fdfbf9] border border-brown/10 hover:border-brown/30 hover:shadow-lg hover:-translate-y-1"}`}>
+              <div key={i} className={`relative flex flex-col rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl lg:scale-[1.04] z-10 border border-brown/20" : "bg-cream-card border border-brown/10 hover:border-brown/30 hover:shadow-lg hover:-translate-y-1"}`}>
                 {featured && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brown text-white text-[0.58rem] px-4 py-1 rounded-full uppercase tracking-[0.22em] font-bold shadow">
                     Рекомендуем
@@ -1548,7 +1549,7 @@ const FAQ = () => {
 };
 
 const Pains = () => (
-  <section id="pains" className="scroll-mt-20 py-24 md:py-36 bg-[#0b1130] relative overflow-hidden">
+  <section id="pains" className="scroll-mt-20 py-24 md:py-36 bg-navy relative overflow-hidden">
     {/* Ambient background glows */}
     <div className="absolute top-0 left-1/4 w-96 h-96 bg-brown/8 rounded-full blur-[120px] pointer-events-none" />
     <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-brown/5 rounded-full blur-[100px] pointer-events-none" />
@@ -1600,7 +1601,7 @@ const Pains = () => (
             autoPlay muted playsInline
             className="w-full object-cover block max-h-[60vh]"
           />
-          <div className="absolute inset-0 bg-[#0b1130]/65" />
+          <div className="absolute inset-0 bg-navy/65" />
           <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-brown/40" />
           <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-16 py-10 md:py-12">
             <Quote className="text-brown/40 mb-6" size={36} />
@@ -1697,11 +1698,11 @@ const SYSTEM_BGS = [
 const SystemProblem = () => {
   const notItems = ["в тебе", "в отношениях", "в работе", "в усталости"];
   return (
-    <section className="bg-[#0c1220] text-white relative overflow-hidden">
+    <section className="bg-navy text-white relative overflow-hidden">
       {/* subtle grain texture */}
       <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
       {/* warm glow bottom-right */}
-      <div aria-hidden className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#7d5c3a]/12 rounded-full blur-[120px] pointer-events-none" />
+      <div aria-hidden className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brown-dark/12 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-[1fr_1px_1fr] gap-0 items-stretch min-h-[80vh]">
 
@@ -1738,27 +1739,27 @@ const SystemProblem = () => {
           {/* video inset */}
           <div className="absolute inset-0 lg:inset-y-8 lg:right-0 overflow-hidden lg:rounded-r-none opacity-15 pointer-events-none">
             <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/walk.MP4" autoPlay muted playsInline className="w-full h-full object-cover object-center" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0c1220] via-[#0c1220]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/60 to-transparent" />
           </div>
           <div className="relative z-10">
             <Reveal direction="right" delay={0.2}>
-              <p className="text-[0.62rem] tracking-[0.35em] uppercase text-[#9a7d5a] font-medium mb-8">Проблема</p>
+              <p className="text-[0.62rem] tracking-[0.35em] uppercase text-brown font-medium mb-8">Проблема</p>
             </Reveal>
             <Reveal direction="right" delay={0.3}>
               <h2 className="font-serif text-[clamp(2.2rem,4.5vw,3.8rem)] leading-[1.08] text-white font-light mb-8">
                 в системе,<br />
-                <em className="not-italic text-[#c4a882]">из которой<br />ты живёшь</em>
+                <em className="not-italic text-brown-bg">из которой<br />ты живёшь</em>
               </h2>
             </Reveal>
             <Reveal direction="right" delay={0.45}>
-              <div className="h-px w-12 bg-[#9a7d5a]/50 mb-8" />
+              <div className="h-px w-12 bg-brown/50 mb-8" />
               <p className="text-white/55 text-[0.9rem] leading-[1.85] max-w-[40ch] mb-10">
                 Этот кэмп — про то, чтобы увидеть и изменить именно его.
               </p>
             </Reveal>
             <Reveal direction="right" delay={0.55}>
-              <div className="inline-flex items-center gap-3 text-[0.75rem] text-[#9a7d5a] tracking-[0.12em] uppercase">
-                <div className="w-8 h-px bg-[#9a7d5a]" />
+              <div className="inline-flex items-center gap-3 text-[0.75rem] text-brown tracking-[0.12em] uppercase">
+                <div className="w-8 h-px bg-brown" />
                 глубинная работа со сценарием
               </div>
             </Reveal>
@@ -4221,7 +4222,7 @@ const PricingV5 = ({ onOpenModal }: any) => {
           {PRICING.map((p, i) => {
             const featured = p.theme === "premium";
             return (
-              <div key={i} className={`relative flex flex-col rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl lg:scale-[1.04] z-10 border border-brown/20" : "bg-[#fdfbf9] border border-brown/10 hover:border-brown/30 hover:shadow-lg hover:-translate-y-1"}`}>
+              <div key={i} className={`relative flex flex-col rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl lg:scale-[1.04] z-10 border border-brown/20" : "bg-cream-card border border-brown/10 hover:border-brown/30 hover:shadow-lg hover:-translate-y-1"}`}>
                 {featured && <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brown text-white text-[0.58rem] px-4 py-1 rounded-full uppercase tracking-[0.22em] font-bold shadow">Рекомендуем</div>}
                 <div className="mb-4">
                   <h3 className="font-serif text-[1.7rem] mb-1.5">{p.name}</h3>

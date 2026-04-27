@@ -1,29 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Onest:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600;700&family=Young+Serif&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Onest", -apple-system, sans-serif;
-  --font-serif: "Vollkorn", Georgia, serif;
+  --font-sans: "Geologica", -apple-system, sans-serif;
+  --font-serif: "Young Serif", Georgia, serif;
 
-  --color-cream: #f3ede4;
-  --color-cream-soft: #ebe4d9;
-  --color-cream-card: #ffffff;
-  --color-cream-card-alt: #f7f3ed;
+  /* Светлая система — бежево-молочная гамма из презентации (OKLCH) */
+  --color-cream: oklch(95.2% 0.012 72);          /* #f3ede4 аналог */
+  --color-cream-soft: oklch(92.8% 0.016 72);     /* #ebe4d9 аналог */
+  --color-cream-card: oklch(98.5% 0.005 72);     /* почти белый, чуть тёплый */
+  --color-cream-card-alt: oklch(96.4% 0.010 72); /* #f7f3ed аналог */
 
-  --color-navy: #0b1130;
-  --color-navy-soft: #101740;
+  /* Тёмная система — для hero, authors, results, footer */
+  --color-navy: oklch(18.5% 0.038 264);          /* глубокий сине-графит */
+  --color-navy-soft: oklch(21.0% 0.040 264);
 
-  --color-brown: #9a7d5a;
-  --color-brown-light: #b8996e;
-  --color-brown-dark: #7a6245;
-  --color-brown-bg: #c4a97a;
+  /* Коричневый акцент — приглушённый терракот из презентации */
+  --color-brown: oklch(56.4% 0.072 52);          /* #9a7d5a аналог */
+  --color-brown-light: oklch(63.8% 0.076 54);    /* #b8996e аналог */
+  --color-brown-dark: oklch(48.2% 0.066 50);     /* #7a6245 аналог */
+  --color-brown-bg: oklch(68.5% 0.080 56);       /* #c4a97a аналог */
 
-  --color-text-dark: #2a2218;
-  --color-text-dark-soft: #5c4f3d;
-  --color-text-dark-muted: #8a7d6d;
-  --color-text-light: #f0e8db;
-  --color-text-light-soft: #bbb3a5;
-  --color-text-light-muted: #6e6a62;
+  /* Текст — графитовые оттенки, не чистый чёрный */
+  --color-text-dark: oklch(22.5% 0.018 52);      /* #2a2218 аналог */
+  --color-text-dark-soft: oklch(40.5% 0.028 50); /* #5c4f3d аналог */
+  --color-text-dark-muted: oklch(57.0% 0.020 50);/* #8a7d6d аналог */
+  --color-text-light: oklch(91.5% 0.018 72);     /* #f0e8db аналог */
+  --color-text-light-soft: oklch(73.5% 0.014 68);/* #bbb3a5 аналог */
+  --color-text-light-muted: oklch(46.5% 0.012 60);
+
+  /* Плашки-теги — как в презентации: серый бордер, почти белый фон */
+  --color-tag-bg: oklch(97.5% 0.006 72);
+  --color-tag-border: oklch(82.0% 0.012 60);
 
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
@@ -55,6 +63,19 @@
   .text-balance {
     text-wrap: balance;
   }
+  /* Плашка-тег в стиле презентации */
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-tag-border);
+    background: var(--color-tag-bg);
+    color: var(--color-text-dark-soft);
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
 }
 
 html {
@@ -75,24 +96,32 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  background-color: var(--color-cream);
+  color: var(--color-text-dark);
 }
 
+/* Young Serif только для явно serif-контекстов */
 .font-serif,
-.font-serif *,
-h1, h2, h3, h4, h5, h6,
 blockquote, q, cite {
-  font-family: "Vollkorn", Georgia, serif;
+  font-family: "Young Serif", Georgia, serif;
+}
+
+/* Заголовки — Geologica, не serif */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Geologica", -apple-system, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-cream);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-brown-light);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-brown);
