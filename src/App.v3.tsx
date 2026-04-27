@@ -276,31 +276,32 @@ const Hero = ({ onOpenModal }: any) => {
   const [videoSrc, setVideoSrc] = useState("");
 
   useEffect(() => {
-    // weight = относительная частота выпадения (1 = базовая, 0.5 = в два раза реже)
-    const desktopVideos: { src: string; weight: number }[] = [
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro.mp4", weight: 1 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4", weight: 0.5 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2.mp4", weight: 1 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro3.mp4", weight: 1 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro5.mp4", weight: 1 },
+    // Промо-ролик выпадает в 50% случаев, остальные делят оставшиеся 50% поровну.
+    const BASE = "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru";
+
+    const desktopFeatured = `${BASE}/intro1.mp4`;
+    const desktopOthers = [
+      `${BASE}/intro.mp4`,
+      `${BASE}/intro2.mp4`,
+      `${BASE}/intro3.mp4`,
+      `${BASE}/intro5.mp4`,
     ];
 
-    const mobileVideos: { src: string; weight: number }[] = [
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1_m.mp4", weight: 0.5 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2_m.mp4", weight: 1 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro3_m.mp4", weight: 1 },
-      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro_m.mp4", weight: 1 },
+    const mobileFeatured = `${BASE}/intro1_m.mp4`;
+    const mobileOthers = [
+      `${BASE}/intro_m.mp4`,
+      `${BASE}/intro2_m.mp4`,
+      `${BASE}/intro3_m.mp4`,
     ];
 
     const isMobile = window.innerWidth < 768;
-    const pool = isMobile ? mobileVideos : desktopVideos;
-    const totalWeight = pool.reduce((s, v) => s + v.weight, 0);
-    let r = Math.random() * totalWeight;
-    let chosen = pool[0].src;
-    for (const v of pool) {
-      r -= v.weight;
-      if (r <= 0) { chosen = v.src; break; }
-    }
+    const featured = isMobile ? mobileFeatured : desktopFeatured;
+    const others = isMobile ? mobileOthers : desktopOthers;
+
+    const chosen = Math.random() < 0.5
+      ? featured
+      : others[Math.floor(Math.random() * others.length)];
+
     setVideoSrc(chosen);
   }, []);
 
