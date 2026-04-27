@@ -35,7 +35,7 @@ const Reveal = ({ children, delay = 0, className = '', direction = 'up', scale =
 );
 
 const Button = ({ variant = 'brown', href, children, className = '', onClick, type }: any) => {
-  const base = "inline-flex min-h-[3.1rem] items-center justify-center gap-2 rounded-full px-8 py-3 text-center font-sans text-[0.85rem] font-semibold tracking-[0.02em] transition-all duration-400 relative overflow-hidden group hover:scale-[1.015] active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brown/40 focus-visible:ring-offset-2";
+  const base = "inline-flex min-h-[3.1rem] items-center justify-center gap-2 rounded-full px-8 py-3 text-center font-sans text-[0.67rem] font-semibold uppercase tracking-[0.22em] transition-all duration-400 relative overflow-hidden group hover:scale-[1.015] active:scale-[0.985] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brown/40 focus-visible:ring-offset-2";
   const variants: any = {
     brown: "border border-brown bg-brown text-white shadow-[0_10px_28px_rgba(154,125,90,0.22)] hover:bg-brown-dark hover:border-brown-dark hover:shadow-[0_14px_32px_rgba(154,125,90,0.32)]",
     olive: "border border-[#5c6b5e] bg-[#5c6b5e] text-white shadow-[0_10px_28px_rgba(92,107,94,0.2)] hover:bg-[#4a574b] hover:border-[#4a574b] hover:shadow-[0_14px_32px_rgba(92,107,94,0.3)]",
@@ -145,7 +145,7 @@ const Navbar = ({ onOpenModal }: any) => {
             : 'bg-transparent py-8'
       }`}>
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-          <a href="#" className={`font-serif text-[1.4rem] font-normal tracking-[0.08em] transition-colors duration-500 flex items-center gap-3 ${isPastHero ? 'text-text-dark' : 'text-white'}`}>
+          <a href="#" className={`text-[1.1rem] font-bold tracking-[0.18em] uppercase transition-colors duration-500 flex items-center gap-3 ${isPastHero ? 'text-text-dark' : 'text-white'}`}>
             ОТРАЖЕНИЕ
             <span className={`text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1 rounded-md font-sans font-bold border transition-colors duration-500 ${isPastHero ? 'border-brown text-brown' : 'border-white/40 text-white'}`}>camp</span>
           </a>
