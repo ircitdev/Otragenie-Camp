@@ -1342,7 +1342,47 @@ const PricingTable = () => {
   );
 };
 
+const OfertaModal = ({ onClose }: { onClose: () => void }) => {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div
+        className="relative z-10 bg-[#faf7f3] w-full sm:max-w-2xl sm:rounded-3xl max-h-[90dvh] overflow-y-auto shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="sticky top-0 bg-[#faf7f3]/95 backdrop-blur-sm border-b border-brown/10 flex items-center justify-between px-6 py-4">
+          <span className="font-serif text-[1rem] text-[#2c1f14]/80">Публичная оферта</span>
+          <button onClick={onClose} className="text-brown/50 hover:text-brown transition text-[0.75rem] uppercase tracking-widest font-semibold">Закрыть ✕</button>
+        </div>
+        <div className="px-6 py-8 text-[0.88rem] leading-relaxed text-[#3d2e21]/80 space-y-4">
+          <p className="text-[0.78rem] text-brown/50 uppercase tracking-widest">Полный текст оферты</p>
+          <p>Оплачивая участие в интенсиве «Отражение», вы акцептируете публичную оферту ИП Дусенко Роман Владимирович (ИНН 272700125009, ОГРНИП 316774600124940).</p>
+          <p>Полный текст оферты, включая условия возврата средств и порядок оплаты в рассрочку, размещён на странице:</p>
+          <a
+            href="/oferta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-brown font-medium underline underline-offset-4 hover:text-brown-light transition"
+          >
+            otragenie-camp.ru/oferta →
+          </a>
+          <p className="pt-2 border-t border-brown/10 text-[0.78rem] text-[#3d2e21]/50">По вопросам: roman@dusenko.ru</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Pricing = ({ onOpenModal }: any) => {
+  const [ofertaOpen, setOfertaOpen] = useState(false);
+
   const getFeatIcon = (title: string) => {
     const t = title.toLowerCase();
     if (t.includes('программе')) return <Calendar size={14} />;
@@ -1359,6 +1399,7 @@ const Pricing = ({ onOpenModal }: any) => {
   };
 
   return (
+    <>
     <section id="pricing" className="scroll-mt-20 min-h-screen flex items-center py-12 bg-white relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
         <svg className="w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
@@ -1423,8 +1464,18 @@ const Pricing = ({ onOpenModal }: any) => {
             );
           })}
         </div>
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => setOfertaOpen(true)}
+            className="text-[0.78rem] text-text-dark-muted hover:text-brown transition underline underline-offset-4"
+          >
+            Публичная оферта
+          </button>
+        </div>
       </div>
     </section>
+    {ofertaOpen && <OfertaModal onClose={() => setOfertaOpen(false)} />}
+    </>
   );
 };
 
