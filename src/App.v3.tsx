@@ -13,6 +13,7 @@ import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
 import DarkVeil from './components/DarkVeil';
 import SoftAurora from './components/SoftAurora';
+import ColorBends from './components/ColorBends';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -2248,8 +2249,8 @@ const HowItWorks = () => {
 
 const ForWho = () => (
   <section id="for-who" className="scroll-mt-20 relative overflow-hidden bg-navy py-24 md:py-32">
-    {/* DarkVeil WebGL-фон */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none opacity-40">
+    {/* DarkVeil WebGL — глубинная текстура */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none opacity-30">
       <DarkVeil
         hueShift={28}
         noiseIntensity={0.03}
@@ -2260,8 +2261,27 @@ const ForWho = () => (
         resolutionScale={1}
       />
     </div>
+    {/* ColorBends — тёплые цветные ленты в палитре сайта */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none opacity-55 mix-blend-screen">
+      <ColorBends
+        colors={['#9a7d5a', '#b89a6e', '#c9a97a', '#7a6245', '#e6d5c3']}
+        rotation={120}
+        autoRotate={3}
+        speed={0.18}
+        scale={1.2}
+        frequency={0.85}
+        warpStrength={1.3}
+        mouseInfluence={0.6}
+        parallax={0.3}
+        noise={0.08}
+        iterations={2}
+        intensity={1.2}
+        bandWidth={5}
+        transparent
+      />
+    </div>
     {/* Затемнение поверх veil для читаемости текста */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none bg-gradient-to-b from-navy/85 via-navy/75 to-navy/90" />
+    <div aria-hidden className="absolute inset-0 pointer-events-none bg-gradient-to-b from-navy/80 via-navy/70 to-navy/88" />
     {/* Тёплый radial halo по центру */}
     <div
       aria-hidden
