@@ -5,6 +5,7 @@ import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS
 import { ChatAssistant } from './components/ChatAssistant';
 import { LiveChat } from './components/LiveChat';
 import BorderGlow from './components/BorderGlow';
+import LightRays from './components/LightRays';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -393,8 +394,23 @@ const Hero = ({ onOpenModal }: any) => {
 
 const JourneyPath = () => (
   <section className="bg-navy py-20 md:py-28 relative overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none">
+      <LightRays
+        raysOrigin="top-center"
+        raysColor="#c9a97a"
+        raysSpeed={0.6}
+        lightSpread={1.2}
+        rayLength={1.6}
+        followMouse
+        mouseInfluence={0.08}
+        noiseAmount={0.06}
+        distortion={0.03}
+        fadeDistance={1.4}
+        saturation={0.9}
+      />
+    </div>
     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }} />
-    <div className="max-w-3xl mx-auto px-6 md:px-12 relative text-center">
+    <div className="max-w-3xl mx-auto px-6 md:px-12 relative text-center z-[5]">
       <Reveal delay={0.05}>
         <p className="text-[clamp(1.05rem,2vw,1.25rem)] text-white/80 leading-[1.75] mb-10 max-w-2xl mx-auto">
           «Отражение» — это двухдневный терапевтический выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
@@ -404,12 +420,12 @@ const JourneyPath = () => (
         <div className="inline-block">
           <p className="text-[0.78rem] uppercase tracking-[0.28em] text-brown/70 mb-5 font-medium">За два дня вы проходите путь</p>
           <div className="flex items-center gap-4 md:gap-6 justify-center">
-            <span className="font-serif italic text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug">от честной диагностики<br className="hidden sm:block" /> своей жизни</span>
+            <span className="text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug font-medium">от честной диагностики<br className="hidden sm:block" /> своей жизни</span>
             <div className="flex items-center gap-1 text-brown shrink-0">
               <div className="w-6 md:w-10 h-px bg-brown/50" />
               <ArrowRight size={16} className="text-brown" />
             </div>
-            <span className="font-serif italic text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug">к первым правилам<br className="hidden sm:block" /> новой</span>
+            <span className="text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug font-medium">к первым правилам<br className="hidden sm:block" /> новой</span>
           </div>
         </div>
       </Reveal>
