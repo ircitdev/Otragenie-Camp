@@ -4,6 +4,7 @@ import path from "path";
 
 type UserStep =
   | "start"
+  | "awaiting_consent"
   | "ask_name"
   | "ask_role"
   | "ask_pain"
@@ -44,10 +45,40 @@ const USER_PAINS = [
   "Потерял смыслы, живу на автопилоте",
 ];
 
-const DEFAULT_WELCOME_TEXT =
+const CONSENT_TEXT =
   "Привет! Я Майя Дзодзатти, психолог и соавтор кэмпа «Отражение».\n\n" +
+  "Прежде чем мы начнём — пожалуйста, ознакомьтесь с пользовательским соглашением и политикой обработки персональных данных:\n" +
+  "👉 https://otragenie-camp.ru/oferta\n\n" +
+  "Если вы согласны с условиями, напишите в ответ <b>Согласен</b> — и мы продолжим.";
+
+const CONSENT_REMINDER =
+  "Чтобы продолжить, напишите <b>Согласен</b> после прочтения соглашения:\n" +
+  "👉 https://otragenie-camp.ru/oferta";
+
+const DEFAULT_WELCOME_TEXT =
+  "Спасибо! Согласие принято.\n\n" +
   "Этот бот поможет пройти короткую практику и, если откликнется, перейти к личному разбору и общению с нашей командой.\n\n" +
   "Для начала познакомимся. Как к вам обращаться?";
+
+const CONSENT_WORDS = new Set([
+  "согласен",
+  "согласна",
+  "согласны",
+  "согласен.",
+  "согласна.",
+  "да",
+  "да.",
+  "yes",
+  "yes.",
+  "ок",
+  "ok",
+  "+",
+]);
+
+const isConsentReply = (text: string): boolean => {
+  const normalized = text.trim().toLowerCase().replace(/[!?.,]+$/g, "");
+  return CONSENT_WORDS.has(normalized);
+};
 
 const AUDIO_INTRO_TEXT =
   "Спасибо за откровенность.\n\n" +
@@ -293,17 +324,33 @@ const createLeadCard = (user: UserRecord) =>
 const createBookCallAdminText = (user: UserRecord) =>
   `❗️ <b>${sanitizeTopicPart(user.name, "Лид")}</b> нажал(а) «Записаться на разбор».`;
 
-const sendWelcomeMessage = async (ctx: Context) => {
+const sendConsentRequest = async (ctx: Context) => {
   if (WELCOME_IMAGE_URL && "replyWithPhoto" in ctx) {
     await (ctx as any).replyWithPhoto(
       { url: WELCOME_IMAGE_URL },
       {
-        caption: DEFAULT_WELCOME_TEXT,
+        caption: CONSENT_TEXT,
+        parse_mode: "HTML",
+        link_preview_options: { is_disabled: true },
       }
     );
     return;
   }
 
+  await ctx.reply(CONSENT_TEXT, {
+    parse_mode: "HTML",
+    link_preview_options: { is_disabled: true },
+  } as any);
+};
+
+const sendConsentReminder = async (ctx: Context) => {
+  await ctx.reply(CONSENT_REMINDER, {
+    parse_mode: "HTML",
+    link_preview_options: { is_disabled: true },
+  } as any);
+};
+
+const sendWelcomeMessage = async (ctx: Context) => {
   await ctx.reply(DEFAULT_WELCOME_TEXT);
 };
 
@@ -502,6 +549,22 @@ const handlePrivateText = async (ctx: Context) => {
   if (!user) return;
 
   const text = ctx.message.text.trim();
+
+  // Шаг 0 — пользовательское соглашение. Бот не ведёт никаких диалогов,
+  // пока пользователь не написал "Согласен".
+  if (user.step === "awaiting_consent" || user.step === "start") {
+    if (isConsentReply(text)) {
+      updateUser(user.id, { step: "ask_name" });
+      logEvent(user.id, "consent_accepted", text);
+      await sendWelcomeMessage(ctx);
+      logMessage(user.id, "bot_to_user", "welcome");
+      return;
+    }
+    logEvent(user.id, "consent_pending_reply", text);
+    await sendConsentReminder(ctx);
+    logMessage(user.id, "bot_to_user", "consent_reminder");
+    return;
+  }
 
   if (user.step === "ask_name") {
     updateUser(user.id, { name: text, step: "ask_role" });
@@ -847,7 +910,7 @@ if (bot) {
     if (!user) return;
 
     updateUser(user.id, {
-      step: "ask_name",
+      step: "awaiting_consent",
       name: null,
       role: null,
       pain: null,
@@ -861,7 +924,8 @@ if (bot) {
     });
 
     logEvent(user.id, "bot_started");
-    await sendWelcomeMessage(ctx);
+    await sendConsentRequest(ctx);
+    logMessage(user.id, "bot_to_user", "consent_request");
   });
 
   bot.on("text", async (ctx) => {
