@@ -6,6 +6,7 @@ import { ChatAssistant } from './components/ChatAssistant';
 import { LiveChat } from './components/LiveChat';
 import BorderGlow from './components/BorderGlow';
 import LightRays from './components/LightRays';
+import ShinyText from './components/ShinyText';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -337,12 +338,19 @@ const Hero = ({ onOpenModal }: any) => {
         
         <Reveal delay={2.6}>
             <div className="relative mb-7">
-              <h1 className="font-serif text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-normal tracking-[0.02em] relative z-10">
-              Отражение
-            </h1>
-              <h1 className="font-serif text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-normal tracking-[0.02em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>
-              Отражение
-            </h1>
+              <h1 className="text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] font-bold tracking-[-0.01em] relative z-10">
+                <ShinyText
+                  text="Отражение"
+                  color="#f0e8db"
+                  shineColor="#fff7ea"
+                  speed={3.5}
+                  delay={1.5}
+                  spread={110}
+                />
+              </h1>
+              <h1 className="text-[clamp(3.2rem,9vw,7rem)] leading-[0.95] text-white font-bold tracking-[-0.01em] absolute top-full left-0 right-0 opacity-[0.07] scale-y-[-1] blur-[2px] select-none pointer-events-none" style={{ maskImage: "linear-gradient(to bottom, transparent 20%, black 100%)" }}>
+                Отражение
+              </h1>
           </div>
         </Reveal>
 
