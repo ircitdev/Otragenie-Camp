@@ -825,10 +825,10 @@ const Authors = ({ onOpenModal }: any) => (
       <Reveal direction="up" delay={0.05}>
         <div className="text-center mb-6">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Авторы программы</span>
-          <h2 className="font-serif text-[clamp(1.8rem,3.8vw,2.8rem)] leading-[1.1] text-white font-light mb-3">
-            Программу проводят <span className="font-semibold">Майя и Роман</span>
+          <h2 className="text-[clamp(1.8rem,3.8vw,2.8rem)] font-bold leading-[1.1] text-white mb-3">
+            Программу проводят <span className="text-brown-light">Майя и Роман</span>
           </h2>
-          <p className="font-serif italic text-[clamp(0.95rem,1.5vw,1.1rem)] text-white/65 leading-[1.55] max-w-2xl mx-auto">
+          <p className="text-[clamp(0.9rem,1.4vw,1rem)] text-white/60 leading-[1.65] max-w-2xl mx-auto">
             Дуэт, который соединяет женскую и мужскую перспективу в работе с жизненными сценариями, отношениями и стратегией жизни
           </p>
         </div>
@@ -842,7 +842,7 @@ const Authors = ({ onOpenModal }: any) => (
                 <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="font-serif text-[clamp(1.4rem,2.5vw,1.9rem)] leading-[1.05] text-white mb-1.5">{a.name}</h3>
+                  <h3 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-bold leading-[1.05] text-white mb-1.5">{a.name}</h3>
                   <p className="text-brown-light/80 text-[0.72rem] tracking-wide leading-[1.5]">{a.role}</p>
                 </div>
               </div>
