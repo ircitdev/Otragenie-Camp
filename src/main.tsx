@@ -4,6 +4,7 @@ import App, {AboutSectionsPage, ProcessSectionsPage, PhilosophySectionsPage, Aut
 import AppV1 from './App.v1.tsx';
 import AppV3, { OfertaPage, PersonalDataPage } from './App.v3.tsx';
 import AppV4 from './App.v4.tsx';
+import AppV5 from './App.v5.tsx';
 import './index.css';
 
 const path = window.location.pathname.replace(/\/$/, '');
@@ -11,6 +12,7 @@ const Page =
   path === '/v1' ? <AppV1 />
   : path === '/v3' ? <AppV3 />
   : path === '/v4' ? <AppV4 />
+  : path === '/v5' ? <AppV5 />
   : path === '/about-sections' ? <AboutSectionsPage />
   : path === '/process-sections' ? <ProcessSectionsPage />
   : path === '/philosophy-sections' ? <PhilosophySectionsPage />
