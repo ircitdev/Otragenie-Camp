@@ -12,7 +12,7 @@ import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
 import SoftAurora from './components/SoftAurora';
-import ColorBends from './components/ColorBends';
+import DarkVeil from './components/DarkVeil';
 import { useScrollLock } from './hooks/useScrollLock';
 
 // Yandex.Metrika goal helper
@@ -314,10 +314,10 @@ const Hero = ({ onOpenModal }: any) => {
   };
 
   return (
-    <section 
-      id="hero" 
+    <section
+      id="hero"
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-navy group/hero"
+      className="relative min-h-[100svh] md:min-h-screen flex items-center justify-center overflow-hidden bg-navy group/hero pt-24 md:pt-0 pb-20 md:pb-0"
     >
       <motion.div style={{ y, opacity, scale, willChange: "transform, opacity" }} className="absolute inset-0 z-0">
         {videoSrc && (
@@ -343,17 +343,18 @@ const Hero = ({ onOpenModal }: any) => {
         
       </motion.div>
 
-      <div className="relative z-10 max-w-[72rem] mx-auto px-5 md:px-6 text-center">
+      <div className="relative z-10 max-w-[72rem] mx-auto px-5 md:px-6 text-center w-full">
         <Reveal delay={0.2} direction="down">
-          <span className="inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full border border-white/25 bg-white/8 backdrop-blur-md text-white/85 text-[0.78rem] md:text-[0.85rem] tracking-[0.22em] uppercase mb-10 md:mb-12 font-medium">
-            <MapPin size={13} className="text-brown-light" />
+          <span className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full border border-white/25 bg-white/8 backdrop-blur-md text-white/85 text-[0.62rem] md:text-[0.85rem] tracking-[0.18em] md:tracking-[0.22em] uppercase mb-5 md:mb-12 font-medium">
+            <MapPin size={11} className="text-brown-light md:hidden" />
+            <MapPin size={13} className="text-brown-light hidden md:inline" />
             19 — 21 июня · Красная Поляна
           </span>
         </Reveal>
 
         <Reveal delay={0.4}>
-            <div className="relative mb-7 md:mb-8">
-              <h1 className="text-[clamp(4rem,12vw,7rem)] leading-[0.95] font-bold tracking-[-0.01em] relative z-10">
+            <div className="relative mb-5 md:mb-8">
+              <h1 className="text-[clamp(3.2rem,15vw,7rem)] leading-[0.95] font-bold tracking-[-0.015em] relative z-10">
                 <ShinyText
                   text="Отражение"
                   color="#f0e8db"
@@ -370,20 +371,20 @@ const Hero = ({ onOpenModal }: any) => {
         </Reveal>
 
         <Reveal delay={0.7}>
-          <p className="text-[clamp(1.05rem,1.8vw,1.25rem)] text-white/85 max-w-[38rem] mx-auto mb-10 md:mb-12 leading-[1.55] font-light">
+          <p className="text-[clamp(0.95rem,1.8vw,1.25rem)] text-white/85 max-w-[38rem] mx-auto mb-7 md:mb-12 leading-[1.55] font-light px-2 md:px-0">
             о честности с собой, о том, как увидеть свою жизнь <span className="text-brown-light font-medium">без иллюзий</span> и изменить то, что в ней не работает
           </p>
         </Reveal>
 
 
         <Reveal delay={1.0}>
-          <div className="flex flex-col items-center gap-5">
-            <Button variant="brown" href="#pricing" className="!px-12 !py-4 shadow-[0_18px_50px_rgba(154,125,90,0.32)] w-full max-w-[20rem] sm:w-auto">
+          <div className="flex flex-col items-center gap-4 md:gap-5">
+            <Button variant="brown" href="#pricing" className="!px-10 md:!px-12 !py-3.5 md:!py-4 shadow-[0_18px_50px_rgba(154,125,90,0.32)] w-full max-w-[18rem] sm:w-auto">
               Забронировать место
             </Button>
             <button
               onClick={onOpenModal}
-              className="text-[0.8rem] text-white/65 hover:text-brown-light transition-colors underline-offset-4 underline decoration-white/25 hover:decoration-brown-light"
+              className="text-[0.78rem] md:text-[0.8rem] text-white/75 md:text-white/65 hover:text-brown-light transition-colors underline-offset-4 underline decoration-white/30 hover:decoration-brown-light px-2"
             >
               ‹ Сначала — индивидуальный разбор ›
             </button>
@@ -391,26 +392,27 @@ const Hero = ({ onOpenModal }: any) => {
         </Reveal>
 
         <Reveal delay={1.2}>
-          <div className="mt-10 md:mt-12 flex items-center justify-center gap-3 text-[0.7rem] md:text-[0.74rem] uppercase tracking-[0.24em] text-white/50 font-medium tabular-nums">
-            <div className="h-px w-8 bg-white/20" />
+          <div className="mt-7 md:mt-12 flex items-center justify-center gap-2 md:gap-3 text-[0.6rem] md:text-[0.74rem] uppercase tracking-[0.18em] md:tracking-[0.24em] text-white/55 md:text-white/50 font-medium tabular-nums">
+            <div className="h-px w-5 md:w-8 bg-white/20" />
             <span>Майя Дзодзатти · Роман Дусенко</span>
-            <div className="h-px w-8 bg-white/20" />
+            <div className="h-px w-5 md:w-8 bg-white/20" />
           </div>
         </Reveal>
       </div>
 
-      <Reveal delay={1.5} className="hidden md:block absolute bottom-10 left-1/2 -translate-x-1/2">
-        <motion.div 
-          animate={{ y: [0, 10, 0] }} 
+      <Reveal delay={1.5} className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2">
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-3"
+          className="flex flex-col items-center gap-2 md:gap-3"
         >
-          <span className="text-white/40 text-[0.6rem] tracking-[0.4em] uppercase font-medium">Листайте вниз</span>
+          <span className="hidden md:block text-white/40 text-[0.6rem] tracking-[0.4em] uppercase font-medium">Листайте вниз</span>
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ChevronDown size={20} className="text-white/30" />
+            <ChevronDown size={18} className="text-white/35 md:hidden" />
+            <ChevronDown size={20} className="text-white/30 hidden md:block" />
           </motion.div>
         </motion.div>
       </Reveal>
@@ -2283,32 +2285,20 @@ const HowItWorks = () => {
 
 const ForWho = () => (
   <section id="for-who" className="scroll-mt-20 relative overflow-hidden bg-navy py-24 md:py-32">
-    {/* ColorBends WebGL — тёплые цветные ленты в палитре сайта */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none">
-      <ColorBends
-        colors={['#c9a97a', '#9a7d5a', '#e6d5c3', '#7a6245', '#b89a6e']}
-        rotation={90}
-        speed={0.2}
-        scale={1}
-        frequency={1}
-        warpStrength={1}
-        mouseInfluence={1}
-        noise={0.15}
-        parallax={0.5}
-        iterations={1}
-        intensity={1.5}
-        bandWidth={6}
-        transparent
+    {/* DarkVeil WebGL — анимированный CPPN-фон в палитре сайта */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none z-0">
+      <DarkVeil
+        hueShift={210}
+        noiseIntensity={0.05}
+        scanlineIntensity={0}
+        speed={0.6}
+        scanlineFrequency={0}
+        warpAmount={0.8}
+        resolutionScale={1}
       />
     </div>
-    {/* Затемнение для читаемости текста */}
-    <div aria-hidden className="absolute inset-0 pointer-events-none bg-gradient-to-b from-navy/55 via-navy/40 to-navy/70" />
-    {/* Тёплый radial halo по центру */}
-    <div
-      aria-hidden
-      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[60vh] rounded-full pointer-events-none"
-      style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(60px)' }}
-    />
+    {/* Лёгкое затемнение по краям для читаемости текста */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none z-[1] bg-gradient-to-b from-navy/30 via-transparent to-navy/40" />
 
     <div className="max-w-2xl mx-auto px-6 md:px-12 relative z-10">
       {/* Шапка — left-aligned, не центр */}
@@ -2722,32 +2712,27 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
       console.error("Error sending notification:", error);
     }
 
-    // If plan selected — try to redirect to payment
-    if (selectedPlan) {
+    // If plan selected — redirect to direct Prodamus payform link
+    if (selectedPlan && selectedPlan.payformUrl) {
       ymGoal("payment_start", { plan: selectedPlan.name, price: selectedPlan.price, mode: paymentMode });
       try {
-        const response = await fetch('/api/prodamus/pay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tariffName: selectedPlan.name,
-            price: parseInt(selectedPlan.price.replace(/\D/g, '')),
-            contact: formData.contact,
-            name: formData.name,
-            installment: paymentMode === 'installment'
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.paymentUrl) {
-            ymGoal("payment_redirect", { plan: selectedPlan.name });
-            window.location.href = data.paymentUrl;
-            return;
+        const url = new URL(selectedPlan.payformUrl);
+        if (paymentMode === 'installment') {
+          url.searchParams.set('paid_content', 'bnpl');
+          url.searchParams.set('payment_method', 'bnpl');
+        }
+        if (formData.contact) {
+          if (formData.contact.includes('@')) {
+            url.searchParams.set('customer_email', formData.contact);
+          } else {
+            url.searchParams.set('customer_phone', formData.contact);
           }
         }
+        ymGoal("payment_redirect", { plan: selectedPlan.name });
+        window.location.href = url.toString();
+        return;
       } catch (error) {
-        console.error("Error initiating payment:", error);
+        console.error("Error redirecting to payment:", error);
         // fall through to success screen
       }
     }
