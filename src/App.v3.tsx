@@ -1913,9 +1913,9 @@ const ForWho = () => (
       style={{ objectPosition: 'center bottom' }}
     />
 
-    {/* Оверлей: тёмный градиент снизу вверх — контент читается, верх прозрачнее */}
+    {/* Оверлей: лёгкое затемнение + сильный градиент только снизу для читаемости текста */}
     <div className="absolute inset-0 pointer-events-none" style={{
-      background: 'linear-gradient(to top, rgba(10,8,6,0.96) 0%, rgba(10,8,6,0.75) 40%, rgba(10,8,6,0.45) 70%, rgba(10,8,6,0.2) 100%)'
+      background: 'linear-gradient(to top, rgba(10,8,6,0.92) 0%, rgba(10,8,6,0.6) 30%, rgba(10,8,6,0.15) 60%, rgba(10,8,6,0.05) 100%)'
     }} />
 
     {/* Контент поверх */}
