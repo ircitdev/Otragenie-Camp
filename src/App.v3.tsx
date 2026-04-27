@@ -1498,6 +1498,12 @@ const Pricing = ({ onOpenModal }: any) => {
             const featured = plan.theme === "full";
             return (
               <Reveal key={i} direction="up" delay={i * 0.12} scale>
+              <div className={`relative h-full ${featured ? "lg:scale-[1.04] z-10" : ""}`}>
+                {featured && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brown text-white text-[0.58rem] px-4 py-1 rounded-full uppercase tracking-[0.22em] font-bold shadow-[0_4px_14px_rgba(154,125,90,0.4)] z-30 whitespace-nowrap">
+                    Рекомендуем
+                  </div>
+                )}
               <GlareHover
                 glareColor={featured ? "#c9a97a" : "#fff7ea"}
                 glareOpacity={featured ? 0.35 : 0.55}
@@ -1506,14 +1512,9 @@ const Pricing = ({ onOpenModal }: any) => {
                 transitionDuration={900}
                 borderRadius="1.5rem"
                 background="transparent"
-                className={`h-full ${featured ? "lg:scale-[1.04] z-10" : ""}`}
+                className="h-full"
               >
               <div className={`relative flex flex-col h-full rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl border border-brown/20" : "bg-cream-card border border-brown/10 hover:border-brown/30 hover:shadow-lg"}`}>
-                {featured && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brown text-white text-[0.58rem] px-4 py-1 rounded-full uppercase tracking-[0.22em] font-bold shadow z-10">
-                    Рекомендуем
-                  </div>
-                )}
                 <div className="mb-4">
                   <h3 className="text-[1.5rem] font-bold mb-1.5">{plan.name}</h3>
                   <p className={`text-[0.82rem] leading-[1.55] ${featured ? "text-white/60" : "text-text-dark-soft"}`}>{plan.desc}</p>
@@ -1543,6 +1544,7 @@ const Pricing = ({ onOpenModal }: any) => {
                 </Button>
               </div>
               </GlareHover>
+              </div>
               </Reveal>
             );
           })}
