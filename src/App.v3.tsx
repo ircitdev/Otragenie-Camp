@@ -2128,46 +2128,97 @@ const FINAL_IMG_SRC = "https://storage.googleapis.com/uspeshnyy-projects/smit/bi
 
 const FinalBlock = ({ onOpenModal }: any) => (
   <section className="relative bg-navy text-white overflow-hidden">
-    {/* video background */}
-    <div className="absolute inset-0 z-0">
-      <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/banya.MP4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-20" />
-      <div className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/60 to-navy/90" />
+    {/* Статичное фото с медленным Ken-Burns */}
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <motion.img
+        src="/images/photo_1_2026-04-19_12-01-26.jpg"
+        alt=""
+        aria-hidden="true"
+        className="w-full h-full object-cover"
+        initial={{ scale: 1.0 }}
+        whileInView={{ scale: 1.08 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ duration: 22, ease: 'linear' }}
+        style={{ opacity: 0.28 }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-navy/85 via-navy/70 to-navy/95" />
+      {/* Тёплый halo за центральной фразой */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(40px)' }}
+      />
     </div>
 
-    <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12 py-28 md:py-36 text-center">
-      <Reveal direction="up" delay={0.1}>
-        <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold leading-[1.2] mb-6">
-          Если ничего не менять —<br />
-          <span className="text-brown-light">через год будет то же самое</span>
-        </h2>
-      </Reveal>
+    <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 py-32 md:py-44">
+      {/* Развилка: два сценария */}
+      <div className="grid md:grid-cols-[1fr_auto_1fr] gap-10 md:gap-8 items-center mb-16 md:mb-20">
+        {/* Сценарий 01 — холодная сторона */}
+        <Reveal direction="left" delay={0.05}>
+          <div className="text-right md:pr-4">
+            <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-white/30 mb-4 font-medium tabular-nums">Сценарий 01 · без выезда</span>
+            <p className="text-[clamp(1.15rem,1.8vw,1.4rem)] text-white/40 leading-[1.55] font-light">
+              Те же мысли.<br />
+              Те же решения.<br />
+              Те же сценарии.
+            </p>
+          </div>
+        </Reveal>
 
-      <Reveal direction="up" delay={0.2}>
-        <p className="text-[1rem] text-white/65 leading-[1.8] mb-3">
-          Те же мысли. Те же решения. Те же сценарии.
-        </p>
-        <p className="font-serif italic text-[1.1rem] text-white/80 mb-10">
-          Этот выезд — точка, где можно это остановить.
-        </p>
-      </Reveal>
-
-      <Reveal direction="up" delay={0.3}>
-        <div className="flex items-center justify-center mb-2">
-          <span className="text-[0.72rem] uppercase tracking-[0.2em] text-brown-light font-medium">19–21 июня · Красная Поляна</span>
+        {/* Разделитель — стрелка */}
+        <div className="flex md:flex-col items-center justify-center gap-3 md:gap-4">
+          <div className="hidden md:block w-px h-16 bg-gradient-to-b from-transparent to-brown/40" />
+          <div className="md:hidden h-px w-12 bg-gradient-to-r from-transparent to-brown/40" />
+          <ArrowRight size={22} className="text-brown-light md:rotate-90 shrink-0" />
+          <div className="hidden md:block w-px h-16 bg-gradient-to-t from-transparent to-brown/40" />
+          <div className="md:hidden h-px w-12 bg-gradient-to-l from-transparent to-brown/40" />
         </div>
-        <p className="text-[0.88rem] text-white/45 mb-10">
-          В группе всего 10 мест —<br className="sm:hidden" /> потому что это формат глубокой работы, где невозможно «быть одним из»
-        </p>
+
+        {/* Сценарий 02 — тёплая сторона */}
+        <Reveal direction="right" delay={0.45}>
+          <div className="md:pl-4">
+            <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-brown-light/80 mb-4 font-medium tabular-nums">Сценарий 02 · после выезда</span>
+            <p className="text-[clamp(1.15rem,1.8vw,1.4rem)] text-cream leading-[1.55] font-medium">
+              Другая опора.<br />
+              Другие решения.<br />
+              Другая жизнь.
+            </p>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* Главная фраза — мостик */}
+      <div className="text-center max-w-3xl mx-auto mb-12">
+        <Reveal direction="up" delay={0.9}>
+          <h2 className="text-[clamp(1.7rem,3.4vw,2.6rem)] font-bold leading-[1.18] text-white">
+            Этот выезд —{' '}
+            <span className="text-brown-light">точка, где это можно остановить</span>
+          </h2>
+        </Reveal>
+      </div>
+
+      {/* Метаданные одной строкой */}
+      <Reveal direction="up" delay={1.1}>
+        <div className="flex items-center justify-center gap-3 md:gap-5 text-[0.7rem] uppercase tracking-[0.24em] text-white/45 font-medium tabular-nums mb-10 flex-wrap">
+          <span>19–21 июня</span>
+          <span className="text-brown/50">·</span>
+          <span>Красная Поляна</span>
+          <span className="text-brown/50">·</span>
+          <span>10 мест</span>
+        </div>
       </Reveal>
 
-      <Reveal direction="up" delay={0.4}>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button variant="brown" onClick={() => onOpenModal?.()} className="!px-10 shadow-2xl">
-            Пройти индивидуальный разбор
-          </Button>
-          <Button variant="outline-light" href="#pricing" className="!px-10">
+      {/* CTA — одна основная + текстовая ссылка */}
+      <Reveal direction="up" delay={1.25}>
+        <div className="flex flex-col items-center gap-5">
+          <Button variant="brown" onClick={() => onOpenModal?.()} className="!px-12 !py-4 shadow-[0_18px_50px_rgba(154,125,90,0.35)]">
             Забронировать место
           </Button>
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); onOpenModal?.(); }}
+            className="text-[0.78rem] text-white/55 hover:text-brown-light transition-colors underline-offset-4 underline decoration-white/20 hover:decoration-brown-light"
+          >
+            Не уверены? — обсудить с куратором
+          </a>
         </div>
       </Reveal>
     </div>
