@@ -1903,81 +1903,91 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="scroll-mt-20 bg-[#f3ede4] relative overflow-hidden">
-    {/* Фоновая сетка — еле заметная редакционная текстура */}
-    <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-      style={{ backgroundImage: 'repeating-linear-gradient(0deg, #9a7d5a 0px, #9a7d5a 1px, transparent 1px, transparent 80px), repeating-linear-gradient(90deg, #9a7d5a 0px, #9a7d5a 1px, transparent 1px, transparent 80px)' }} />
+  <section id="for-who" className="scroll-mt-20 relative overflow-hidden" style={{ background: '#0e0c09' }}>
+    {/* Зернистая текстура поверх тёмного фона */}
+    <div className="absolute inset-0 pointer-events-none opacity-[0.035]"
+      style={{
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")',
+        backgroundSize: '200px'
+      }} />
+
+    {/* Тонкая вертикальная линия-акцент */}
+    <div className="absolute top-0 right-0 w-px h-full opacity-10"
+      style={{ background: 'linear-gradient(to bottom, transparent, #c9a97a 30%, #c9a97a 70%, transparent)' }} />
 
     <div className="max-w-7xl mx-auto px-6 md:px-12">
 
-      {/* Шапка с вводным текстом */}
-      <div className="pt-20 md:pt-28 pb-14 md:pb-20 grid lg:grid-cols-[1fr_1.6fr] gap-10 lg:gap-20 items-end">
+      {/* Верхняя шапка */}
+      <div className="pt-20 md:pt-28 pb-12 md:pb-16">
         <Reveal direction="up" delay={0.05}>
-          <span className="text-[0.6rem] uppercase tracking-[0.38em] text-brown font-medium block mb-6">Для кого · 11 экран</span>
-          <h2 className="font-serif text-[clamp(2.8rem,6vw,5rem)] leading-[0.95] text-[#0b1130] font-light">
-            Кому это<br /><em className="italic">нужно сейчас</em>
+          <div className="flex items-center gap-4 mb-10">
+            <span className="text-[0.58rem] uppercase tracking-[0.42em] font-medium" style={{ color: '#c9a97a' }}>
+              Для кого
+            </span>
+            <div className="h-px flex-1 max-w-[60px] opacity-30" style={{ background: '#c9a97a' }} />
+          </div>
+          <h2 className="font-serif text-[clamp(3rem,7vw,5.5rem)] leading-[0.92] font-light" style={{ color: '#f0e9dc' }}>
+            Кому это<br />
+            <em className="italic" style={{ color: '#c9a97a' }}>нужно сейчас</em>
           </h2>
-        </Reveal>
-        <Reveal direction="up" delay={0.15}>
-          <p className="font-serif italic text-[clamp(1rem,1.6vw,1.15rem)] text-[#5c4f3d] leading-[1.75] max-w-[52ch]">
-            Иногда в жизни наступает момент, когда внешне всё выглядит устойчиво и правильно, но внутри появляется тихий голос: «Я хочу большего от своей жизни. Но не понимаю, как это получить».
-          </p>
         </Reveal>
       </div>
 
-      {/* Разделитель */}
-      <div className="h-px bg-[#9a7d5a]/20 mb-0" />
+      {/* Главная сетка */}
+      <div className="grid lg:grid-cols-[1fr_1.75fr] gap-12 lg:gap-20 pb-20 md:pb-28 items-start">
 
-      {/* Основная сетка: фото + список признаний */}
-      <div className="grid lg:grid-cols-[2fr_3fr] gap-0 items-stretch">
-
-        {/* Левая колонка — портрет */}
-        <div className="relative overflow-hidden" style={{ minHeight: '560px' }}>
-          <video
-            src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/rookkreslo.MP4"
-            autoPlay muted playsInline loop
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-          {/* Оверлей справа для плавного перехода к списку */}
-          <div className="absolute inset-0 hidden lg:block"
-            style={{ background: 'linear-gradient(to right, transparent 60%, #f3ede4 100%)' }} />
-          {/* Оверлей снизу */}
-          <div className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(243,237,228,0.6) 0%, transparent 40%)' }} />
-          {/* Подпись внизу */}
-          <div className="absolute bottom-7 left-7 right-7">
-            <p className="text-[0.58rem] uppercase tracking-[0.28em] text-[#5c4f3d]/70 font-medium">
-              Этот выезд для людей, которые:
-            </p>
+        {/* Левая колонка — цитата + видео */}
+        <Reveal direction="up" delay={0.1}>
+          <div className="lg:sticky lg:top-28">
+            <div className="mb-10 relative">
+              <div className="absolute -left-3 top-0 bottom-0 w-[2px] rounded-full" style={{ background: 'linear-gradient(to bottom, #c9a97a, transparent)' }} />
+              <p className="font-serif italic text-[clamp(1.05rem,1.6vw,1.2rem)] leading-[1.8] pl-6" style={{ color: '#a89070' }}>
+                «Иногда в жизни наступает момент, когда внешне всё выглядит устойчиво, но внутри появляется тихий голос: я хочу большего. Но не понимаю, как это получить.»
+              </p>
+            </div>
+            <div className="relative rounded-sm overflow-hidden" style={{ aspectRatio: '3/4' }}>
+              <video
+                src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/rookkreslo.MP4"
+                autoPlay muted playsInline loop
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,12,9,0.65) 0%, transparent 50%)' }} />
+              <div className="absolute bottom-5 left-5 right-5">
+                <p className="text-[0.56rem] uppercase tracking-[0.32em] font-medium" style={{ color: 'rgba(201,169,122,0.6)' }}>
+                  Узнаёте себя в трёх и более — этот выезд для вас
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
-        {/* Правая колонка — 6 нумерованных признаний */}
-        <div className="lg:pl-12 py-0 divide-y divide-[#9a7d5a]/15">
+        {/* Правая колонка — 6 карточек */}
+        <div className="space-y-3">
           {FOR_WHO.map((text, i) => (
-            <Reveal key={i} direction="right" delay={0.08 + i * 0.06}>
-              <div className="flex items-baseline gap-5 md:gap-8 py-6 md:py-7 group">
-                <span
-                  className="font-serif text-[clamp(2rem,3.5vw,2.8rem)] leading-none text-[#0b1130]/15 group-hover:text-[#0b1130]/35 transition-colors duration-300 shrink-0 select-none tabular-nums"
-                  style={{ fontStyle: 'italic', fontFeatureSettings: '"lnum"', minWidth: '2.5ch', textAlign: 'right' }}
-                >
+            <Reveal key={i} direction="right" delay={0.06 + i * 0.07}>
+              <div className="group relative rounded-sm cursor-default overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(201,169,122,0.1)', padding: '1.5rem 1.75rem', transition: 'background 0.4s, border-color 0.4s' }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(201,169,122,0.07)'; el.style.borderColor = 'rgba(201,169,122,0.3)'; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(255,255,255,0.03)'; el.style.borderColor = 'rgba(201,169,122,0.1)'; }}
+              >
+                <span className="absolute top-4 right-5 font-serif tabular-nums select-none" style={{ color: 'rgba(201,169,122,0.18)', fontSize: 'clamp(1.6rem,2.5vw,2rem)', fontStyle: 'italic', lineHeight: 1 }}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <p className="text-[clamp(0.95rem,1.4vw,1.05rem)] text-[#3a2714] leading-[1.65] group-hover:text-[#0b1130] transition-colors duration-300">
+                <p className="text-[clamp(0.92rem,1.3vw,1rem)] leading-[1.7] pr-10" style={{ color: '#b8a896' }}>
                   {text}
                 </p>
+                <div className="absolute bottom-0 left-5 h-px" style={{ background: '#c9a97a', width: 0, transition: 'width 0.4s' }}
+                  ref={el => { if (el) { const card = el.parentElement; card?.addEventListener('mouseenter', () => { el.style.width = '64px'; }); card?.addEventListener('mouseleave', () => { el.style.width = '0'; }); }}}
+                />
               </div>
             </Reveal>
           ))}
         </div>
       </div>
 
-      {/* Нижний акцент */}
-      <div className="h-px bg-[#9a7d5a]/20 mt-0 mb-16 md:mb-20" />
+      <div className="h-px opacity-10 mb-0" style={{ background: '#c9a97a' }} />
     </div>
   </section>
 );
-
 const Counter = ({ value, suffix = '', duration = 2, delay = 0 }: { value: number, suffix?: string, duration?: number, delay?: number }) => {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
@@ -2140,7 +2150,7 @@ const CookieBanner = () => {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem('cookie-consent')) {
-      const t = setTimeout(() => setVisible(true), 1800);
+      const t = setTimeout(() => setVisible(true), 30000);
       return () => clearTimeout(t);
     }
   }, []);
@@ -2153,7 +2163,7 @@ const CookieBanner = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-6 left-4 right-4 z-[400] max-w-xl mx-auto bg-navy/96 backdrop-blur-md text-white rounded-2xl px-6 py-4 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4"
+          className="fixed bottom-6 left-4 z-[400] max-w-sm bg-navy/96 backdrop-blur-md text-white rounded-2xl px-6 py-4 shadow-2xl flex flex-col gap-3"
         >
           <p className="text-[0.78rem] leading-[1.6] text-white/75 flex-1">
             Сайт использует файлы cookie для аналитики и корректной работы. Продолжая использование, вы соглашаетесь с{' '}
