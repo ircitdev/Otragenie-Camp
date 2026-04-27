@@ -8,6 +8,7 @@ import BorderGlow from './components/BorderGlow';
 import LightRays from './components/LightRays';
 import ShinyText from './components/ShinyText';
 import ScrollReveal from './components/ScrollReveal';
+import GlareHover from './components/GlareHover';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -1464,7 +1465,7 @@ const Pricing = ({ onOpenModal }: any) => {
         </Reveal>
         <Reveal direction="up" delay={0.1}>
         <div className="text-center mb-10 max-w-xl mx-auto bg-brown/5 rounded-2xl px-8 py-5">
-          <p className="text-[1rem] font-serif font-semibold text-text-dark mb-1">В группе всего 10 мест</p>
+          <p className="text-[1rem] font-bold text-text-dark mb-1">В группе всего 10 мест</p>
           <p className="text-[0.9rem] text-text-dark-soft leading-[1.6]">Это не потоковый формат и не обучение, а работа, где каждый участник проходит через личный разбор.</p>
         </div>
         </Reveal>
@@ -1473,9 +1474,19 @@ const Pricing = ({ onOpenModal }: any) => {
             const featured = plan.theme === "full";
             return (
               <Reveal key={i} direction="up" delay={i * 0.12} scale>
-              <div key={i} className={`relative flex flex-col rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl lg:scale-[1.04] z-10 border border-brown/20" : "bg-cream-card border border-brown/10 hover:border-brown/30 hover:shadow-lg hover:-translate-y-1"}`}>
+              <GlareHover
+                glareColor={featured ? "#c9a97a" : "#fff7ea"}
+                glareOpacity={featured ? 0.35 : 0.55}
+                glareAngle={-30}
+                glareSize={280}
+                transitionDuration={900}
+                borderRadius="1.5rem"
+                background="transparent"
+                className={`h-full ${featured ? "lg:scale-[1.04] z-10" : ""}`}
+              >
+              <div className={`relative flex flex-col h-full rounded-[1.5rem] p-7 md:p-8 transition-all duration-500 group ${featured ? "bg-navy text-white shadow-2xl border border-brown/20" : "bg-cream-card border border-brown/10 hover:border-brown/30 hover:shadow-lg"}`}>
                 {featured && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brown text-white text-[0.58rem] px-4 py-1 rounded-full uppercase tracking-[0.22em] font-bold shadow">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brown text-white text-[0.58rem] px-4 py-1 rounded-full uppercase tracking-[0.22em] font-bold shadow z-10">
                     Рекомендуем
                   </div>
                 )}
@@ -1484,8 +1495,8 @@ const Pricing = ({ onOpenModal }: any) => {
                   <p className={`text-[0.82rem] leading-[1.55] ${featured ? "text-white/60" : "text-text-dark-soft"}`}>{plan.desc}</p>
                 </div>
                 <div className="mb-5 flex items-baseline gap-1.5">
-                  <span className="font-serif text-[3rem] md:text-[3.6rem] text-brown-light leading-none">{plan.price.split(" ")[0]}</span>
-                  <span className={`text-base font-serif ${featured ? "text-white/40" : "text-text-dark-muted"}`}>{plan.price.split(" ").slice(1).join(" ")}</span>
+                  <span className="text-[3rem] md:text-[3.6rem] font-bold text-brown-light leading-none tabular-nums tracking-tight">{plan.price.split(" ")[0]}</span>
+                  <span className={`text-base ${featured ? "text-white/40" : "text-text-dark-muted"}`}>{plan.price.split(" ").slice(1).join(" ")}</span>
                 </div>
                 <ul className="flex-1 space-y-3 mb-6">
                   {plan.feats.map((f: any, j: number) => (
@@ -1498,7 +1509,7 @@ const Pricing = ({ onOpenModal }: any) => {
                     </li>
                   ))}
                 </ul>
-                {plan.note && <p className={`text-[0.65rem] italic mb-4 leading-tight ${featured ? "text-brown-light" : "text-text-dark-muted"}`}>{plan.note}</p>}
+                {plan.note && <p className={`text-[0.65rem] mb-4 leading-tight ${featured ? "text-brown-light" : "text-text-dark-muted"}`}>{plan.note}</p>}
                 <Button
                   variant={featured ? "brown" : "outline-dark"}
                   className="w-full"
@@ -1507,6 +1518,7 @@ const Pricing = ({ onOpenModal }: any) => {
                   Забронировать
                 </Button>
               </div>
+              </GlareHover>
               </Reveal>
             );
           })}
