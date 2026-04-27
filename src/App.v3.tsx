@@ -1995,19 +1995,32 @@ const Results = ({ onOpenModal }: any) => {
       <Reveal direction="up" delay={0.05}>
         <div className="text-center mb-8">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-white font-light">Что ты заберёшь с собой</h2>
+          <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-white">Что ты заберёшь с собой</h2>
         </div>
       </Reveal>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {RESULTS.map((r, i) => (
           <Reveal key={i} direction="up" delay={0.1 + i * 0.07}>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 hover:bg-white/[0.08] hover:border-brown-light/30 transition group">
-              <div className="font-serif text-[2rem] text-brown-light/30 leading-none mb-4 group-hover:text-brown-light/60 transition tabular-nums select-none">
-                {String(i + 1).padStart(2, '0')}
+            <BorderGlow
+              backgroundColor="#16213d"
+              borderRadius={16}
+              glowRadius={36}
+              glowColor="36 60 70"
+              glowIntensity={1.0}
+              edgeSensitivity={28}
+              coneSpread={26}
+              colors={['#c9a97a', '#9a7d5a', '#e6d5c3']}
+              fillOpacity={0.3}
+              className="h-full"
+            >
+              <div className="p-5 group h-full">
+                <div className="text-[2rem] font-bold text-brown-light/30 leading-none mb-4 group-hover:text-brown-light/60 transition tabular-nums select-none">
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+                <h4 className="text-[1.1rem] font-bold mb-1.5 text-white group-hover:text-brown-light transition">{r.title}</h4>
+                <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
               </div>
-              <h4 className="font-serif text-[1.1rem] mb-1.5 group-hover:text-brown-light transition">{r.title}</h4>
-              <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
-            </div>
+            </BorderGlow>
           </Reveal>
         ))}
       </div>
@@ -2038,9 +2051,9 @@ const FinalBlock = ({ onOpenModal }: any) => (
 
     <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12 py-28 md:py-36 text-center">
       <Reveal direction="up" delay={0.1}>
-        <h2 className="font-serif text-[clamp(1.8rem,4vw,3rem)] leading-[1.2] font-light mb-6">
+        <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold leading-[1.2] mb-6">
           Если ничего не менять —<br />
-          <em className="not-italic text-brown-light">через год будет то же самое</em>
+          <span className="text-brown-light">через год будет то же самое</span>
         </h2>
       </Reveal>
 
