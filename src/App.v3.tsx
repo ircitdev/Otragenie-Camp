@@ -70,7 +70,7 @@ const SectionHeading = ({ subtitle, title, light = false, centered = true }: any
       </span>
     </Reveal>
     <Reveal delay={0.2}>
-      <h2 className={`font-serif text-[clamp(1.9rem,4.5vw,3.25rem)] leading-[1.12] mb-6 ${light ? 'text-white' : 'text-text-dark'}`}>
+      <h2 className={`text-[clamp(1.9rem,4.5vw,3.25rem)] font-bold leading-[1.1] mb-6 ${light ? 'text-white' : 'text-text-dark'}`}>
         {title}
       </h2>
     </Reveal>
@@ -552,19 +552,19 @@ const About = () => (
             <span className="text-[0.65rem] uppercase tracking-[0.35em] text-brown font-medium block mb-4 pb-3 border-b border-brown/20">О проекте · 2026</span>
           </Reveal>
           <Reveal direction="up" delay={0.15}>
-            <h2 className="font-serif italic text-[clamp(1.8rem,4vw,2.9rem)] leading-[1.15] text-text-dark mb-5 max-w-[16ch]">
-              Место, где <span className="not-italic">честность</span><br />становится опорой.
+            <h2 className="text-[clamp(1.8rem,4vw,2.9rem)] font-bold leading-[1.1] text-text-dark mb-5 max-w-[20ch]">
+              Место, где <span className="text-brown">честность</span> становится опорой
             </h2>
           </Reveal>
           <Reveal direction="up" delay={0.25}>
-            <p className="text-[0.92rem] text-text-dark-soft leading-[1.6] mb-6 max-w-[40rem]">{ABOUT_INTRO_2}</p>
+            <p className="text-[0.95rem] text-text-dark-soft leading-[1.75] mb-8 max-w-[40rem]">{ABOUT_INTRO_2}</p>
           </Reveal>
           <div>
             {ABOUT_ITEMS.map((item, i) => (
               <Reveal key={i} direction="up" delay={0.3 + i * 0.08}>
-                <div className="flex gap-6 py-2.5 border-b border-text-dark/10 items-start">
-                  <div className="font-serif text-brown text-[1.3rem] leading-none shrink-0 w-10 pt-0.5">№{i + 1}</div>
-                  <p className="font-serif text-[0.98rem] text-text-dark leading-[1.5]">{item}</p>
+                <div className="flex gap-5 py-3.5 border-b border-text-dark/8 items-start">
+                  <div className="text-[0.65rem] font-bold text-brown/50 tracking-[0.12em] shrink-0 w-7 pt-1">0{i + 1}</div>
+                  <p className="text-[0.97rem] text-text-dark leading-[1.6]">{item}</p>
                 </div>
               </Reveal>
             ))}
@@ -613,7 +613,7 @@ const Program = () => {
         <Reveal direction="up">
           <div className="text-center mb-8">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Программа</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Три дня трансформации</h2>
+            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-text-dark">Три дня трансформации</h2>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
@@ -662,8 +662,8 @@ const Program = () => {
                 </div>
                 {/* Контент */}
                 <div className="p-7 md:p-10 flex flex-col justify-center">
-                  <h3 className="font-serif text-[clamp(1.8rem,3.5vw,2.4rem)] leading-[1.1] text-text-dark mb-1">
-                    <span className="text-brown font-bold">Пятница</span> <span className="font-light">вечер</span>
+                  <h3 className="text-[clamp(1.8rem,3.5vw,2.4rem)] font-bold leading-[1.1] text-text-dark mb-1">
+                    <span className="text-brown">Пятница</span> вечер
                   </h3>
                   <p className="text-[1.05rem] text-text-dark-soft font-light mb-6">{p.subtitle}</p>
                   <div className="space-y-2 mb-5">
@@ -691,9 +691,9 @@ const Program = () => {
                 {/* Заголовок с вопросами */}
                 <div className="rounded-2xl bg-white p-6 md:p-8 mb-4 shadow-sm">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
-                    <h3 className="font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.1] text-text-dark">
-                      <span className="text-brown font-bold">{p.day.split(' ')[0]} {p.day.split(' ')[1]}</span>
-                      {' '}<span className="font-light">— {p.subtitle}</span>
+                    <h3 className="text-[clamp(1.8rem,4vw,2.6rem)] font-bold leading-[1.1] text-text-dark">
+                      <span className="text-brown">{p.day.split(' ')[0]} {p.day.split(' ')[1]}</span>
+                      {' '}<span className="font-normal text-text-dark-soft">— {p.subtitle}</span>
                     </h3>
                     {p.theme && (
                       <span className="font-serif italic text-[1.05rem] text-text-dark-muted/60 whitespace-nowrap shrink-0">{p.theme}</span>
@@ -772,8 +772,8 @@ const Philosophy = () => (
         <div className="mb-10 pb-6 border-b border-brown/20 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
             <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Философия · принципы</span>
-            <h2 className="font-serif italic text-[clamp(1.9rem,4.2vw,3rem)] leading-[1.05] text-text-dark max-w-[18ch]">
-              Глубина и <span className="not-italic">структура</span> в одной работе.
+            <h2 className="text-[clamp(1.9rem,4.2vw,3rem)] font-bold leading-[1.1] text-text-dark max-w-[18ch]">
+              Глубина и <span className="text-brown">структура</span> в одной работе
             </h2>
           </div>
           <p className="text-[0.9rem] text-text-dark-soft leading-[1.7] max-w-sm">{PHIL_DESC}</p>
@@ -784,7 +784,7 @@ const Philosophy = () => (
           <Reveal key={it.title} direction="up" delay={0.1 + i * 0.12}>
             <div>
               <div className="font-serif text-[3rem] leading-none text-brown/40 mb-3">0{i + 1}</div>
-              <h3 className="font-serif text-[1.5rem] text-text-dark mb-3">{it.title}</h3>
+              <h3 className="text-[1.35rem] font-bold text-text-dark mb-3">{it.title}</h3>
               <p className="text-[0.93rem] text-text-dark-soft leading-[1.7]">{it.text}</p>
             </div>
           </Reveal>
@@ -890,8 +890,8 @@ const Location = () => (
       <Reveal direction="up" delay={0.05}>
         <div className="mb-6 pb-5 border-b border-brown/20">
           <span className="text-[0.68rem] uppercase tracking-[0.35em] text-brown font-medium block mb-3">Локация</span>
-          <h2 className="font-serif italic text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] text-text-dark">
-            Красная Поляна · <span className="not-italic">Глэмпинг «Дзен рекавери»</span>
+          <h2 className="text-[clamp(1.5rem,3.4vw,2.6rem)] font-bold leading-[1.1] text-text-dark">
+            Красная Поляна · <span className="text-brown font-normal">Глэмпинг «Дзен рекавери»</span>
           </h2>
         </div>
       </Reveal>
@@ -1089,7 +1089,7 @@ const Testimonials = () => {
         <Reveal direction="up">
           <div className="text-center mb-7">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Кейсы</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Истории трансформации</h2>
+            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-text-dark">Истории трансформации</h2>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
@@ -1244,11 +1244,11 @@ const LeadMagnet = () => {
             </div>
           </div>
           <div className="lg:col-span-7 p-8 md:p-10 lg:p-12 flex flex-col justify-center">
-            <h3 className="text-[1rem] md:text-[1.15rem] text-text-dark mb-2 font-serif leading-snug">
+            <h3 className="text-[1rem] md:text-[1.15rem] text-text-dark mb-2 font-semibold leading-snug">
               Ты уже пробовал менять жизнь.<br />Но результат возвращается.
             </h3>
-            <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-text-dark mb-6">
-              10 минут, <span className="italic text-brown">которые покажут почему</span>
+            <h2 className="text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-[1.1] text-text-dark mb-6">
+              10 минут, <span className="text-brown font-normal">которые покажут почему</span>
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
               <div>
@@ -1414,7 +1414,7 @@ const Pricing = ({ onOpenModal }: any) => {
         <Reveal direction="up">
         <div className="text-center mb-6">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Стоимость</span>
-          <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Тарифы</h2>
+          <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-text-dark">Тарифы</h2>
           <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
         </div>
         </Reveal>
@@ -1436,7 +1436,7 @@ const Pricing = ({ onOpenModal }: any) => {
                   </div>
                 )}
                 <div className="mb-4">
-                  <h3 className="font-serif text-[1.7rem] mb-1.5">{plan.name}</h3>
+                  <h3 className="text-[1.5rem] font-bold mb-1.5">{plan.name}</h3>
                   <p className={`text-[0.82rem] leading-[1.55] ${featured ? "text-white/60" : "text-text-dark-soft"}`}>{plan.desc}</p>
                 </div>
                 <div className="mb-5 flex items-baseline gap-1.5">
@@ -1514,7 +1514,7 @@ const FAQ = () => {
         <Reveal direction="up">
           <div className="text-center mb-8">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Вопросы</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Часто спрашивают</h2>
+            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-text-dark">Часто спрашивают</h2>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
@@ -1635,29 +1635,31 @@ const WhenYouNeedCamp = () => (
         {/* Левая колонка — текст */}
         <div className="flex flex-col">
           <Reveal direction="left" delay={0.05}>
-            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-4">О проекте · 2026</span>
-            <h2 className="font-serif italic text-[clamp(1.8rem,4vw,3rem)] leading-[1.1] text-text-dark mb-6">
-              Когда вы понимаете,<br />что нужен кэмп
+            <span className="text-[0.65rem] uppercase tracking-[0.28em] text-brown font-semibold block mb-5">О проекте · 2026</span>
+            <h2 className="text-[clamp(1.9rem,4vw,3rem)] font-bold leading-[1.08] text-text-dark mb-3">
+              Когда люди понимают,<br />что <span className="text-brown">им нужен такой выезд</span>
             </h2>
-            <p className="text-[1rem] text-text-dark-soft leading-[1.7] mb-8">Ты можешь ощущать это по-разному:</p>
+            <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-2 font-semibold">Иногда жизнь начинает подавать очень явные сигналы.</p>
+            <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-8">Внешне всё может выглядеть нормально — работа, проекты, ответственность</p>
           </Reveal>
-          <div className="space-y-0 mb-8 flex-1">
-            {WHEN_PAINS.map((item, i) => (
-              <Reveal key={i} direction="left" delay={0.12 + i * 0.07}>
-                <div className="flex items-start gap-4 py-4 border-b border-brown/15">
-                  <span className="text-brown/50 font-serif text-[0.75rem] shrink-0 mt-1 leading-none font-bold">№ {i + 1}</span>
-                  <p className="text-[1rem] text-text-dark leading-[1.65]">{item}</p>
+          <Reveal direction="left" delay={0.2}>
+            <p className="text-[0.82rem] font-semibold text-text-dark mb-4">Но внутри постепенно <strong>накапливаются ощущения:</strong></p>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {WHEN_PAINS.map((item, i) => (
+                <div key={i} className="flex items-center gap-2 px-3.5 py-2 rounded-full border border-tag-border bg-tag-bg">
+                  <span className="text-[0.6rem] font-bold text-brown/50 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="text-[0.82rem] text-text-dark-soft">{item}</span>
                 </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal direction="left" delay={0.5}>
-            <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-5">
-              Когда работа, перегрузка и внутренняя усталость начали разрушать отношения и контакт с собой.
-            </p>
-            <div className="pt-6 border-t border-brown/20">
-              <p className="font-serif italic text-[1.1rem] text-text-dark leading-[1.7]">
-                Если вы узнаёте себя — значит, вы уже понимаете: что-то нужно менять. Вопрос только в том, с чего начать.
+              ))}
+            </div>
+          </Reveal>
+          <Reveal direction="left" delay={0.4}>
+            <div className="bg-brown rounded-2xl px-6 py-5">
+              <p className="text-[0.88rem] text-white/80 leading-[1.7] mb-3">
+                Очень часто именно в этот момент человек понимает: если я не остановлюсь и честно не посмотрю на свою жизнь, она продолжит двигаться по той же траектории
+              </p>
+              <p className="text-[0.9rem] text-white font-semibold">
+                ✦ И именно здесь начинается возможность настоящих изменений
               </p>
             </div>
           </Reveal>
@@ -1800,7 +1802,7 @@ const WhatHappens = () => (
         {/* Текст справа */}
         <div>
           <Reveal direction="right" delay={0.15}>
-            <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-text-dark mb-6">
+            <h2 className="text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-[1.1] text-text-dark mb-6">
               Что происходит<br />на кэмпе
             </h2>
             <p className="text-[1rem] text-text-dark-soft leading-[1.75] mb-4">
@@ -1865,7 +1867,7 @@ const HowItWorks = () => {
         <Reveal direction="up">
           <div className="text-center mb-8">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Как проходит работа</span>
-            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Инструменты отражения</h2>
+            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-text-dark">Инструменты отражения</h2>
             <p className="text-[0.95rem] text-text-dark-soft mt-3 max-w-xl mx-auto">Не лекции. Не теория. Живая работа с вашей реальной ситуацией.</p>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
@@ -4435,11 +4437,11 @@ const LeadMagnetV5 = () => (
             </div>
           </div>
           <div className="lg:col-span-7 p-8 md:p-10 lg:p-12 flex flex-col justify-center">
-            <h3 className="text-[1rem] md:text-[1.15rem] text-text-dark mb-2 font-serif leading-snug">
+            <h3 className="text-[1rem] md:text-[1.15rem] text-text-dark mb-2 font-semibold leading-snug">
               Ты уже пробовал менять жизнь.<br />Но результат возвращается.
             </h3>
-            <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.1] text-text-dark mb-6">
-              10 минут, <span className="italic text-brown">которые покажут почему</span>
+            <h2 className="text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-[1.1] text-text-dark mb-6">
+              10 минут, <span className="text-brown font-normal">которые покажут почему</span>
             </h2>
             <div className="grid sm:grid-cols-2 gap-6 mb-6">
               <div>
