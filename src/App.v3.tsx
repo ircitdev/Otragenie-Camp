@@ -1906,70 +1906,202 @@ const WHEN_PAINS = [
   "ощущение, что жизнь идёт не туда",
 ];
 
-const WhenYouNeedCamp = () => (
-  <section id="when" className="scroll-mt-20 bg-cream relative overflow-hidden">
-    <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+const WhenYouNeedCamp = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const videoScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.18, 1, 1.08]);
+  const videoY = useTransform(scrollYProgress, [0, 1], [-30, 30]);
 
-        {/* Левая колонка — текст */}
-        <div className="flex flex-col">
-          <Reveal direction="left" delay={0.05}>
-            <span className="text-[0.65rem] uppercase tracking-[0.28em] text-brown font-semibold block mb-5">О проекте · 2026</span>
-            <h2 className="text-[clamp(1.9rem,4vw,3rem)] font-bold leading-[1.08] heading-gradient mb-3">
-              Когда люди понимают,<br />что <span style={{WebkitTextFillColor: 'oklch(56.4% 0.072 52)'}}>им нужен такой выезд</span>
-            </h2>
-            <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-2 font-semibold">Иногда жизнь начинает подавать очень явные сигналы.</p>
-            <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-8">Внешне всё может выглядеть нормально — работа, проекты, ответственность</p>
-          </Reveal>
-          <Reveal direction="left" delay={0.2}>
-            <p className="text-[0.82rem] font-semibold text-text-dark mb-4">Но внутри постепенно <strong>накапливаются ощущения:</strong></p>
-            <div className="flex flex-wrap gap-2 mb-8">
+  return (
+    <section
+      id="when"
+      ref={sectionRef}
+      className="scroll-mt-20 bg-cream relative overflow-hidden"
+    >
+      {/* Фоновая декорация — мягкие тёплые пятна */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-[36rem] h-[36rem] rounded-full opacity-[0.18]"
+          style={{ background: 'radial-gradient(ellipse, rgba(184,153,110,0.55) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+        <div className="absolute -bottom-40 -right-40 w-[40rem] h-[40rem] rounded-full opacity-[0.14]"
+          style={{ background: 'radial-gradient(ellipse, rgba(154,125,90,0.5) 0%, transparent 65%)', filter: 'blur(100px)' }} />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 relative">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+
+          {/* Левая колонка — текст */}
+          <div className="flex flex-col">
+            <motion.div
+              initial={{ opacity: 0, y: -16, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-3 mb-5"
+            >
+              <span className="h-px w-8 bg-brown/40" />
+              <span className="text-[0.65rem] uppercase tracking-[0.28em] text-brown font-semibold">О проекте · 2026</span>
+            </motion.div>
+
+            <SplitText
+              tag="h2"
+              text="Когда люди понимают, что им нужен такой выезд"
+              splitType="words"
+              delay={55}
+              duration={0.8}
+              ease="power3.out"
+              from={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
+              to={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              textAlign="left"
+              className="text-[clamp(1.9rem,4vw,3rem)] font-bold leading-[1.08] heading-gradient mb-5 w-full"
+            />
+
+            <Reveal direction="left" delay={0.35}>
+              <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-2 font-semibold">Иногда жизнь начинает подавать очень явные сигналы.</p>
+              <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-8">Внешне всё может выглядеть нормально — работа, проекты, ответственность</p>
+            </Reveal>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[0.82rem] font-semibold text-text-dark mb-4"
+            >
+              Но внутри постепенно <strong>накапливаются ощущения:</strong>
+            </motion.p>
+
+            <motion.div
+              className="flex flex-wrap gap-2 mb-8"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.09, delayChildren: 0.6 } },
+              }}
+            >
               {WHEN_PAINS.map((item, i) => (
-                <div key={i} className="flex items-center gap-2 px-3.5 py-2 rounded-full border border-tag-border bg-tag-bg">
+                <motion.div
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, y: 14, scale: 0.94, filter: 'blur(4px)' },
+                    visible: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
+                  }}
+                  transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -2, scale: 1.03, transition: { duration: 0.2 } }}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-full border border-tag-border bg-tag-bg cursor-default"
+                >
                   <span className="text-[0.6rem] font-bold text-brown/50 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                   <span className="text-[0.82rem] text-text-dark-soft">{item}</span>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </Reveal>
-          <Reveal direction="left" delay={0.4}>
-            <div className="bg-brown rounded-2xl px-6 py-5">
-              <p className="text-[0.88rem] text-white/80 leading-[1.7] mb-3">
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.85, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-brown rounded-2xl px-6 py-5 relative overflow-hidden group"
+            >
+              <motion.div
+                aria-hidden
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at top right, rgba(255,247,234,0.18) 0%, transparent 60%)' }}
+              />
+              <p className="text-[0.88rem] text-white/80 leading-[1.7] mb-3 relative">
                 Очень часто именно в этот момент человек понимает: если я не остановлюсь и честно не посмотрю на свою жизнь, она продолжит двигаться по той же траектории
               </p>
-              <p className="text-[0.9rem] text-white font-semibold">
-                ✦ И именно здесь начинается возможность настоящих изменений
-              </p>
-            </div>
-          </Reveal>
-        </div>
+              <motion.p
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.7, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="text-[0.9rem] text-white font-semibold relative"
+              >
+                <motion.span
+                  className="inline-block mr-1"
+                  animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.15, 1] }}
+                  transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+                >✦</motion.span>
+                И именно здесь начинается возможность настоящих изменений
+              </motion.p>
+            </motion.div>
+          </div>
 
-        {/* Правая колонка — видео с наложением */}
-        <Reveal direction="right" delay={0.15} className="h-full">
-          <div className="relative rounded-[1.5rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.18)] h-full min-h-[480px]">
-            <video
-              src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4"
-              autoPlay muted loop playsInline
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.82) 0%, rgba(15,23,42,0.15) 55%, transparent 100%)' }} />
-            <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
-              <Quote className="text-white/30 mb-4" size={24} />
-              <p className="font-serif italic text-[clamp(0.95rem,1.8vw,1.15rem)] text-white leading-[1.6] mb-5">
-                «Когда работа, деньги и даже отдых перестают приносить радость — проблема не в них. Проблема в системе, из которой вы действуете».
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="h-px w-8 bg-brown-light/60" />
-                <span className="text-[0.6rem] uppercase tracking-[0.22em] text-brown-light font-bold">Майя Дзодзатти</span>
+          {/* Правая колонка — видео с наложением */}
+          <motion.div
+            initial={{ opacity: 0, x: 40, scale: 0.96 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full"
+          >
+            <div className="relative rounded-[1.5rem] overflow-hidden shadow-[0_24px_60px_rgba(58,39,20,0.18)] h-full min-h-[480px] group">
+              <motion.div
+                style={{ scale: videoScale, y: videoY, position: 'absolute', inset: 0 }}
+                className="will-change-transform"
+              >
+                <video
+                  src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/veranda.MP4"
+                  autoPlay muted loop playsInline
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </motion.div>
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.82) 0%, rgba(15,23,42,0.15) 55%, transparent 100%)' }} />
+
+              {/* Тонкая декоративная рамка-блик при ховере */}
+              <div aria-hidden className="absolute inset-0 rounded-[1.5rem] pointer-events-none ring-1 ring-inset ring-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+              <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.6, rotate: -12 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Quote className="text-white/30 mb-4" size={24} />
+                </motion.div>
+                <SplitText
+                  tag="p"
+                  text="«Когда работа, деньги и даже отдых перестают приносить радость — проблема не в них. Проблема в системе, из которой вы действуете»."
+                  splitType="words"
+                  delay={32}
+                  duration={0.7}
+                  ease="power3.out"
+                  from={{ opacity: 0, y: 18, filter: 'blur(4px)' }}
+                  to={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  textAlign="left"
+                  className="font-serif italic text-[clamp(0.95rem,1.8vw,1.15rem)] text-white leading-[1.6] mb-5 w-full"
+                />
+                <motion.div
+                  initial={{ opacity: 0, x: -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.7, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex items-center gap-3"
+                >
+                  <motion.div
+                    className="h-px bg-brown-light/60"
+                    initial={{ width: 0 }}
+                    whileInView={{ width: 32 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    transition={{ duration: 0.8, delay: 1.3, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                  <span className="text-[0.6rem] uppercase tracking-[0.22em] text-brown-light font-bold">Майя Дзодзатти</span>
+                </motion.div>
               </div>
             </div>
-          </div>
-        </Reveal>
+          </motion.div>
 
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const SYSTEM_BGS = [
   "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/maya2.jpg",
