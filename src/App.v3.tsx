@@ -4,6 +4,7 @@ import { X, CheckCircle, ChevronRight, ChevronDown, ChevronLeft, MapPin, Calenda
 import { PAINS, WHAT_HAPPENS, AUTHORS, PROCESS, PROGRAM, CASES, FOR_WHO, RESULTS, STATS, PRICING } from './data';
 import { ChatAssistant } from './components/ChatAssistant';
 import { LiveChat } from './components/LiveChat';
+import BorderGlow from './components/BorderGlow';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -836,35 +837,48 @@ const Authors = ({ onOpenModal }: any) => (
       <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-6">
         {AUTHORS.map((a: any, i: number) => (
           <Reveal key={a.name} direction={i === 0 ? "left" : "right"} delay={0.15 + i * 0.1}>
-            <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden flex flex-col h-full group">
-              {/* Фото — полное, имя поверх */}
-              <div className="relative aspect-[3/2] overflow-hidden shrink-0">
-                <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-bold leading-[1.05] text-white mb-1.5">{a.name}</h3>
-                  <p className="text-brown-light/80 text-[0.72rem] tracking-wide leading-[1.5]">{a.role}</p>
+            <BorderGlow
+              backgroundColor="#16213d"
+              borderRadius={24}
+              glowRadius={50}
+              glowColor="36 60 70"
+              glowIntensity={1.1}
+              edgeSensitivity={25}
+              coneSpread={28}
+              colors={['#c9a97a', '#9a7d5a', '#e6d5c3']}
+              fillOpacity={0.35}
+              className="h-full"
+            >
+              <div className="flex flex-col h-full group">
+                {/* Фото — полное, имя поверх */}
+                <div className="relative aspect-[3/2] overflow-hidden shrink-0">
+                  <img src={a.img} alt={a.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h3 className="text-[clamp(1.4rem,2.5vw,1.9rem)] font-bold leading-[1.05] text-white mb-1.5">{a.name}</h3>
+                    <p className="text-brown-light/80 text-[0.72rem] tracking-wide leading-[1.5]">{a.role}</p>
+                  </div>
+                </div>
+                {/* Контент */}
+                <div className="p-6 md:p-8 flex flex-col gap-5 flex-1">
+                  <ul className="space-y-2.5 flex-1">
+                    {a.points.map((pt: string, j: number) => (
+                      <li key={j} className="flex items-start gap-3 text-[0.88rem] text-white/70 leading-[1.6]">
+                        <span className="text-[0.7rem] text-brown-light/50 shrink-0 tabular-nums select-none mt-0.5">{String(j + 1).padStart(2, '0')}</span>
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                    {a.tags.map((tag: string) => (
+                      <span key={tag} className="px-3 py-1.5 rounded-full text-[0.7rem] font-medium bg-brown/20 border border-brown-light/20 text-brown-light tracking-wide">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-              {/* Контент */}
-              <div className="p-6 md:p-8 flex flex-col gap-5 flex-1">
-                <ul className="space-y-2.5 flex-1">
-                  {a.points.map((pt: string, j: number) => (
-                    <li key={j} className="flex items-start gap-3 text-[0.88rem] text-white/70 leading-[1.6]">
-                      <span className="font-serif text-[0.7rem] text-brown-light/50 shrink-0 tabular-nums select-none mt-0.5">{String(j + 1).padStart(2, '0')}</span>
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
-                  {a.tags.map((tag: string) => (
-                    <span key={tag} className="px-3 py-1.5 rounded-full text-[0.7rem] font-medium bg-brown/20 border border-brown-light/20 text-brown-light tracking-wide">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+            </BorderGlow>
           </Reveal>
         ))}
       </div>
