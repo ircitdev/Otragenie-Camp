@@ -2179,7 +2179,7 @@ const Footer = () => (
     <div className="max-w-6xl mx-auto px-6 md:px-12">
       <div className="grid md:grid-cols-[1.4fr_1fr_1fr] gap-10">
         <div>
-          <div className="font-serif text-[1.7rem] tracking-[0.1em] text-white mb-3">Отражение</div>
+          <div className="text-[1.5rem] font-bold tracking-[0.18em] uppercase text-white mb-3">Отражение</div>
           <p className="text-[0.88rem] leading-[1.7] text-white/60 max-w-sm">{FOOTER_DESC}</p>
         </div>
         <div>
@@ -2192,13 +2192,14 @@ const Footer = () => (
         </div>
         <div>
           <div className="text-[0.6rem] uppercase tracking-[0.25em] text-brown-light mb-3">Даты</div>
-          <div className="font-serif text-[1.6rem] text-white leading-tight mb-1">19—21<br />июня 2026</div>
+          <div className="text-[1.6rem] font-bold text-white leading-tight mb-1 tabular-nums">19—21<br />июня 2026</div>
           <p className="text-[0.78rem] text-white/50">Глэмпинг «Дзен рекавери», Красная Поляна</p>
         </div>
       </div>
       <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-[0.65rem] uppercase tracking-[0.24em] text-white/35">
         <p>© 2026 «Отражение»</p>
-        <p>Безопасное пространство · Глубинная работа с собой</p>
+        <p className="text-center">ИП Дусенко Р.В. · ИНН 272700125009</p>
+        <p>Безопасное пространство</p>
       </div>
     </div>
   </footer>
