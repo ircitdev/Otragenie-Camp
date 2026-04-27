@@ -2311,10 +2311,11 @@ const FinalBlock = ({ onOpenModal }: any) => (
     {/* Статичное фото с медленным Ken-Burns */}
     <div className="absolute inset-0 z-0 overflow-hidden">
       <motion.img
-        src="/images/photo_1_2026-04-19_12-01-26.jpg"
+        src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/footerbg.jpg"
         alt=""
         aria-hidden="true"
         className="w-full h-full object-cover"
+        referrerPolicy="no-referrer"
         initial={{ scale: 1.0 }}
         whileInView={{ scale: 1.08 }}
         viewport={{ once: true, margin: '-100px' }}
