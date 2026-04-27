@@ -1786,8 +1786,7 @@ const WhatHappens = () => (
               <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
               <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
                 <span className="text-[0.62rem] uppercase tracking-[0.28em] text-white/60 font-medium block mb-3">Процесс</span>
-                <h2 className="font-serif text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.1] text-white font-light">Что происходит<br />на кэмпе</h2>
-                <div className="h-px w-14 bg-white/40 mt-4" />
+                <div className="h-px w-14 bg-white/40" />
               </div>
             </div>
             <div className="hidden md:block absolute -bottom-6 -right-6 max-w-[260px] bg-brown text-white px-6 py-5 rounded-2xl shadow-xl">
