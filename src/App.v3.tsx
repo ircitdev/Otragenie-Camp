@@ -1326,38 +1326,60 @@ const Testimonials = () => {
           </div>
         </Reveal>
 
-        {/* Карточка кейса со стрелками по бокам */}
+        {/* Карточка кейса со стрелками по бокам (desktop) и свайпом (mobile) */}
         <div className="relative min-h-[640px] flex items-center justify-center">
-          {/* Стрелка prev — слева */}
+          {/* Стрелка prev — слева, скрыта на мобильном (там свайп) */}
           <motion.button
             onClick={() => go(currentIndex - 1)}
             aria-label={`Предыдущий: ${flatCases[(currentIndex - 1 + flatCases.length) % flatCases.length].name}`}
             whileHover={{ scale: 1.08, x: -3 }}
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 lg:left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] flex items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
+            className="hidden sm:flex absolute left-0 lg:left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
             <ChevronLeft size={22} strokeWidth={1.8} />
           </motion.button>
 
-          {/* Карточка */}
-          <div className="w-full px-12 md:px-16 lg:px-20">
+          {/* Карточка с drag-свайпом */}
+          <div className="w-full px-2 sm:px-12 md:px-16 lg:px-20 touch-pan-y">
             <AnimatePresence mode="wait">
-              <CaseCard key={currentIndex} c={flatCases[currentIndex]} />
+              <motion.div
+                key={currentIndex}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.18}
+                onDragEnd={(_, info) => {
+                  const threshold = 60;
+                  if (info.offset.x < -threshold || info.velocity.x < -300) go(currentIndex + 1);
+                  else if (info.offset.x > threshold || info.velocity.x > 300) go(currentIndex - 1);
+                }}
+                whileTap={{ cursor: 'grabbing' }}
+                style={{ touchAction: 'pan-y' }}
+                className="cursor-grab active:cursor-grabbing select-none"
+              >
+                <CaseCard c={flatCases[currentIndex]} />
+              </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Стрелка next — справа */}
+          {/* Стрелка next — справа, скрыта на мобильном */}
           <motion.button
             onClick={() => go(currentIndex + 1)}
             aria-label={`Следующий: ${nextCase.name}`}
             whileHover={{ scale: 1.08, x: 3 }}
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute right-0 lg:right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] flex items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
+            className="hidden sm:flex absolute right-0 lg:right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
             <ChevronRight size={22} strokeWidth={1.8} />
           </motion.button>
+        </div>
+
+        {/* Подсказка свайпа на мобильном */}
+        <div className="sm:hidden flex items-center justify-center gap-2 mt-4 text-[0.7rem] text-text-dark-muted/70 uppercase tracking-[0.18em] font-medium">
+          <ChevronLeft size={12} />
+          <span>свайп для переключения</span>
+          <ChevronRight size={12} />
         </div>
 
         {/* Счётчик под карточкой */}
