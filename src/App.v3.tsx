@@ -955,8 +955,8 @@ const Location = () => (
   </section>
 );
 
-const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
-  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_16px_56px_rgba(154,125,90,0.22),0_2px_8px_rgba(154,125,90,0.08)] scale-[1.01] z-10" : "border-brown/8 shadow-sm scale-[0.97]"}`}>
+const CaseCard = ({ c }: { c: any }) => (
+  <div className="w-full grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 border border-brown/20 shadow-[0_16px_56px_rgba(154,125,90,0.22),0_2px_8px_rgba(154,125,90,0.08)]">
     <div>
       <div className="flex items-center gap-4 mb-5">
         <div className="w-14 h-14 rounded-full overflow-hidden bg-brown/10 shrink-0">
@@ -1010,20 +1010,39 @@ const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
   </div>
 );
 
+const cardVariants = {
+  enter: (dir: number) => ({
+    x: dir > 0 ? 120 : -120,
+    y: 40,
+    opacity: 0,
+    scale: 0.96,
+  }),
+  center: {
+    x: 0,
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] },
+  },
+  exit: (dir: number) => ({
+    x: dir > 0 ? -120 : 120,
+    y: 40,
+    opacity: 0,
+    scale: 0.96,
+    transition: { duration: 0.38, ease: [0.4, 0, 1, 1] },
+  }),
+};
+
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const flatCases = CASES.flat();
-  const trackRef = useRef<HTMLDivElement>(null);
+  const dragStartX = useRef(0);
 
   const go = (idx: number) => {
-    const clamped = (idx + flatCases.length) % flatCases.length;
-    setCurrentIndex(clamped);
-    if (trackRef.current) {
-      const card = trackRef.current.children[clamped] as HTMLElement;
-      if (card) {
-        card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
-      }
-    }
+    const next = (idx + flatCases.length) % flatCases.length;
+    setDirection(idx >= currentIndex ? 1 : -1);
+    setCurrentIndex(next);
   };
 
   useEffect(() => {
@@ -1034,20 +1053,6 @@ const Testimonials = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex]);
-
-  // sync currentIndex when user scrolls manually
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const onScroll = () => {
-      const cardWidth = (track.children[0] as HTMLElement)?.offsetWidth ?? 0;
-      const gap = 24;
-      const idx = Math.round(track.scrollLeft / (cardWidth + gap));
-      setCurrentIndex(Math.min(idx, flatCases.length - 1));
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => track.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <section id="testimonials" className="scroll-mt-20 py-12 md:py-16 bg-cream relative overflow-hidden">
@@ -1076,7 +1081,7 @@ const Testimonials = () => {
       </div>
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
+      <div className="max-w-5xl mx-auto px-6 md:px-12 relative">
         <Reveal direction="up">
           <div className="text-center mb-7">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Кейсы</span>
@@ -1086,29 +1091,34 @@ const Testimonials = () => {
         </Reveal>
       </div>
 
-      {/* Peek scroll track — overflows container on both sides, left padding aligns first card */}
-      <div
-        ref={trackRef}
-        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-8 px-6 md:px-12 overflow-y-visible"
-        style={{
-          scrollbarWidth: "none",
-          WebkitOverflowScrolling: "touch",
-          paddingRight: "calc(15vw - 24px)",
-        }}
-      >
-        <style>{`.cases-track::-webkit-scrollbar { display: none; }`}</style>
-        {flatCases.map((c, i) => (
-          <div key={i} className={`snap-start flex-shrink-0 cursor-pointer relative transition-transform duration-500 ${i === currentIndex ? 'z-10' : 'z-0'}`} onClick={() => go(i)}>
-            <CaseCard c={c} active={i === currentIndex} />
-          </div>
-        ))}
-        {/* ghost spacer so last card isn't flush right */}
-        <div className="flex-shrink-0 w-[15vw] min-w-[40px]" aria-hidden />
+      {/* Карточка */}
+      <div className="max-w-5xl mx-auto px-6 md:px-12 relative">
+        <div
+          className="relative overflow-hidden py-4 cursor-grab active:cursor-grabbing"
+          onPointerDown={e => { dragStartX.current = e.clientX; }}
+          onPointerUp={e => {
+            const dx = e.clientX - dragStartX.current;
+            if (Math.abs(dx) > 50) go(dx < 0 ? currentIndex + 1 : currentIndex - 1);
+          }}
+        >
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={currentIndex}
+              custom={direction}
+              variants={cardVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+            >
+              <CaseCard c={flatCases[currentIndex]} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Controls */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
-        <div className="flex items-center justify-center gap-6 mt-6">
+      <div className="max-w-5xl mx-auto px-6 md:px-12 relative">
+        <div className="flex items-center justify-center gap-6 mt-4">
           <motion.button
             onClick={() => go(currentIndex - 1)}
             aria-label="Предыдущий кейс"
