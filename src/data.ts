@@ -23,7 +23,7 @@ export const AUTHORS = [
       "Личный опыт проживания отношений и семьи: 4 брака, взрослый сын",
     ],
     tags: ["Чувствительность", "Глубина", "Отношения", "Сценарии"],
-    img: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/3maya.jpg"
+    img: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/m5.jpg"
   },
   {
     name: "Роман Дусенко",
@@ -35,7 +35,7 @@ export const AUTHORS = [
       "Личный опыт: 2 брака, 3 детей",
     ],
     tags: ["Структура", "Стратегия", "Система решений"],
-    img: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/3roman.jpg"
+    img: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/d5.jpg"
   }
 ];
 
