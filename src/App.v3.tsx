@@ -12,6 +12,7 @@ import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
 import DarkVeil from './components/DarkVeil';
+import SoftAurora from './components/SoftAurora';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -1833,6 +1834,26 @@ const SystemProblem = () => {
     <section className="bg-navy text-white relative overflow-hidden pt-20 md:pt-28 pb-0 min-h-[100vh]">
       {/* Лёгкий шум */}
       <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none z-[1]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
+
+      {/* SoftAurora WebGL — тёплая лента янтаря+терракота под Романом */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none opacity-65 z-[1]">
+        <SoftAurora
+          color1="#c9a97a"
+          color2="#9a4d2e"
+          speed={0.45}
+          scale={1.4}
+          brightness={0.95}
+          noiseFrequency={2.2}
+          noiseAmplitude={1.1}
+          bandHeight={0.35}
+          bandSpread={1.1}
+          octaveDecay={0.18}
+          layerOffset={1.5}
+          colorSpeed={0.7}
+          enableMouseInteraction
+          mouseInfluence={0.18}
+        />
+      </div>
 
       {/* Тёплый halo за фигурой (привязан к нижней части секции) */}
       <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-[20%] w-[60vw] h-[55vh] rounded-full pointer-events-none animate-pulse-slow z-[1]"
