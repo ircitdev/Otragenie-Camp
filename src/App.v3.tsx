@@ -1827,14 +1827,14 @@ const SystemProblem = () => {
   const notItems = ["в тебе", "в отношениях", "в работе", "в усталости"];
   const systemFormsLines = ["твои решения", "отношения", "состояния", "повторы"];
   return (
-    <section className="bg-navy text-white relative overflow-hidden py-20 md:py-28 min-h-[85vh] flex items-center">
+    <section className="bg-navy text-white relative overflow-hidden pt-20 md:pt-28 pb-10 md:pb-16">
       {/* Лёгкий шум */}
       <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
-      {/* Двойной тёплый halo за капитаном */}
-      <div aria-hidden className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[44vw] h-[60vh] rounded-full pointer-events-none animate-pulse-slow"
+      {/* Двойной тёплый halo за капитаном (привязан к нижней половине секции) */}
+      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[42vw] h-[55vh] rounded-full pointer-events-none animate-pulse-slow"
         style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, rgba(184,153,110,0.08) 35%, transparent 70%)', filter: 'blur(60px)' }}
       />
-      <div aria-hidden className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28vw] h-[40vh] rounded-full pointer-events-none"
+      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[26vw] h-[38vh] rounded-full pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at center, rgba(154,125,90,0.22) 0%, transparent 60%)', filter: 'blur(80px)' }}
       />
 
@@ -1851,10 +1851,10 @@ const SystemProblem = () => {
         </Reveal>
 
         {/* Композиция: НЕ ← Роман → СИСТЕМА */}
-        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-center">
+        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-end">
 
           {/* Левая колонка — НЕ */}
-          <div className="lg:text-right lg:pr-4 order-2 lg:order-1">
+          <div className="lg:text-right lg:pr-4 lg:pb-12 order-2 lg:order-1">
             <Reveal direction="left" delay={0.15}>
               <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-white/40 mb-5 font-medium">Проблема не</span>
             </Reveal>
@@ -1884,17 +1884,18 @@ const SystemProblem = () => {
             </Reveal>
           </div>
 
-          {/* Центр — Роман-капитан */}
+          {/* Центр — Роман-капитан, стоит на нижней границе секции */}
           <Reveal delay={0.1} scale>
-            <div className="relative w-[260px] sm:w-[300px] md:w-[340px] mx-auto order-1 lg:order-2">
+            <div className="relative w-[260px] sm:w-[300px] md:w-[340px] mx-auto order-1 lg:order-2 lg:-mb-px">
               {/* Тень-«пьедестал» под фигурой */}
-              <div aria-hidden className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-12 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, transparent 65%)', filter: 'blur(20px)' }}
+              <div aria-hidden className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-10 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, transparent 65%)', filter: 'blur(18px)' }}
               />
               <img
                 src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/dusenko-kap.png"
                 alt="Роман Дусенко"
-                className="relative w-full h-auto object-contain select-none pointer-events-none"
+                className="relative w-full h-auto object-contain object-bottom select-none pointer-events-none block"
+                style={{ maxHeight: 'min(560px, 72vh)' }}
                 referrerPolicy="no-referrer"
                 draggable={false}
               />
@@ -1902,7 +1903,7 @@ const SystemProblem = () => {
           </Reveal>
 
           {/* Правая колонка — СИСТЕМА */}
-          <div className="lg:pl-4 order-3">
+          <div className="lg:pl-4 lg:pb-12 order-3">
             <Reveal direction="right" delay={0.15}>
               <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-brown-light/80 mb-5 font-medium">Система</span>
             </Reveal>
@@ -1927,41 +1928,20 @@ const SystemProblem = () => {
               ))}
             </ul>
             <Reveal direction="right" delay={0.85}>
-              <p className="text-white/55 text-[0.92rem] leading-[1.7] max-w-[36ch]">
+              <p className="text-white/55 text-[0.92rem] leading-[1.7] max-w-[36ch] mb-6">
                 Этот кэмп — про то, чтобы увидеть и изменить именно её.
               </p>
             </Reveal>
+            <Reveal direction="right" delay={1.0}>
+              <div className="flex items-center gap-3">
+                <div className="h-px w-10 bg-brown-light/40 shrink-0" />
+                <p className="text-[0.62rem] uppercase tracking-[0.28em] text-brown-light/70 tabular-nums font-medium">
+                  Глубинная работа · Роман Дусенко
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
-
-        {/* Подпись автора методологии */}
-        <Reveal delay={1.1}>
-          <div className="mt-16 md:mt-20 flex items-center justify-center gap-3">
-            <div className="h-px w-10 bg-brown-light/40 shrink-0" />
-            <p className="text-[0.7rem] uppercase tracking-[0.28em] text-brown-light/70 tabular-nums font-medium">
-              Глубинная работа со сценарием · Роман Дусенко
-            </p>
-            <div className="h-px w-10 bg-brown-light/40 shrink-0" />
-          </div>
-        </Reveal>
-
-        {/* Якорь-мостик */}
-        <Reveal delay={1.25}>
-          <div className="mt-10 flex items-center justify-center">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.querySelector('[data-section="what-happens"]') as HTMLElement | null;
-                el?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="inline-flex flex-col items-center gap-2 text-brown-light/70 hover:text-brown-light transition-colors group"
-            >
-              <span className="text-[0.7rem] uppercase tracking-[0.26em] font-medium">что меняется</span>
-              <ArrowDown size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
-            </a>
-          </div>
-        </Reveal>
       </div>
     </section>
   );
