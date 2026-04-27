@@ -1825,75 +1825,143 @@ const SYSTEM_BGS = [
 
 const SystemProblem = () => {
   const notItems = ["в тебе", "в отношениях", "в работе", "в усталости"];
+  const systemFormsLines = ["твои решения", "отношения", "состояния", "повторы"];
   return (
-    <section className="bg-navy text-white relative overflow-hidden">
-      {/* subtle grain texture */}
+    <section className="bg-navy text-white relative overflow-hidden py-20 md:py-28 min-h-[85vh] flex items-center">
+      {/* Лёгкий шум */}
       <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
-      {/* warm glow bottom-right */}
-      <div aria-hidden className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brown-dark/12 rounded-full blur-[120px] pointer-events-none" />
+      {/* Двойной тёплый halo за капитаном */}
+      <div aria-hidden className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[44vw] h-[60vh] rounded-full pointer-events-none animate-pulse-slow"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, rgba(184,153,110,0.08) 35%, transparent 70%)', filter: 'blur(60px)' }}
+      />
+      <div aria-hidden className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28vw] h-[40vh] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(154,125,90,0.22) 0%, transparent 60%)', filter: 'blur(80px)' }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-[1fr_1px_1fr] gap-0 items-stretch min-h-[80vh]">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
+        {/* Шапка над всей композицией */}
+        <Reveal delay={0.05}>
+          <div className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+            <span className="text-[0.62rem] tracking-[0.32em] uppercase font-medium text-brown-light/80 block mb-4">Проблема в системе</span>
+            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-white mb-3">
+              из которой <span className="text-brown-light">ты живёшь</span>
+            </h2>
+            <div className="h-px w-16 bg-brown-light/40 mx-auto" />
+          </div>
+        </Reveal>
 
-        {/* Left — the "NOT" list */}
-        <div className="py-20 md:py-28 lg:pr-16 flex flex-col justify-center">
-          <Reveal direction="left" delay={0.1}>
-            <p className="text-white/40 text-[0.82rem] uppercase tracking-[0.2em] font-medium mb-6">Проблема не</p>
-          </Reveal>
-          <div className="space-y-0 mb-10">
-            {notItems.map((item, i) => (
-              <Reveal key={i} direction="left" delay={0.15 + i * 0.08}>
-                <div className="flex items-baseline gap-5 py-4 border-b border-white/6 group">
-                  <span className="text-[0.62rem] text-white/20 font-mono shrink-0 w-5 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="font-serif text-[clamp(1.6rem,3.5vw,2.4rem)] leading-[1.1] text-white/30 relative">
-                    {item}
-                    <span className="absolute left-0 right-0 top-1/2 h-[1.5px] bg-white/20" aria-hidden />
+        {/* Композиция: НЕ ← Роман → СИСТЕМА */}
+        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-center">
+
+          {/* Левая колонка — НЕ */}
+          <div className="lg:text-right lg:pr-4 order-2 lg:order-1">
+            <Reveal direction="left" delay={0.15}>
+              <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-white/40 mb-5 font-medium">Проблема не</span>
+            </Reveal>
+            <ul className="space-y-3 md:space-y-4 mb-7">
+              {notItems.map((item, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.25 + i * 0.12 }}
+                  className="flex items-center lg:justify-end gap-3"
+                >
+                  <span className="lg:order-2 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#c47d6e]/15 text-[#d18b7a] shrink-0">
+                    <X size={14} strokeWidth={2.5} />
                   </span>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal direction="left" delay={0.55}>
-            <p className="text-white/45 text-[0.9rem] leading-[1.8] max-w-[42ch]">
-              Можно менять работу, партнёров, города, решения — и возвращаться в ту же точку. Потому что сценарий остаётся прежним.
-            </p>
-          </Reveal>
-        </div>
-
-        {/* Divider */}
-        <div aria-hidden className="hidden lg:block bg-white/6" />
-
-        {/* Right — the reveal */}
-        <div className="lg:pl-16 py-20 md:py-28 flex flex-col justify-center relative">
-          {/* video inset */}
-          <div className="absolute inset-0 lg:inset-y-8 lg:right-0 overflow-hidden lg:rounded-r-none opacity-15 pointer-events-none">
-            <video src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/walk.MP4" autoPlay muted playsInline className="w-full h-full object-cover object-center" />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/60 to-transparent" />
-          </div>
-          <div className="relative z-10">
-            <Reveal direction="right" delay={0.2}>
-              <p className="text-[0.62rem] tracking-[0.35em] uppercase text-brown font-medium mb-8">Проблема</p>
-            </Reveal>
-            <Reveal direction="right" delay={0.3}>
-              <h2 className="font-serif text-[clamp(2.2rem,4.5vw,3.8rem)] leading-[1.08] text-white font-light mb-8">
-                в системе,<br />
-                <em className="not-italic text-brown-bg">из которой<br />ты живёшь</em>
-              </h2>
-            </Reveal>
-            <Reveal direction="right" delay={0.45}>
-              <div className="h-px w-12 bg-brown/50 mb-8" />
-              <p className="text-white/55 text-[0.9rem] leading-[1.85] max-w-[40ch] mb-10">
-                Этот кэмп — про то, чтобы увидеть и изменить именно его.
+                  <span className="lg:order-1 text-[clamp(1.15rem,1.7vw,1.45rem)] uppercase tracking-[0.04em] text-white/85 font-bold">
+                    {item}
+                  </span>
+                </motion.li>
+              ))}
+            </ul>
+            <Reveal direction="left" delay={0.7}>
+              <p className="text-white/55 text-[0.92rem] leading-[1.7] max-w-[36ch] lg:ml-auto">
+                Можно менять работу, партнёров, города, решения — и возвращаться в ту же точку. Потому что сценарий остаётся прежним.
               </p>
             </Reveal>
-            <Reveal direction="right" delay={0.55}>
-              <div className="inline-flex items-center gap-3 text-[0.75rem] text-brown tracking-[0.12em] uppercase">
-                <div className="w-8 h-px bg-brown" />
-                глубинная работа со сценарием
-              </div>
+          </div>
+
+          {/* Центр — Роман-капитан */}
+          <Reveal delay={0.1} scale>
+            <div className="relative w-[260px] sm:w-[300px] md:w-[340px] mx-auto order-1 lg:order-2">
+              {/* Тень-«пьедестал» под фигурой */}
+              <div aria-hidden className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[80%] h-12 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, transparent 65%)', filter: 'blur(20px)' }}
+              />
+              <img
+                src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/dusenko-kap.png"
+                alt="Роман Дусенко"
+                className="relative w-full h-auto object-contain select-none pointer-events-none"
+                referrerPolicy="no-referrer"
+                draggable={false}
+              />
+            </div>
+          </Reveal>
+
+          {/* Правая колонка — СИСТЕМА */}
+          <div className="lg:pl-4 order-3">
+            <Reveal direction="right" delay={0.15}>
+              <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-brown-light/80 mb-5 font-medium">Система</span>
+            </Reveal>
+            <Reveal direction="right" delay={0.25}>
+              <p className="text-[clamp(1rem,1.4vw,1.18rem)] text-white/75 leading-[1.7] mb-5 max-w-[34ch]">
+                которая формирует
+              </p>
+            </Reveal>
+            <ul className="space-y-2.5 mb-7">
+              {systemFormsLines.map((line, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.35 + i * 0.12 }}
+                  className="flex items-center gap-3"
+                >
+                  <span className="h-px w-5 bg-brown-light/50 shrink-0" />
+                  <span className="text-[clamp(1rem,1.4vw,1.18rem)] text-white/85 font-medium">{line}</span>
+                </motion.li>
+              ))}
+            </ul>
+            <Reveal direction="right" delay={0.85}>
+              <p className="text-white/55 text-[0.92rem] leading-[1.7] max-w-[36ch]">
+                Этот кэмп — про то, чтобы увидеть и изменить именно её.
+              </p>
             </Reveal>
           </div>
         </div>
 
+        {/* Подпись автора методологии */}
+        <Reveal delay={1.1}>
+          <div className="mt-16 md:mt-20 flex items-center justify-center gap-3">
+            <div className="h-px w-10 bg-brown-light/40 shrink-0" />
+            <p className="text-[0.7rem] uppercase tracking-[0.28em] text-brown-light/70 tabular-nums font-medium">
+              Глубинная работа со сценарием · Роман Дусенко
+            </p>
+            <div className="h-px w-10 bg-brown-light/40 shrink-0" />
+          </div>
+        </Reveal>
+
+        {/* Якорь-мостик */}
+        <Reveal delay={1.25}>
+          <div className="mt-10 flex items-center justify-center">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.querySelector('[data-section="what-happens"]') as HTMLElement | null;
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex flex-col items-center gap-2 text-brown-light/70 hover:text-brown-light transition-colors group"
+            >
+              <span className="text-[0.7rem] uppercase tracking-[0.26em] font-medium">что меняется</span>
+              <ArrowDown size={20} className="group-hover:translate-y-1 transition-transform duration-300" />
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1901,7 +1969,7 @@ const SystemProblem = () => {
 
 
 const WhatHappens = () => (
-  <section className="py-16 md:py-24 bg-cream relative overflow-hidden">
+  <section data-section="what-happens" className="py-16 md:py-24 bg-cream relative overflow-hidden">
     <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Видео слева */}
@@ -1970,73 +2038,98 @@ const WhatHappens = () => (
 );
 
 const HowItWorks = () => {
-  const icons: any = { Eye, RefreshCw, Zap, Compass };
+  const icons: any = { Eye, RefreshCw, Zap, Compass, Key };
 
   return (
-    <section className="min-h-screen flex items-center py-12 bg-cream relative overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)",
-          maskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)"
-        }}
-      >
-        <svg width="100%" height="100%" className="opacity-[0.12]">
-          <defs>
-            <pattern id="methodology-rings" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <g stroke="#9a7d5a" strokeWidth="0.6" fill="none">
-                <circle cx="50" cy="50" r="32" />
-                <circle cx="50" cy="50" r="20" opacity="0.7" />
-                <circle cx="50" cy="50" r="10" opacity="0.5" />
-              </g>
-              <circle cx="50" cy="50" r="1.2" fill="#9a7d5a" />
-              <line x1="50" y1="0" x2="50" y2="100" stroke="#9a7d5a" strokeWidth="0.3" opacity="0.25" />
-              <line x1="0" y1="50" x2="100" y2="50" stroke="#9a7d5a" strokeWidth="0.3" opacity="0.25" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#methodology-rings)" />
-        </svg>
-      </div>
-
+    <section className="min-h-[85vh] flex items-center py-20 md:py-28 bg-cream relative overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10">
+        {/* Шапка */}
         <Reveal direction="up">
-          <div className="text-center mb-8">
-            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Как проходит работа</span>
-            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] heading-gradient">Инструменты отражения</h2>
-            <p className="text-[0.95rem] text-text-dark-soft mt-3 max-w-xl mx-auto">Не лекции. Не теория. Живая работа с вашей реальной ситуацией.</p>
-            <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
+          <div className="max-w-3xl mb-14 md:mb-16">
+            <span className="text-[0.62rem] uppercase tracking-[0.32em] text-brown font-medium block mb-4">Как проходит работа</span>
+            <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] heading-gradient mb-4">Инструменты отражения</h2>
+            <div className="h-px w-16 bg-brown/30 mb-5" />
+            <p className="text-[1rem] text-text-dark-soft leading-[1.65] max-w-[44ch]">
+              Не лекции. Не теория. Живая работа с вашей реальной ситуацией.
+            </p>
           </div>
         </Reveal>
 
-        <div className="max-w-2xl mx-auto">
-          <div className="space-y-4">
-            {PROCESS.map((item, i) => {
-              const Icon = icons[item.icon] || HelpCircle;
-              return (
-                <Reveal key={i} direction="up" delay={0.08 + i * 0.07}>
-                  <div className="flex items-center gap-5 px-6 py-5 rounded-2xl bg-white border border-brown/10 group hover:border-brown/30 hover:shadow-sm transition-all duration-300">
-                    <span className="font-serif text-[1.4rem] text-brown/20 leading-none w-7 shrink-0 text-right select-none">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <div className="w-px h-7 bg-brown/15 shrink-0" />
-                    <p className="text-[0.97rem] text-text-dark leading-snug">
-                      <span className="font-semibold text-brown">{item.bold}</span>{' '}
-                      <span className="text-text-dark-soft">{item.rest}</span>
-                    </p>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-          <Reveal direction="up" delay={0.5}>
-            <div className="mt-6 flex items-start gap-4 px-6 py-5 rounded-2xl bg-brown/8 border border-brown/15">
-              <Users size={18} className="text-brown shrink-0 mt-0.5" />
-              <p className="text-[0.88rem] text-text-dark-soft leading-[1.65]">
-                Работа проходит в малой группе, всего <span className="font-semibold text-text-dark">10 человек</span>, чтобы у каждого участника было время, внимание и возможность получить личный разбор своей ситуации.
-              </p>
+        {/* Майя слева + инструменты справа */}
+        <div className="grid lg:grid-cols-[5fr_7fr] gap-10 lg:gap-16 items-center">
+
+          {/* Майя в кресле */}
+          <Reveal direction="left" delay={0.1} scale>
+            <div className="relative max-w-[460px] mx-auto lg:mx-0">
+              {/* Кольца за фигурой */}
+              <div aria-hidden className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <svg viewBox="0 0 400 400" className="w-[120%] h-[120%] opacity-[0.18]">
+                  <g stroke="#9a7d5a" strokeWidth="1" fill="none">
+                    <circle cx="200" cy="200" r="180" />
+                    <circle cx="200" cy="200" r="140" opacity="0.7" />
+                    <circle cx="200" cy="200" r="100" opacity="0.5" />
+                    <circle cx="200" cy="200" r="60" opacity="0.35" />
+                  </g>
+                </svg>
+              </div>
+              {/* Тёплый halo */}
+              <div aria-hidden className="absolute inset-0 pointer-events-none animate-pulse-slow"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(50px)' }}
+              />
+              {/* Тень-«пол» */}
+              <div aria-hidden className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[78%] h-10 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(58,39,20,0.28) 0%, transparent 65%)', filter: 'blur(20px)' }}
+              />
+              <img
+                src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/mayachair.png"
+                alt="Майя Дзодзатти"
+                className="relative w-full h-auto object-contain select-none pointer-events-none"
+                referrerPolicy="no-referrer"
+                draggable={false}
+              />
             </div>
           </Reveal>
+
+          {/* Инструменты */}
+          <div>
+            <ul className="space-y-6 md:space-y-7">
+              {PROCESS.map((item, i) => {
+                const Icon = icons[item.icon] || HelpCircle;
+                return (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: 20, filter: 'blur(4px)' }}
+                    whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.13 }}
+                    className="group flex items-start gap-4 md:gap-5 cursor-default"
+                  >
+                    <span className="shrink-0 w-11 h-11 rounded-full bg-brown/10 text-brown flex items-center justify-center transition-all duration-300 group-hover:bg-brown group-hover:text-white group-hover:shadow-[0_8px_22px_rgba(154,125,90,0.28)] group-hover:scale-105">
+                      <Icon size={18} strokeWidth={1.7} />
+                    </span>
+                    <div className="pt-1.5 transition-transform duration-300 group-hover:translate-x-1">
+                      <p className="text-[clamp(1.05rem,1.5vw,1.2rem)] font-bold text-text-dark leading-snug mb-1">
+                        {item.bold}
+                      </p>
+                      <p className="text-[0.92rem] text-text-dark-soft leading-[1.6]">
+                        {item.rest}
+                      </p>
+                    </div>
+                  </motion.li>
+                );
+              })}
+            </ul>
+
+            {/* Подпись автора-методолога без выдуманной цитаты */}
+            <Reveal direction="up" delay={0.5}>
+              <div className="mt-10 pt-7 border-t border-brown/15 flex items-center gap-3">
+                <div className="h-px w-10 bg-brown/40 shrink-0" />
+                <p className="text-[0.7rem] uppercase tracking-[0.28em] text-brown tabular-nums font-medium">
+                  Методология · Майя Дзодзатти
+                </p>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>
