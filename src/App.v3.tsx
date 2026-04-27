@@ -977,7 +977,7 @@ const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
             : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
         </div>
         <div>
-          <h3 className="font-serif text-[1.35rem] text-text-dark leading-tight">{c.name}</h3>
+          <h3 className="text-[1.15rem] font-bold text-text-dark leading-tight">{c.name}</h3>
           <p className="text-text-dark-muted text-[0.72rem] mt-0.5 leading-tight">{c.role}</p>
         </div>
       </div>
