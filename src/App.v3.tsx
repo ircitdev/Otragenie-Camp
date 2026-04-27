@@ -955,84 +955,75 @@ const Location = () => (
   </section>
 );
 
-const CaseCard = ({ c, direction }: { c: any; direction: number }) => (
-  <motion.div
-    key={c.name}
-    initial={{ opacity: 0, x: direction * 60 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: direction * -60 }}
-    transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-    className="grid lg:grid-cols-[1fr_1.1fr] gap-0 bg-white rounded-[1.5rem] overflow-hidden shadow-[0_8px_48px_rgba(154,125,90,0.13)] border border-brown/10 w-full"
-  >
-    {/* Левая — фото на всю высоту */}
-    <div className="relative min-h-[260px] lg:min-h-0 overflow-hidden">
-      {c.img
-        ? <img src={c.img} alt={c.name} className="absolute inset-0 w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
-        : <div className="absolute inset-0 bg-brown/10 flex items-center justify-center font-serif text-brown text-6xl">{c.name[0]}</div>
-      }
-      {/* Градиент снизу — имя читается */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(11,17,48,0.85) 0%, rgba(11,17,48,0.2) 45%, transparent 70%)' }} />
-      <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-        <h3 className="font-serif text-[1.25rem] text-white leading-tight">{c.name}</h3>
-        <p className="text-white/55 text-[0.68rem] mt-1 leading-tight">{c.role}</p>
-      </div>
-    </div>
-
-    {/* Правая — результат + до/после */}
-    <div className="flex flex-col p-6 md:p-7">
-      {/* Цитата — главный акцент */}
-      <div className="mb-5 pb-5 border-b border-brown/10">
-        <Quote className="text-brown/40 mb-2" size={22} />
-        <p className="font-serif italic text-[clamp(0.95rem,1.3vw,1.08rem)] leading-[1.6] text-text-dark">
-          «{c.resText}»
-        </p>
-        {c.author && (
-          <p className="text-[0.6rem] uppercase tracking-[0.2em] text-brown font-medium mt-3">
-            — работа с {c.author}
-          </p>
-        )}
+const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
+  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 shadow-sm border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_8px_40px_rgba(154,125,90,0.12)]" : "border-brown/8 opacity-60 scale-[0.97]"}`}>
+    <div>
+      <div className="flex items-center gap-4 mb-5">
+        <div className="w-14 h-14 rounded-full overflow-hidden bg-brown/10 shrink-0">
+          {c.img
+            ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
+        </div>
+        <div>
+          <h3 className="font-serif text-[1.35rem] text-text-dark leading-tight">{c.name}</h3>
+          <p className="text-text-dark-muted text-[0.72rem] mt-0.5 leading-tight">{c.role}</p>
+        </div>
       </div>
 
-      {/* После */}
       <div className="mb-4">
-        <span className="text-[0.55rem] uppercase tracking-[0.25em] font-bold text-brown block mb-2">Что изменилось</span>
+        <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-text-dark-muted mb-2 block">До участия</span>
+        <ul className="space-y-1.5">
+          {c.before.map((x: string, j: number) => (
+            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark-soft leading-[1.5]">
+              <span className="text-brown/50 shrink-0">—</span>{x}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="p-4 rounded-xl bg-brown/6">
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-brown">После этого</span>
+          {c.author && <span className="text-[0.58rem] text-text-dark-muted">· результат работы с {c.author}</span>}
+        </div>
         <ul className="space-y-1.5">
           {c.after.map((x: string, j: number) => (
-            <li key={j} className="flex gap-2 text-[0.82rem] text-text-dark leading-[1.5]">
-              <CheckCircle size={12} className="shrink-0 mt-[3px] text-brown" />{x}
+            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark leading-[1.5] font-medium">
+              <CheckCircle size={13} className="shrink-0 mt-0.5 text-brown" />{x}
             </li>
           ))}
         </ul>
       </div>
-
-      {/* До — свёрнуто, вторичное */}
-      <details className="mt-auto group">
-        <summary className="text-[0.6rem] uppercase tracking-[0.22em] text-text-dark-muted cursor-pointer list-none flex items-center gap-1.5 select-none hover:text-brown transition-colors">
-          <ChevronRight size={11} className="group-open:rotate-90 transition-transform" />
-          С чем пришёл
-        </summary>
-        <ul className="mt-2 space-y-1">
-          {c.before.map((x: string, j: number) => (
-            <li key={j} className="flex gap-2 text-[0.78rem] text-text-dark-soft leading-[1.45]">
-              <span className="text-brown/40 shrink-0">—</span>{x}
-            </li>
-          ))}
-        </ul>
-      </details>
     </div>
-  </motion.div>
+
+    <div className="bg-navy text-white p-6 md:p-7 rounded-[1.25rem] relative overflow-hidden flex flex-col justify-between">
+      <div className="absolute top-0 right-0 w-24 h-24 bg-brown/15 rounded-full blur-3xl" />
+      <div>
+        <Quote className="text-brown mb-3 opacity-70" size={28} />
+        <p className="font-serif italic text-[0.98rem] md:text-[1.08rem] leading-[1.5] mb-4">«{c.resText}»</p>
+      </div>
+      <div className="flex items-center gap-3 pt-3 border-t border-white/10">
+        <div className="h-px w-8 bg-brown" />
+        <span className="text-[0.6rem] uppercase tracking-[0.18em] text-brown-light font-bold">{c.resLabel}</span>
+      </div>
+    </div>
+  </div>
 );
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const flatCases = CASES.flat();
-  const dragStartX = useRef(0);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const go = (idx: number) => {
-    const next = (idx + flatCases.length) % flatCases.length;
-    setDirection(idx >= currentIndex ? 1 : -1);
-    setCurrentIndex(next);
+    const clamped = (idx + flatCases.length) % flatCases.length;
+    setCurrentIndex(clamped);
+    if (trackRef.current) {
+      const card = trackRef.current.children[clamped] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+      }
+    }
   };
 
   useEffect(() => {
@@ -1044,13 +1035,31 @@ const Testimonials = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex]);
 
+  // sync currentIndex when user scrolls manually
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => {
+      const cardWidth = (track.children[0] as HTMLElement)?.offsetWidth ?? 0;
+      const gap = 24;
+      const idx = Math.round(track.scrollLeft / (cardWidth + gap));
+      setCurrentIndex(Math.min(idx, flatCases.length - 1));
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <section id="testimonials" className="scroll-mt-20 py-14 md:py-20 bg-cream relative overflow-hidden">
-      {/* Фоновый паттерн */}
-      <div aria-hidden className="absolute inset-0 pointer-events-none"
-        style={{ WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)", maskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)" }}
+    <section id="testimonials" className="scroll-mt-20 py-12 md:py-16 bg-cream relative overflow-hidden">
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)",
+          maskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)"
+        }}
       >
-        <svg width="100%" height="100%" className="opacity-20">
+        <svg width="100%" height="100%" className="opacity-25">
           <defs>
             <pattern id="cases-waves" x="0" y="0" width="140" height="140" patternUnits="userSpaceOnUse">
               <g stroke="#9a7d5a" strokeWidth="1" strokeLinecap="round" fill="none">
@@ -1058,84 +1067,84 @@ const Testimonials = () => {
                 <path d="M0 115 C 25 90, 45 140, 70 115 S 115 90, 140 115" opacity="0.6" />
               </g>
               <circle cx="70" cy="70" r="1.5" fill="#9a7d5a" />
+              <circle cx="0" cy="115" r="1.5" fill="#9a7d5a" />
+              <circle cx="140" cy="115" r="1.5" fill="#9a7d5a" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#cases-waves)" />
         </svg>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-12 relative">
-
-        {/* Шапка */}
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
         <Reveal direction="up">
-          <div className="flex items-end justify-between mb-8 md:mb-10">
-            <div>
-              <span className="text-[0.62rem] uppercase tracking-[0.3em] text-brown font-medium block mb-2">Кейсы</span>
-              <h2 className="font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.1] text-text-dark">Истории трансформации</h2>
-            </div>
-            {/* Счётчик */}
-            <div className="flex items-center gap-3 shrink-0">
-              <span className="font-serif text-[clamp(1.4rem,2.5vw,1.9rem)] leading-none text-text-dark tabular-nums">
-                {String(currentIndex + 1).padStart(2, '0')}
-              </span>
-              <div className="flex flex-col gap-1">
-                <div className="h-px w-8 bg-brown/30" />
-                <div className="h-px w-8 bg-brown/30" />
-              </div>
-              <span className="font-serif text-[clamp(1rem,1.8vw,1.3rem)] leading-none text-brown/40 tabular-nums">
-                {String(flatCases.length).padStart(2, '0')}
-              </span>
-            </div>
+          <div className="text-center mb-7">
+            <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Кейсы</span>
+            <h2 className="font-serif text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.1] text-text-dark">Истории трансформации</h2>
+            <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
+      </div>
 
-        {/* Карточка с AnimatePresence */}
-        <div
-          className="relative overflow-hidden rounded-[1.5rem] cursor-grab active:cursor-grabbing"
-          onPointerDown={e => { dragStartX.current = e.clientX; }}
-          onPointerUp={e => {
-            const dx = e.clientX - dragStartX.current;
-            if (Math.abs(dx) > 50) go(dx < 0 ? currentIndex + 1 : currentIndex - 1);
-          }}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <CaseCard key={currentIndex} c={flatCases[currentIndex]} direction={direction} />
-          </AnimatePresence>
-        </div>
+      {/* Peek scroll track — overflows container on both sides, left padding aligns first card */}
+      <div
+        ref={trackRef}
+        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 px-6 md:px-12"
+        style={{
+          scrollbarWidth: "none",
+          WebkitOverflowScrolling: "touch",
+          paddingRight: "calc(15vw - 24px)",
+        }}
+      >
+        <style>{`.cases-track::-webkit-scrollbar { display: none; }`}</style>
+        {flatCases.map((c, i) => (
+          <div key={i} className="snap-start flex-shrink-0 cursor-pointer" onClick={() => go(i)}>
+            <CaseCard c={c} active={i === currentIndex} />
+          </div>
+        ))}
+        {/* ghost spacer so last card isn't flush right */}
+        <div className="flex-shrink-0 w-[15vw] min-w-[40px]" aria-hidden />
+      </div>
 
-        {/* Контролы */}
-        <div className="flex items-center justify-between mt-6">
+      {/* Controls */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
+        <div className="flex items-center justify-center gap-6 mt-6">
+          <motion.button
+            onClick={() => go(currentIndex - 1)}
+            aria-label="Предыдущий кейс"
+            whileHover={{ scale: 1.08, backgroundColor: "#9a7d5a", color: "#fff" }}
+            whileTap={{ scale: 0.93 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="w-14 h-14 rounded-full border-2 border-brown/35 bg-white text-brown shadow-[0_4px_16px_rgba(154,125,90,0.12)] flex items-center justify-center"
+            style={{ color: "#9a7d5a" }}
+          >
+            <ChevronLeft size={22} strokeWidth={1.8} />
+          </motion.button>
 
-          {/* Прогресс-полоска */}
-          <div className="flex-1 h-[2px] bg-brown/10 rounded-full mr-8 overflow-hidden">
-            <motion.div
-              className="h-full bg-brown rounded-full"
-              animate={{ width: `${((currentIndex + 1) / flatCases.length) * 100}%` }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            />
+          <div className="flex items-center gap-2">
+            {flatCases.map((_, j) => (
+              <motion.button
+                key={j}
+                onClick={() => go(j)}
+                aria-label={`Кейс ${j + 1}`}
+                animate={{ width: currentIndex === j ? 28 : 8, backgroundColor: currentIndex === j ? "#9a7d5a" : "rgba(154,125,90,0.25)" }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="h-2 rounded-full"
+              />
+            ))}
           </div>
 
-          {/* Кнопки */}
-          <div className="flex items-center gap-3">
-            <motion.button
-              onClick={() => go(currentIndex - 1)}
-              aria-label="Предыдущий кейс"
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.93 }}
-              className="w-11 h-11 rounded-full border border-brown/25 bg-white flex items-center justify-center text-brown hover:bg-brown hover:text-white hover:border-brown transition-colors duration-200"
-            >
-              <ChevronLeft size={18} strokeWidth={1.8} />
-            </motion.button>
-            <motion.button
-              onClick={() => go(currentIndex + 1)}
-              aria-label="Следующий кейс"
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.93 }}
-              className="w-11 h-11 rounded-full border border-brown/25 bg-white flex items-center justify-center text-brown hover:bg-brown hover:text-white hover:border-brown transition-colors duration-200"
-            >
-              <ChevronRight size={18} strokeWidth={1.8} />
-            </motion.button>
-          </div>
+          <motion.button
+            onClick={() => go(currentIndex + 1)}
+            aria-label="Следующий кейс"
+            whileHover={{ scale: 1.08, backgroundColor: "#9a7d5a", color: "#fff" }}
+            whileTap={{ scale: 0.93 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="w-14 h-14 rounded-full border-2 border-brown/35 bg-white text-brown shadow-[0_4px_16px_rgba(154,125,90,0.12)] flex items-center justify-center"
+            style={{ color: "#9a7d5a" }}
+          >
+            <ChevronRight size={22} strokeWidth={1.8} />
+          </motion.button>
         </div>
       </div>
     </section>
