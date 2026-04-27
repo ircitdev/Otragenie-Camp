@@ -12,6 +12,7 @@ import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
 import SplitText from './components/SplitText';
+import TextType from './components/TextType';
 import SoftAurora from './components/SoftAurora';
 import DarkVeil from './components/DarkVeil';
 import { useScrollLock } from './hooks/useScrollLock';
@@ -2824,7 +2825,20 @@ const Footer = () => (
         </div>
         <div>
           <div className="text-[0.6rem] uppercase tracking-[0.25em] text-brown-light mb-3">Даты</div>
-          <div className="text-[1.6rem] font-bold text-white leading-tight mb-1 tabular-nums">19—21<br />июня 2026</div>
+          <TextType
+            as="div"
+            text={["19—21\nиюня 2026"]}
+            typingSpeed={90}
+            initialDelay={250}
+            pauseDuration={3500}
+            deletingSpeed={50}
+            loop
+            startOnVisible
+            cursorCharacter="▍"
+            cursorClassName="text-brown-light/80"
+            cursorBlinkDuration={0.55}
+            className="text-[1.6rem] font-bold text-white leading-tight mb-1 tabular-nums"
+          />
           <p className="text-[0.78rem] text-white/50">Глэмпинг «Дзен рекавери», Красная Поляна</p>
         </div>
       </div>
@@ -2832,6 +2846,18 @@ const Footer = () => (
         <p>© 2026 «Отражение»</p>
         <p className="text-center">ИП Дусенко Р.В. · ИНН 272700125009</p>
         <p>Безопасное пространство</p>
+      </div>
+      <div className="mt-4 pt-4 border-t border-white/5 flex justify-center">
+        <a
+          href="https://t.me/uspeshnyy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-[0.32em] text-white/30 hover:text-brown-light transition-colors duration-300 group"
+        >
+          <span className="h-px w-6 bg-white/20 group-hover:bg-brown-light/60 transition-colors duration-300" />
+          <span>Webdev by Uspeshnyy</span>
+          <span className="h-px w-6 bg-white/20 group-hover:bg-brown-light/60 transition-colors duration-300" />
+        </a>
       </div>
     </div>
   </footer>
