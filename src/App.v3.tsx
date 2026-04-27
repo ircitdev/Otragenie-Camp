@@ -2041,11 +2041,11 @@ const HowItWorks = () => {
   const icons: any = { Eye, RefreshCw, Zap, Compass, Key };
 
   return (
-    <section className="min-h-[85vh] flex items-center py-20 md:py-28 bg-cream relative overflow-hidden">
+    <section className="pt-20 md:pt-24 pb-0 bg-cream relative overflow-hidden">
       <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative z-10">
         {/* Шапка */}
         <Reveal direction="up">
-          <div className="max-w-3xl mb-14 md:mb-16">
+          <div className="max-w-3xl mb-12 md:mb-14">
             <span className="text-[0.62rem] uppercase tracking-[0.32em] text-brown font-medium block mb-4">Как проходит работа</span>
             <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] heading-gradient mb-4">Инструменты отражения</h2>
             <div className="h-px w-16 bg-brown/30 mb-5" />
@@ -2055,15 +2055,15 @@ const HowItWorks = () => {
           </div>
         </Reveal>
 
-        {/* Майя слева + инструменты справа */}
-        <div className="grid lg:grid-cols-[5fr_7fr] gap-10 lg:gap-16 items-center">
+        {/* Майя слева + инструменты справа — стул стоит на нижней границе секции */}
+        <div className="grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 items-end">
 
           {/* Майя в кресле */}
           <Reveal direction="left" delay={0.1} scale>
-            <div className="relative max-w-[460px] mx-auto lg:mx-0">
+            <div className="relative w-full max-w-[420px] mx-auto lg:mx-0 lg:-mb-px">
               {/* Кольца за фигурой */}
-              <div aria-hidden className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <svg viewBox="0 0 400 400" className="w-[120%] h-[120%] opacity-[0.18]">
+              <div aria-hidden className="absolute inset-x-0 top-0 pointer-events-none flex items-start justify-center" style={{ height: '70%' }}>
+                <svg viewBox="0 0 400 400" className="w-[110%] h-[110%] opacity-[0.18]">
                   <g stroke="#9a7d5a" strokeWidth="1" fill="none">
                     <circle cx="200" cy="200" r="180" />
                     <circle cx="200" cy="200" r="140" opacity="0.7" />
@@ -2072,26 +2072,27 @@ const HowItWorks = () => {
                   </g>
                 </svg>
               </div>
-              {/* Тёплый halo */}
-              <div aria-hidden className="absolute inset-0 pointer-events-none animate-pulse-slow"
-                style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(50px)' }}
+              {/* Тёплый halo — за верхней частью фигуры */}
+              <div aria-hidden className="absolute inset-x-0 top-0 pointer-events-none animate-pulse-slow"
+                style={{ height: '60%', background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(50px)' }}
               />
-              {/* Тень-«пол» */}
-              <div aria-hidden className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[78%] h-10 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at center, rgba(58,39,20,0.28) 0%, transparent 65%)', filter: 'blur(20px)' }}
+              {/* Тень под стулом — на самой нижней границе */}
+              <div aria-hidden className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[78%] h-8 rounded-full pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at center, rgba(58,39,20,0.28) 0%, transparent 65%)', filter: 'blur(16px)' }}
               />
               <img
                 src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/mayachair.png"
                 alt="Майя Дзодзатти"
-                className="relative w-full h-auto object-contain select-none pointer-events-none"
+                className="relative w-full h-auto object-contain object-bottom select-none pointer-events-none block"
+                style={{ maxHeight: 'min(620px, 78vh)' }}
                 referrerPolicy="no-referrer"
                 draggable={false}
               />
             </div>
           </Reveal>
 
-          {/* Инструменты */}
-          <div>
+          {/* Инструменты — с нижним отступом, чтобы оставалось дыхание над WhatHappens */}
+          <div className="pb-16 md:pb-24">
             <ul className="space-y-6 md:space-y-7">
               {PROCESS.map((item, i) => {
                 const Icon = icons[item.icon] || HelpCircle;
