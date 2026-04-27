@@ -63,12 +63,27 @@
   .text-balance {
     text-wrap: balance;
   }
-  /* Диагональный градиент для заголовков светлых секций */
+  /* Анимированный градиент для заголовков светлых секций
+     (мигрировано на logic React Bits GradientText, реализовано через CSS) */
   .heading-gradient {
-    background: linear-gradient(to top right, #b49d88, #a1846d);
+    background-image: linear-gradient(to right, #53371f, #b49d88, #a1846d, #b49d88, #53371f);
+    background-size: 300% 100%;
+    background-position: 0% 50%;
+    background-repeat: repeat;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: heading-gradient-shift 9s ease-in-out infinite;
+  }
+
+  @keyframes heading-gradient-shift {
+    0%   { background-position: 0%   50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .heading-gradient { animation: none; background-position: 50% 50%; }
   }
   /* Плашка-тег в стиле презентации */
   .tag-pill {
