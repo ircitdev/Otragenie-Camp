@@ -956,7 +956,7 @@ const Location = () => (
 );
 
 const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
-  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 shadow-sm border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_8px_40px_rgba(154,125,90,0.12)]" : "border-brown/8 opacity-60 scale-[0.97]"}`}>
+  <div className={`flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 border transition-all duration-500 ${active ? "border-brown/20 shadow-[0_16px_56px_rgba(154,125,90,0.22),0_2px_8px_rgba(154,125,90,0.08)] scale-[1.01] z-10" : "border-brown/8 shadow-sm scale-[0.97]"}`}>
     <div>
       <div className="flex items-center gap-4 mb-5">
         <div className="w-14 h-14 rounded-full overflow-hidden bg-brown/10 shrink-0">
@@ -1089,7 +1089,7 @@ const Testimonials = () => {
       {/* Peek scroll track — overflows container on both sides, left padding aligns first card */}
       <div
         ref={trackRef}
-        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-4 px-6 md:px-12"
+        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-8 px-6 md:px-12 overflow-y-visible"
         style={{
           scrollbarWidth: "none",
           WebkitOverflowScrolling: "touch",
@@ -1098,7 +1098,7 @@ const Testimonials = () => {
       >
         <style>{`.cases-track::-webkit-scrollbar { display: none; }`}</style>
         {flatCases.map((c, i) => (
-          <div key={i} className="snap-start flex-shrink-0 cursor-pointer" onClick={() => go(i)}>
+          <div key={i} className={`snap-start flex-shrink-0 cursor-pointer relative transition-transform duration-500 ${i === currentIndex ? 'z-10' : 'z-0'}`} onClick={() => go(i)}>
             <CaseCard c={c} active={i === currentIndex} />
           </div>
         ))}
