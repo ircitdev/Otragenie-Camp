@@ -406,7 +406,7 @@ const Hero = ({ onOpenModal }: any) => {
 // --- JourneyPath (Экран 2 — пунктирный маршрут) ---
 
 const JourneyPath = () => (
-  <section className="bg-navy py-32 md:py-44 relative overflow-hidden min-h-[75vh] flex items-center">
+  <section className="bg-navy py-44 md:py-60 relative overflow-hidden min-h-[88vh] flex items-center">
     <div className="absolute inset-0 pointer-events-none">
       <LightRays
         raysOrigin="top-center"
