@@ -1907,7 +1907,7 @@ const ForWho = () => (
 
     {/* Фоновое видео — выравнивание по центру низа */}
     <video
-      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/intro1.mp4"
+      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4"
       autoPlay muted playsInline loop
       className="absolute inset-0 w-full h-full object-cover"
       style={{ objectPosition: 'center bottom' }}
