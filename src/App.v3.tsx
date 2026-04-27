@@ -276,25 +276,32 @@ const Hero = ({ onOpenModal }: any) => {
   const [videoSrc, setVideoSrc] = useState("");
 
   useEffect(() => {
-    const desktopVideos = [
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/intro-budda.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/intro-girls.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/img/intro-yoga.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro.mp4"
+    // weight = относительная частота выпадения (1 = базовая, 0.5 = в два раза реже)
+    const desktopVideos: { src: string; weight: number }[] = [
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro.mp4", weight: 1 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4", weight: 0.5 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2.mp4", weight: 1 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro3.mp4", weight: 1 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro5.mp4", weight: 1 },
     ];
 
-    const mobileVideos = [
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2_m.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1_m.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro_m.mp4",
-      "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro3_m.mp4"
+    const mobileVideos: { src: string; weight: number }[] = [
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1_m.mp4", weight: 0.5 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro2_m.mp4", weight: 1 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro3_m.mp4", weight: 1 },
+      { src: "https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro_m.mp4", weight: 1 },
     ];
 
     const isMobile = window.innerWidth < 768;
-    const videos = isMobile ? mobileVideos : desktopVideos;
-    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
-    setVideoSrc(randomVideo);
+    const pool = isMobile ? mobileVideos : desktopVideos;
+    const totalWeight = pool.reduce((s, v) => s + v.weight, 0);
+    let r = Math.random() * totalWeight;
+    let chosen = pool[0].src;
+    for (const v of pool) {
+      r -= v.weight;
+      if (r <= 0) { chosen = v.src; break; }
+    }
+    setVideoSrc(chosen);
   }, []);
 
   const togglePlay = () => {
