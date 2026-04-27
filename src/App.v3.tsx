@@ -1893,41 +1893,60 @@ const HowItWorks = () => {
   );
 };
 
-const ForWho = () => (
-  <section id="for-who" className="scroll-mt-20 relative overflow-hidden min-h-screen flex flex-col justify-end" style={{ background: '#0e0c09' }}>
+const ForWho = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const videoY = useTransform(scrollYProgress, [0, 1], ['-12%', '12%']);
 
-    {/* Фоновое видео — выравнивание по центру низа */}
-    <video
-      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4"
-      autoPlay muted playsInline loop
-      className="absolute inset-0 w-full h-full object-cover"
-      style={{ objectPosition: 'center bottom' }}
-    />
+  return (
+    <section ref={sectionRef} id="for-who" className="scroll-mt-20 relative overflow-hidden flex flex-col justify-end" style={{ background: '#0e0c09', minHeight: '90vh' }}>
 
-    {/* Оверлей: лёгкое затемнение + сильный градиент только снизу для читаемости текста */}
-    <div className="absolute inset-0 pointer-events-none" style={{
-      background: 'linear-gradient(to top, rgba(10,8,6,0.92) 0%, rgba(10,8,6,0.6) 30%, rgba(10,8,6,0.15) 60%, rgba(10,8,6,0.05) 100%)'
-    }} />
+      {/* Фоновое видео с параллаксом */}
+      <motion.video
+        src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/intro1.mp4"
+        autoPlay muted playsInline loop
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ objectPosition: 'center bottom', y: videoY, scale: 1.15 }}
+      />
 
-    {/* Контент поверх */}
-    <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pt-16 pb-10 md:pb-14">
+      {/* Синий градиент сверху — прозрачный */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'linear-gradient(to bottom, rgba(15,30,80,0.55) 0%, rgba(15,30,80,0.15) 35%, transparent 60%)'
+      }} />
 
-      {/* Шапка */}
-      <Reveal direction="up" delay={0.05}>
-        <div className="flex items-center gap-4 mb-5">
-          <span className="text-[0.56rem] uppercase tracking-[0.42em] font-medium" style={{ color: '#c9a97a' }}>Для кого</span>
-          <div className="h-px w-10 opacity-30" style={{ background: '#c9a97a' }} />
-        </div>
-        <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1] font-light mb-8" style={{ color: '#f0e9dc' }}>
-          Кому это <em className="italic" style={{ color: '#c9a97a' }}>нужно сейчас</em>
-        </h2>
-      </Reveal>
+      {/* Тёмный градиент снизу — читаемость текста */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: 'linear-gradient(to top, rgba(10,8,6,0.94) 0%, rgba(10,8,6,0.65) 28%, rgba(10,8,6,0.1) 55%, transparent 75%)'
+      }} />
 
-      {/* Карточки — 2 колонки на десктопе, 1 на мобиле */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-        {FOR_WHO.map((text, i) => (
-          <Reveal key={i} direction="up" delay={0.05 + i * 0.06}>
-            <div
+      {/* Контент */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pt-12 pb-10 md:pb-12">
+
+        {/* Шапка */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="flex items-center gap-4 mb-4">
+            <span className="text-[0.56rem] uppercase tracking-[0.42em] font-medium" style={{ color: '#c9a97a' }}>Для кого</span>
+            <div className="h-px w-10 opacity-30" style={{ background: '#c9a97a' }} />
+          </div>
+          <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1] font-light mb-7" style={{ color: '#f0e9dc' }}>
+            Кому это <em className="italic" style={{ color: '#c9a97a' }}>нужно сейчас</em>
+          </h2>
+        </motion.div>
+
+        {/* Карточки */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {FOR_WHO.map((text, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.07 }}
               className="group relative rounded-sm cursor-default overflow-hidden"
               style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(201,169,122,0.12)', padding: '0.9rem 1.1rem 0.9rem 1rem', transition: 'background 0.35s, border-color 0.35s' }}
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(201,169,122,0.09)'; el.style.borderColor = 'rgba(201,169,122,0.35)'; }}
@@ -1939,15 +1958,15 @@ const ForWho = () => (
               <p className="text-[clamp(0.8rem,1.1vw,0.9rem)] leading-[1.55]" style={{ color: '#c4b49e' }}>
                 {text}
               </p>
-            </div>
-          </Reveal>
-        ))}
-      </div>
+            </motion.div>
+          ))}
+        </div>
 
-      <div className="h-px mt-10 opacity-10" style={{ background: '#c9a97a' }} />
-    </div>
-  </section>
-);
+        <div className="h-px mt-8 opacity-10" style={{ background: '#c9a97a' }} />
+      </div>
+    </section>
+  );
+};
 const Counter = ({ value, suffix = '', duration = 2, delay = 0 }: { value: number, suffix?: string, duration?: number, delay?: number }) => {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
@@ -6053,7 +6072,14 @@ export const AboutSectionsPage = () => (
 // --- Main App ---
 
 export default function AppV3() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    const key = 'preloader_shown';
+    const last = localStorage.getItem(key);
+    const now = Date.now();
+    if (last && now - Number(last) < 86400000) return false;
+    localStorage.setItem(key, String(now));
+    return true;
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
