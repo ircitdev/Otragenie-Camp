@@ -1903,88 +1903,57 @@ const HowItWorks = () => {
 };
 
 const ForWho = () => (
-  <section id="for-who" className="scroll-mt-20 relative overflow-hidden" style={{ background: '#0e0c09' }}>
-    {/* Зернистая текстура поверх тёмного фона */}
-    <div className="absolute inset-0 pointer-events-none opacity-[0.035]"
-      style={{
-        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")',
-        backgroundSize: '200px'
-      }} />
+  <section id="for-who" className="scroll-mt-20 relative overflow-hidden min-h-screen flex flex-col justify-end" style={{ background: '#0e0c09' }}>
 
-    {/* Тонкая вертикальная линия-акцент */}
-    <div className="absolute top-0 right-0 w-px h-full opacity-10"
-      style={{ background: 'linear-gradient(to bottom, transparent, #c9a97a 30%, #c9a97a 70%, transparent)' }} />
+    {/* Фоновое видео — выравнивание по центру низа */}
+    <video
+      src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/intro1.mp4"
+      autoPlay muted playsInline loop
+      className="absolute inset-0 w-full h-full object-cover"
+      style={{ objectPosition: 'center bottom' }}
+    />
 
-    <div className="max-w-7xl mx-auto px-6 md:px-12">
+    {/* Оверлей: тёмный градиент снизу вверх — контент читается, верх прозрачнее */}
+    <div className="absolute inset-0 pointer-events-none" style={{
+      background: 'linear-gradient(to top, rgba(10,8,6,0.96) 0%, rgba(10,8,6,0.75) 40%, rgba(10,8,6,0.45) 70%, rgba(10,8,6,0.2) 100%)'
+    }} />
 
-      {/* Верхняя шапка */}
-      <div className="pt-20 md:pt-28 pb-12 md:pb-16">
-        <Reveal direction="up" delay={0.05}>
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-[0.58rem] uppercase tracking-[0.42em] font-medium" style={{ color: '#c9a97a' }}>
-              Для кого
-            </span>
-            <div className="h-px flex-1 max-w-[60px] opacity-30" style={{ background: '#c9a97a' }} />
-          </div>
-          <h2 className="font-serif text-[clamp(3rem,7vw,5.5rem)] leading-[0.92] font-light" style={{ color: '#f0e9dc' }}>
-            Кому это<br />
-            <em className="italic" style={{ color: '#c9a97a' }}>нужно сейчас</em>
-          </h2>
-        </Reveal>
-      </div>
+    {/* Контент поверх */}
+    <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pt-16 pb-10 md:pb-14">
 
-      {/* Главная сетка */}
-      <div className="grid lg:grid-cols-[1fr_1.75fr] gap-12 lg:gap-20 pb-20 md:pb-28 items-start">
+      {/* Шапка */}
+      <Reveal direction="up" delay={0.05}>
+        <div className="flex items-center gap-4 mb-5">
+          <span className="text-[0.56rem] uppercase tracking-[0.42em] font-medium" style={{ color: '#c9a97a' }}>Для кого</span>
+          <div className="h-px w-10 opacity-30" style={{ background: '#c9a97a' }} />
+        </div>
+        <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] leading-[1] font-light mb-8" style={{ color: '#f0e9dc' }}>
+          Кому это <em className="italic" style={{ color: '#c9a97a' }}>нужно сейчас</em>
+        </h2>
+      </Reveal>
 
-        {/* Левая колонка — цитата + видео */}
-        <Reveal direction="up" delay={0.1}>
-          <div className="lg:sticky lg:top-28">
-            <div className="mb-10 relative">
-              <div className="absolute -left-3 top-0 bottom-0 w-[2px] rounded-full" style={{ background: 'linear-gradient(to bottom, #c9a97a, transparent)' }} />
-              <p className="font-serif italic text-[clamp(1.05rem,1.6vw,1.2rem)] leading-[1.8] pl-6" style={{ color: '#a89070' }}>
-                «Иногда в жизни наступает момент, когда внешне всё выглядит устойчиво, но внутри появляется тихий голос: я хочу большего. Но не понимаю, как это получить.»
+      {/* Карточки — 2 колонки на десктопе, 1 на мобиле */}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        {FOR_WHO.map((text, i) => (
+          <Reveal key={i} direction="up" delay={0.05 + i * 0.06}>
+            <div
+              className="group relative rounded-sm cursor-default overflow-hidden"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(201,169,122,0.12)', padding: '0.9rem 1.1rem 0.9rem 1rem', transition: 'background 0.35s, border-color 0.35s' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(201,169,122,0.09)'; el.style.borderColor = 'rgba(201,169,122,0.35)'; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(255,255,255,0.04)'; el.style.borderColor = 'rgba(201,169,122,0.12)'; }}
+            >
+              <span className="block text-[0.5rem] uppercase tracking-[0.3em] mb-1.5 font-medium" style={{ color: 'rgba(201,169,122,0.45)' }}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p className="text-[clamp(0.8rem,1.1vw,0.9rem)] leading-[1.55]" style={{ color: '#c4b49e' }}>
+                {text}
               </p>
             </div>
-            <div className="relative rounded-sm overflow-hidden" style={{ aspectRatio: '3/4' }}>
-              <video
-                src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otraghenie-camp.ru/img/rookkreslo.MP4"
-                autoPlay muted playsInline loop
-                className="absolute inset-0 w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,12,9,0.65) 0%, transparent 50%)' }} />
-              <div className="absolute bottom-5 left-5 right-5">
-                <p className="text-[0.56rem] uppercase tracking-[0.32em] font-medium" style={{ color: 'rgba(201,169,122,0.6)' }}>
-                  Узнаёте себя в трёх и более — этот выезд для вас
-                </p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Правая колонка — 6 карточек */}
-        <div className="space-y-3">
-          {FOR_WHO.map((text, i) => (
-            <Reveal key={i} direction="right" delay={0.06 + i * 0.07}>
-              <div className="group relative rounded-sm cursor-default overflow-hidden" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(201,169,122,0.1)', padding: '1.5rem 1.75rem', transition: 'background 0.4s, border-color 0.4s' }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(201,169,122,0.07)'; el.style.borderColor = 'rgba(201,169,122,0.3)'; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(255,255,255,0.03)'; el.style.borderColor = 'rgba(201,169,122,0.1)'; }}
-              >
-                <span className="absolute top-4 right-5 font-serif tabular-nums select-none" style={{ color: 'rgba(201,169,122,0.18)', fontSize: 'clamp(1.6rem,2.5vw,2rem)', fontStyle: 'italic', lineHeight: 1 }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <p className="text-[clamp(0.92rem,1.3vw,1rem)] leading-[1.7] pr-10" style={{ color: '#b8a896' }}>
-                  {text}
-                </p>
-                <div className="absolute bottom-0 left-5 h-px" style={{ background: '#c9a97a', width: 0, transition: 'width 0.4s' }}
-                  ref={el => { if (el) { const card = el.parentElement; card?.addEventListener('mouseenter', () => { el.style.width = '64px'; }); card?.addEventListener('mouseleave', () => { el.style.width = '0'; }); }}}
-                />
-              </div>
-            </Reveal>
-          ))}
-        </div>
+          </Reveal>
+        ))}
       </div>
 
-      <div className="h-px opacity-10 mb-0" style={{ background: '#c9a97a' }} />
+      <div className="h-px mt-10 opacity-10" style={{ background: '#c9a97a' }} />
     </div>
   </section>
 );
