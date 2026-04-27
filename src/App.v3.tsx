@@ -215,15 +215,8 @@ const Navbar = ({ onOpenModal }: any) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[99] bg-navy/96 backdrop-blur-xl flex flex-col md:hidden overflow-y-auto"
-            style={{ paddingTop: 'max(5rem, env(safe-area-inset-top, 0px))', paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 0px))' }}
+            style={{ paddingTop: 'max(6rem, env(safe-area-inset-top, 0px))', paddingBottom: 'max(2rem, env(safe-area-inset-bottom, 0px))' }}
           >
-            <button
-              className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/8 hover:bg-white/15 text-white/85 flex items-center justify-center transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Закрыть меню"
-            >
-              <X size={22} />
-            </button>
             <div className="flex flex-col items-center justify-center flex-1 gap-1 px-6">
               {navLinks.map((item, i) => (
                 <motion.a
