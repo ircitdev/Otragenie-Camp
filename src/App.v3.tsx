@@ -9,6 +9,7 @@ import LightRays from './components/LightRays';
 import ShinyText from './components/ShinyText';
 import ScrollReveal from './components/ScrollReveal';
 import GlareHover from './components/GlareHover';
+import TiltedCard from './components/TiltedCard';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -1836,22 +1837,33 @@ const WhatHappens = () => (
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Видео слева */}
         <Reveal direction="left" delay={0.1} scale>
-          <div className="relative">
-            <div className="rounded-[2rem] overflow-hidden aspect-[4/5] relative shadow-[0_24px_60px_rgba(58,39,20,0.18)]">
-              <video src={WHAT_HAPPENS_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
-              <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
-                <span className="text-[0.62rem] uppercase tracking-[0.28em] text-white/60 font-medium block mb-3">Процесс</span>
-                <div className="h-px w-14 bg-white/40" />
+          <TiltedCard
+            containerHeight="auto"
+            containerWidth="100%"
+            rotateAmplitude={10}
+            scaleOnHover={1.03}
+            className="!block"
+          >
+            <div className="relative w-full" style={{ transformStyle: 'preserve-3d' }}>
+              <div className="rounded-[2rem] overflow-hidden aspect-[4/5] relative shadow-[0_24px_60px_rgba(58,39,20,0.18)]" style={{ transform: 'translateZ(0)' }}>
+                <video src={WHAT_HAPPENS_VIDEO} autoPlay muted loop playsInline className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-b from-navy/50 via-transparent to-navy/40" />
+                <div className="absolute top-0 left-0 right-0 p-8 md:p-10">
+                  <span className="text-[0.62rem] uppercase tracking-[0.28em] text-white/60 font-medium block mb-3">Процесс</span>
+                  <div className="h-px w-14 bg-white/40" />
+                </div>
+              </div>
+              <div
+                className="hidden md:block absolute -bottom-6 -right-6 max-w-[260px] bg-brown text-white px-6 py-5 rounded-2xl shadow-xl"
+                style={{ transform: 'translateZ(60px)' }}
+              >
+                <Quote className="text-white/25 mb-2" size={20} />
+                <p className="text-[0.92rem] leading-snug">
+                  «Это не просто отдых. Это глубокая <span className="font-bold">хирургическая работа</span> с вашей реальностью».
+                </p>
               </div>
             </div>
-            <div className="hidden md:block absolute -bottom-6 -right-6 max-w-[260px] bg-brown text-white px-6 py-5 rounded-2xl shadow-xl">
-              <Quote className="text-white/25 mb-2" size={20} />
-              <p className="font-serif italic text-[0.92rem] leading-snug">
-                «Это не просто отдых. Это глубокая <span className="not-italic font-semibold">хирургическая работа</span> с вашей реальностью».
-              </p>
-            </div>
-          </div>
+          </TiltedCard>
         </Reveal>
 
         {/* Текст справа */}
