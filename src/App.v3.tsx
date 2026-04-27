@@ -1025,119 +1025,140 @@ const Location = () => (
   </section>
 );
 
-const CaseCard = ({ c, active }: { c: any; active: boolean }) => (
-  <motion.div
-    animate={{
-      y: active ? 0 : 12,
-      scale: active ? 1 : 0.97,
-      opacity: active ? 1 : 0.72,
-      boxShadow: active
-        ? "0 20px 60px rgba(154,125,90,0.22), 0 4px 12px rgba(154,125,90,0.10)"
-        : "0 2px 8px rgba(154,125,90,0.06)",
-    }}
-    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-    className="flex-shrink-0 w-[85vw] sm:w-[75vw] lg:w-[860px] grid lg:grid-cols-2 gap-6 bg-white rounded-[1.5rem] p-6 md:p-8 border border-brown/10"
-  >
-    <div>
-      <div className="flex items-center gap-4 mb-5">
+const CaseCard = ({ c }: { c: any }) => {
+  const [expanded, setExpanded] = useState(false);
+  const visibleBefore = expanded ? c.before : c.before.slice(0, 2);
+  const visibleAfter = expanded ? c.after : c.after.slice(0, 2);
+  const hasHidden = c.before.length > 2 || c.after.length > 2;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, y: -12, filter: 'blur(6px)' }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full max-w-[520px] mx-auto bg-cream-card rounded-[1.5rem] p-7 md:p-8 border border-brown/10 shadow-[0_18px_50px_-20px_rgba(58,39,20,0.18)]"
+    >
+      {/* Шапка: аватар + имя + роль */}
+      <div className="flex items-center gap-4 mb-7">
         <div className="w-14 h-14 rounded-full overflow-hidden bg-brown/10 shrink-0">
           {c.img
             ? <img src={c.img} alt={c.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            : <span className="w-full h-full flex items-center justify-center font-serif text-brown text-2xl">{c.name[0]}</span>}
+            : <span className="w-full h-full flex items-center justify-center text-brown text-xl font-bold">{c.name[0]}</span>}
         </div>
-        <div>
-          <h3 className="text-[1.15rem] font-bold text-text-dark leading-tight">{c.name}</h3>
-          <p className="text-text-dark-muted text-[0.72rem] mt-0.5 leading-tight">{c.role}</p>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-[1.18rem] font-bold text-text-dark leading-tight truncate">{c.name}</h3>
+          <p className="text-text-dark-muted text-[0.74rem] mt-0.5 leading-tight">{c.role}</p>
         </div>
       </div>
 
-      <div className="mb-4">
-        <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-text-dark-muted mb-2 block">До участия</span>
+      {/* ДО — приглушённый блок с левой полосой */}
+      <div className="relative pl-5 mb-1.5 border-l-[2px] border-brown/25">
+        <span className="block text-[0.6rem] uppercase tracking-[0.28em] text-text-dark-muted mb-2 font-bold">До</span>
         <ul className="space-y-1.5">
-          {c.before.map((x: string, j: number) => (
-            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark-soft leading-[1.5]">
-              <span className="text-brown/50 shrink-0">—</span>{x}
+          {visibleBefore.map((x: string, j: number) => (
+            <li key={j} className="text-[0.88rem] text-text-dark-soft leading-[1.55]">{x}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Стрелка-разделитель + лейбл «работа с …» */}
+      <div className="flex flex-col items-center my-5 select-none">
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 3.6, ease: 'easeInOut', repeat: Infinity }}
+          className="text-brown-light"
+        >
+          <ArrowDown size={22} strokeWidth={1.6} />
+        </motion.div>
+        {c.author && (
+          <span className="mt-2 text-[0.62rem] uppercase tracking-[0.26em] text-brown font-medium">
+            3 дня работы с {c.author}
+          </span>
+        )}
+      </div>
+
+      {/* ПОСЛЕ — тёплый блок с галочками */}
+      <div className="rounded-2xl bg-cream-soft p-5">
+        <span className="block text-[0.6rem] uppercase tracking-[0.28em] text-brown mb-2.5 font-bold">После</span>
+        <ul className="space-y-2">
+          {visibleAfter.map((x: string, j: number) => (
+            <li key={j} className="flex gap-2.5 text-[0.88rem] text-text-dark leading-[1.55] font-medium">
+              <Check size={14} strokeWidth={2.5} className="shrink-0 mt-1 text-brown" />
+              <span>{x}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="p-4 rounded-xl bg-brown/6">
-        <div className="flex items-center gap-2 flex-wrap mb-2">
-          <span className="text-[0.58rem] uppercase tracking-[0.2em] font-bold text-brown">После этого</span>
-          {c.author && <span className="text-[0.58rem] text-text-dark-muted">· результат работы с {c.author}</span>}
-        </div>
-        <ul className="space-y-1.5">
-          {c.after.map((x: string, j: number) => (
-            <li key={j} className="flex gap-2 text-[0.85rem] text-text-dark leading-[1.5] font-medium">
-              <CheckCircle size={13} className="shrink-0 mt-0.5 text-brown" />{x}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      {hasHidden && (
+        <button
+          onClick={() => setExpanded(v => !v)}
+          className="mt-4 text-[0.72rem] uppercase tracking-[0.22em] font-medium text-brown/70 hover:text-brown transition-colors"
+        >
+          {expanded ? '— свернуть' : `+ ещё ${(c.before.length - 2) + (c.after.length - 2)}`}
+        </button>
+      )}
 
-    <div className="bg-navy text-white p-6 md:p-7 rounded-[1.25rem] relative overflow-hidden flex flex-col justify-between">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-brown/15 rounded-full blur-3xl" />
-      <div>
-        <Quote className="text-brown mb-3 opacity-70" size={28} />
-        <p className="font-serif italic text-[0.98rem] md:text-[1.08rem] leading-[1.5] mb-4">«{c.resText}»</p>
+      {/* Главное достижение — итоговая печать */}
+      <div className="mt-7 pt-6 border-t border-brown/12">
+        <div className="flex items-center gap-2 mb-3">
+          <Star size={12} className="text-brown-light fill-brown-light" />
+          <span className="text-[0.6rem] uppercase tracking-[0.26em] text-brown font-bold">{c.resLabel}</span>
+        </div>
+        <p className="text-[1.02rem] md:text-[1.08rem] text-text-dark font-bold leading-[1.45]">
+          «{c.resText}»
+        </p>
       </div>
-      <div className="flex items-center gap-3 pt-3 border-t border-white/10">
-        <div className="h-px w-8 bg-brown" />
-        <span className="text-[0.6rem] uppercase tracking-[0.18em] text-brown-light font-bold">{c.resLabel}</span>
-      </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 const Testimonials = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const flatCases = CASES.flat();
-  const trackRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
+  const railRef = useRef<HTMLDivElement>(null);
+
+  const visibleCount = showAll ? flatCases.length : Math.min(4, flatCases.length);
 
   const go = (idx: number) => {
     const clamped = (idx + flatCases.length) % flatCases.length;
     setCurrentIndex(clamped);
-    if (trackRef.current) {
-      const card = trackRef.current.children[clamped] as HTMLElement;
-      if (card) card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    }
+    // Если выбрали скрытый кейс — раскрыть
+    if (!showAll && clamped >= 4) setShowAll(true);
+    // Скролл рейлы имён к выбранному
+    requestAnimationFrame(() => {
+      if (railRef.current) {
+        const btn = railRef.current.children[clamped] as HTMLElement;
+        btn?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
   };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") go(currentIndex - 1);
-      if (e.key === "ArrowRight") go(currentIndex + 1);
+      if (e.key === 'ArrowLeft') go(currentIndex - 1);
+      if (e.key === 'ArrowRight') go(currentIndex + 1);
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex]);
 
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const onScroll = () => {
-      const cardWidth = (track.children[0] as HTMLElement)?.offsetWidth ?? 0;
-      const gap = 24;
-      const idx = Math.round(track.scrollLeft / (cardWidth + gap));
-      setCurrentIndex(Math.min(idx, flatCases.length - 1));
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => track.removeEventListener("scroll", onScroll);
-  }, []);
+  const nextCase = flatCases[(currentIndex + 1) % flatCases.length];
 
   return (
-    <section id="testimonials" className="scroll-mt-20 py-12 md:py-16 bg-cream relative overflow-hidden">
+    <section id="testimonials" className="scroll-mt-20 py-16 md:py-24 bg-cream relative overflow-hidden">
+      {/* Декоративный волнообразный паттерн снизу */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
-          WebkitMaskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)",
-          maskImage: "linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)"
+          WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)',
+          maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 92%)',
         }}
       >
-        <svg width="100%" height="100%" className="opacity-25">
+        <svg width="100%" height="100%" className="opacity-20">
           <defs>
             <pattern id="cases-waves" x="0" y="0" width="140" height="140" patternUnits="userSpaceOnUse">
               <g stroke="#9a7d5a" strokeWidth="1" strokeLinecap="round" fill="none">
@@ -1153,69 +1174,92 @@ const Testimonials = () => {
         </svg>
       </div>
 
-      {/* Header */}
+      {/* Шапка */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
         <Reveal direction="up">
-          <div className="text-center mb-7">
+          <div className="text-center mb-10">
             <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown font-medium block mb-3">Кейсы</span>
             <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] heading-gradient">Истории трансформации</h2>
             <div className="h-px w-16 bg-brown/30 mx-auto mt-4" />
           </div>
         </Reveal>
-      </div>
 
-      {/* Горизонтальный трек на всю ширину */}
-      <div
-        ref={trackRef}
-        className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-8 px-6 md:px-12"
-        style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch", paddingRight: "calc(15vw - 24px)" }}
-      >
-        {flatCases.map((c, i) => (
-          <div key={i} className="snap-start flex-shrink-0 cursor-pointer" onClick={() => go(i)}>
-            <CaseCard c={c} active={i === currentIndex} />
+        {/* Имена-навигация */}
+        <Reveal direction="up" delay={0.1}>
+          <div className="relative mb-10">
+            <div
+              ref={railRef}
+              className="flex items-center gap-1 overflow-x-auto no-scrollbar pb-2"
+              style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+            >
+              {flatCases.slice(0, visibleCount).map((c, j) => {
+                const active = j === currentIndex;
+                return (
+                  <button
+                    key={j}
+                    onClick={() => go(j)}
+                    className={`shrink-0 px-4 py-2 rounded-full text-[0.78rem] font-medium tabular-nums transition-all duration-300 ${
+                      active
+                        ? 'bg-brown text-white shadow-[0_6px_18px_rgba(154,125,90,0.28)]'
+                        : 'text-text-dark-soft hover:text-brown hover:bg-brown/5'
+                    }`}
+                  >
+                    {c.name}
+                  </button>
+                );
+              })}
+              {!showAll && flatCases.length > 4 && (
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="shrink-0 ml-2 px-4 py-2 rounded-full text-[0.74rem] uppercase tracking-[0.18em] font-medium text-brown/70 border border-brown/25 hover:bg-brown hover:text-white hover:border-brown transition-all"
+                >
+                  + ещё {flatCases.length - 4}
+                </button>
+              )}
+            </div>
+            {/* Тонкая горизонтальная линия под именами */}
+            <div className="h-px bg-brown/15 mt-1" />
           </div>
-        ))}
-        <div className="flex-shrink-0 w-[15vw] min-w-[40px]" aria-hidden />
-      </div>
+        </Reveal>
 
-      {/* Controls */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
-        <div className="flex items-center justify-center gap-6 mt-2">
+        {/* Карточка кейса с AnimatePresence */}
+        <div className="relative min-h-[640px]">
+          <AnimatePresence mode="wait">
+            <CaseCard key={currentIndex} c={flatCases[currentIndex]} />
+          </AnimatePresence>
+        </div>
+
+        {/* Управление: prev / счётчик / next с подсказкой следующего имени */}
+        <div className="flex items-center justify-center gap-4 md:gap-6 mt-8">
           <motion.button
             onClick={() => go(currentIndex - 1)}
             aria-label="Предыдущий кейс"
-            whileHover={{ scale: 1.08, backgroundColor: "#9a7d5a", color: "#fff" }}
-            whileTap={{ scale: 0.93 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="w-14 h-14 rounded-full border-2 border-brown/35 bg-white text-brown shadow-[0_4px_16px_rgba(154,125,90,0.12)] flex items-center justify-center"
-            style={{ color: "#9a7d5a" }}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            className="w-12 h-12 rounded-full border border-brown/30 bg-white text-brown shadow-[0_4px_14px_rgba(154,125,90,0.1)] flex items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
-            <ChevronLeft size={22} strokeWidth={1.8} />
+            <ChevronLeft size={20} strokeWidth={1.8} />
           </motion.button>
 
-          <div className="flex items-center gap-2">
-            {flatCases.map((_, j) => (
-              <motion.button
-                key={j}
-                onClick={() => go(j)}
-                aria-label={`Кейс ${j + 1}`}
-                animate={{ width: currentIndex === j ? 28 : 8, backgroundColor: currentIndex === j ? "#9a7d5a" : "rgba(154,125,90,0.25)" }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="h-2 rounded-full"
-              />
-            ))}
+          <div className="text-[0.78rem] tabular-nums text-text-dark-soft min-w-[3.5rem] text-center font-medium">
+            <span className="text-brown font-bold">{String(currentIndex + 1).padStart(2, '0')}</span>
+            <span className="text-text-dark-muted mx-1">/</span>
+            <span>{String(flatCases.length).padStart(2, '0')}</span>
           </div>
 
           <motion.button
             onClick={() => go(currentIndex + 1)}
-            aria-label="Следующий кейс"
-            whileHover={{ scale: 1.08, backgroundColor: "#9a7d5a", color: "#fff" }}
-            whileTap={{ scale: 0.93 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="w-14 h-14 rounded-full border-2 border-brown/35 bg-white text-brown shadow-[0_4px_16px_rgba(154,125,90,0.12)] flex items-center justify-center"
-            style={{ color: "#9a7d5a" }}
+            aria-label={`Следующий: ${nextCase.name}`}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            className="group flex items-center gap-3 pl-4 pr-2 py-2 rounded-full border border-brown/30 bg-white text-brown shadow-[0_4px_14px_rgba(154,125,90,0.1)] hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
-            <ChevronRight size={22} strokeWidth={1.8} />
+            <span className="text-[0.74rem] font-medium hidden sm:inline">{nextCase.name}</span>
+            <span className="w-8 h-8 rounded-full bg-brown/10 group-hover:bg-white/20 flex items-center justify-center transition-colors">
+              <ChevronRight size={16} strokeWidth={2} />
+            </span>
           </motion.button>
         </div>
       </div>
