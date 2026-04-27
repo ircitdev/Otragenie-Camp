@@ -436,12 +436,28 @@ const JourneyPath = () => (
         <div className="inline-block">
           <p className="text-[0.88rem] uppercase tracking-[0.3em] text-brown/70 mb-7 font-medium">За два дня вы проходите путь</p>
           <div className="flex items-center gap-5 md:gap-8 justify-center">
-            <span className="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium">от честной диагностики<br className="hidden sm:block" /> своей жизни</span>
+            <ScrollReveal
+              baseOpacity={0.1}
+              baseRotation={3}
+              blurStrength={5}
+              enableBlur
+              textClassName="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium block"
+            >
+              от честной диагностики своей жизни
+            </ScrollReveal>
             <div className="flex items-center gap-1.5 text-brown shrink-0">
               <div className="w-8 md:w-14 h-px bg-brown/50" />
               <ArrowRight size={22} className="text-brown" />
             </div>
-            <span className="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium">к первым правилам<br className="hidden sm:block" /> новой</span>
+            <ScrollReveal
+              baseOpacity={0.1}
+              baseRotation={-3}
+              blurStrength={5}
+              enableBlur
+              textClassName="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium block"
+            >
+              к первым правилам новой
+            </ScrollReveal>
           </div>
         </div>
       </Reveal>
