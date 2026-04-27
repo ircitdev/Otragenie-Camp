@@ -2488,8 +2488,7 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
                       </span>
                       <span className="text-[0.73rem] text-text-dark-soft leading-[1.55]">
                         Я согласен(-а) на{' '}
-                        <a href="/oferta" target="_blank" rel="noopener noreferrer" className="text-brown underline underline-offset-2 hover:no-underline">обработку персональных данных</a>{' '}
-                        согласно публичной оферте
+                        <a href="/personal-data" target="_blank" rel="noopener noreferrer" className="text-brown underline underline-offset-2 hover:no-underline">обработку персональных данных</a>
                       </span>
                     </label>
                     {errors.consent && <p className="text-[0.65rem] text-red-500 ml-7 -mt-1">{errors.consent}</p>}
@@ -6311,7 +6310,137 @@ export const OfertaPage = () => {
         </Section>
 
         <div className="mt-12 pt-6 border-t border-brown/15 text-[0.8rem] text-[#3d2e21]/45 leading-relaxed">
-          <p>Редакция от апреля 2026 г. По вопросам: info@otragenie-camp.ru</p>
+          <p>Редакция от апреля 2026 г. По вопросам: roman@dusenko.ru</p>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+// ─── Personal Data Page ──────────────────────────────────────────────────────
+
+export const PersonalDataPage = () => {
+  const P = ({ children }: { children: React.ReactNode }) => (
+    <p className="pl-4 border-l border-brown/15 text-[0.92rem] leading-relaxed text-[#3d2e21]/80">{children}</p>
+  );
+
+  const Section = ({ num, title, children }: { num: string; title: string; children: React.ReactNode }) => (
+    <section className="mb-10">
+      <h2 className="font-serif text-[1.25rem] md:text-[1.45rem] text-[#2c1f14] mb-3 flex items-baseline gap-2">
+        <span className="text-brown/50 font-sans text-[0.85rem] font-semibold shrink-0">{num}.</span>
+        {title}
+      </h2>
+      <div className="space-y-2">{children}</div>
+    </section>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#faf7f3]">
+      <header className="sticky top-0 z-40 bg-[#faf7f3]/90 backdrop-blur-sm border-b border-brown/10">
+        <div className="max-w-3xl mx-auto px-5 h-14 flex items-center justify-between">
+          <a href="/v3" className="text-[0.78rem] uppercase tracking-[0.18em] text-brown/60 hover:text-brown transition font-semibold">
+            ← На сайт
+          </a>
+          <span className="font-serif text-[0.95rem] text-[#2c1f14]/70">Согласие на обработку данных</span>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-5 py-12 md:py-16">
+        <div className="mb-10">
+          <h1 className="font-serif text-[clamp(1.8rem,4vw,2.6rem)] text-[#2c1f14] leading-tight mb-3">
+            Согласие на обработку персональных данных
+          </h1>
+          <p className="text-[0.88rem] text-[#3d2e21]/55 leading-relaxed">
+            в соответствии с Федеральным законом № 152-ФЗ «О персональных данных»
+          </p>
+          <div className="mt-4 h-px bg-gradient-to-r from-brown/25 to-transparent" />
+        </div>
+
+        <Section num="1" title="Оператор персональных данных">
+          <P><span className="font-medium text-[#2c1f14]">Индивидуальный предприниматель Дусенко Роман Владимирович</span></P>
+          <P>ИНН: 272700125009</P>
+          <P>ОГРНИП: 316774600124940</P>
+          <P>Юридический адрес: 115054, г. Москва, ул. Новокузнецкая д. 35-37, стр. 2, 133</P>
+          <P>E-mail: roman@dusenko.ru</P>
+          <P>Телефон: +7 (916) 706-27-46</P>
+        </Section>
+
+        <Section num="2" title="Субъект персональных данных">
+          <P>Физическое лицо, заполняющее форму заявки на сайте otragenie-camp.ru и выражающее согласие на обработку своих персональных данных путём проставления отметки в соответствующем поле формы (далее — «Субъект»).</P>
+        </Section>
+
+        <Section num="3" title="Перечень персональных данных">
+          <P>Субъект даёт согласие на обработку следующих персональных данных:</P>
+          {[
+            'фамилия, имя, отчество (при наличии);',
+            'номер мобильного телефона;',
+            'адрес электронной почты;',
+            'имя пользователя в мессенджере Telegram (при указании);',
+            'иная информация, добровольно сообщённая Субъектом в поле «запрос» формы.',
+          ].map((t, i) => (
+            <p key={i} className="pl-4 border-l border-brown/15 text-[0.92rem] leading-relaxed text-[#3d2e21]/80 flex items-baseline gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+              {t}
+            </p>
+          ))}
+        </Section>
+
+        <Section num="4" title="Цели обработки">
+          <P>Персональные данные обрабатываются исключительно в следующих целях:</P>
+          {[
+            'рассмотрение заявки на участие в интенсиве «Отражение» (19–21 июня 2026, Красная Поляна);',
+            'связь с Субъектом для уточнения условий участия и деталей оплаты;',
+            'направление организационных материалов, связанных с Мероприятием;',
+            'исполнение обязательств по договору оказания услуг.',
+          ].map((t, i) => (
+            <p key={i} className="pl-4 border-l border-brown/15 text-[0.92rem] leading-relaxed text-[#3d2e21]/80 flex items-baseline gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+              {t}
+            </p>
+          ))}
+        </Section>
+
+        <Section num="5" title="Способы и условия обработки">
+          <P>Оператор осуществляет обработку персональных данных следующими способами: сбор, запись, систематизация, накопление, хранение, уточнение, использование, передача (в части, необходимой для исполнения договора), обезличивание, блокирование, удаление.</P>
+          <P>Обработка осуществляется как с использованием средств автоматизации, так и без таковых.</P>
+          <P>Персональные данные не передаются третьим лицам, за исключением случаев, необходимых для исполнения договора: платёжный сервис Prodamus (проведение оплаты), место проведения Мероприятия (организация размещения).</P>
+          <P>Трансграничная передача персональных данных не осуществляется.</P>
+        </Section>
+
+        <Section num="6" title="Срок действия согласия">
+          <P>Согласие действует с момента его предоставления до достижения целей обработки персональных данных, но не более 3 (трёх) лет с даты последнего взаимодействия Оператора с Субъектом.</P>
+          <P>По истечении указанного срока персональные данные подлежат уничтожению либо обезличиванию, если иное не предусмотрено законодательством Российской Федерации.</P>
+        </Section>
+
+        <Section num="7" title="Права субъекта персональных данных">
+          <P>Субъект вправе в любое время:</P>
+          {[
+            'отозвать настоящее согласие, направив письменное уведомление на e-mail roman@dusenko.ru;',
+            'запросить информацию об обрабатываемых персональных данных и основаниях их обработки;',
+            'потребовать уточнения, блокирования или уничтожения своих персональных данных в случае, если они являются неполными, устаревшими, недостоверными, незаконно полученными или не являются необходимыми для заявленных целей;',
+            'обратиться с жалобой в уполномоченный орган по защите прав субъектов персональных данных — Роскомнадзор (rkn.gov.ru).',
+          ].map((t, i) => (
+            <p key={i} className="pl-4 border-l border-brown/15 text-[0.92rem] leading-relaxed text-[#3d2e21]/80 flex items-baseline gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-brown/40 shrink-0 mt-[0.35em]" />
+              {t}
+            </p>
+          ))}
+          <P>Отзыв согласия не влечёт за собой прекращения обязательств, возникших до момента его отзыва, и не освобождает от обязанности оплатить уже оказанные услуги.</P>
+        </Section>
+
+        <Section num="8" title="Заключительные положения">
+          <P>Проставляя отметку в поле «Я согласен(-а) на обработку персональных данных» формы заявки на сайте otragenie-camp.ru, Субъект подтверждает, что ознакомлен с настоящим Согласием, понимает его содержание и даёт добровольное информированное согласие на обработку своих персональных данных в указанных целях.</P>
+          <P>Настоящее Согласие составлено в соответствии с требованиями Федерального закона № 152-ФЗ «О персональных данных» от 27 июля 2006 года.</P>
+        </Section>
+
+        <div className="mt-12 pt-6 border-t border-brown/15 text-[0.8rem] text-[#3d2e21]/45 leading-relaxed space-y-1">
+          <p>Редакция от апреля 2026 г.</p>
+          <p>По вопросам обработки персональных данных: roman@dusenko.ru</p>
+          <p className="mt-3">
+            <a href="/oferta" className="text-brown/60 hover:text-brown underline underline-offset-2 transition">
+              Публичная оферта →
+            </a>
+          </p>
         </div>
       </main>
     </div>
