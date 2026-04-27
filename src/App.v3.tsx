@@ -1827,21 +1827,43 @@ const SystemProblem = () => {
   const notItems = ["в тебе", "в отношениях", "в работе", "в усталости"];
   const systemFormsLines = ["твои решения", "отношения", "состояния", "повторы"];
   return (
-    <section className="bg-navy text-white relative overflow-hidden pt-20 md:pt-28 pb-10 md:pb-16">
+    <section className="bg-navy text-white relative overflow-hidden pt-20 md:pt-28 pb-0 min-h-[100vh]">
       {/* Лёгкий шум */}
-      <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
-      {/* Двойной тёплый halo за капитаном (привязан к нижней половине секции) */}
-      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[42vw] h-[55vh] rounded-full pointer-events-none animate-pulse-slow"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, rgba(184,153,110,0.08) 35%, transparent 70%)', filter: 'blur(60px)' }}
+      <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none z-[1]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
+
+      {/* Тёплый halo за фигурой (привязан к нижней части секции) */}
+      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-[20%] w-[60vw] h-[55vh] rounded-full pointer-events-none animate-pulse-slow z-[1]"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.20) 0%, rgba(184,153,110,0.08) 40%, transparent 75%)', filter: 'blur(70px)' }}
       />
-      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[26vw] h-[38vh] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(154,125,90,0.22) 0%, transparent 60%)', filter: 'blur(80px)' }}
+      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 bottom-[15%] w-[35vw] h-[40vh] rounded-full pointer-events-none z-[1]"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(154,125,90,0.25) 0%, transparent 60%)', filter: 'blur(90px)' }}
       />
 
+      {/* Роман — крупная фоновая фигура, прижата к низу */}
+      <div className="absolute inset-x-0 bottom-0 flex justify-center items-end pointer-events-none z-[2]" aria-hidden>
+        {/* Тень под Романом */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[55vw] max-w-[700px] h-16 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, transparent 65%)', filter: 'blur(28px)' }}
+        />
+        <motion.img
+          src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/romankap2.png"
+          alt=""
+          className="relative w-auto h-auto object-contain object-bottom select-none block"
+          style={{ maxHeight: 'min(85vh, 920px)', maxWidth: '95vw' }}
+          referrerPolicy="no-referrer"
+          draggable={false}
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+        />
+      </div>
+
+      {/* Текстовый слой поверх фона */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10">
-        {/* Шапка над всей композицией */}
+        {/* Шапка */}
         <Reveal delay={0.05}>
-          <div className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+          <div className="text-center mb-14 md:mb-20 max-w-3xl mx-auto">
             <span className="text-[0.62rem] tracking-[0.32em] uppercase font-medium text-brown-light/80 block mb-4">Проблема в системе</span>
             <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-white mb-3">
               из которой <span className="text-brown-light">ты живёшь</span>
@@ -1850,11 +1872,11 @@ const SystemProblem = () => {
           </div>
         </Reveal>
 
-        {/* Композиция: НЕ ← Роман → СИСТЕМА */}
-        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-end">
+        {/* Двухколоночная композиция: слева НЕ, справа СИСТЕМА. По центру — пустой коридор для Романа в фоне */}
+        <div className="grid lg:grid-cols-[1fr_24vw_1fr] gap-6 lg:gap-8 items-start pb-[55vh] lg:pb-[40vh]">
 
           {/* Левая колонка — НЕ */}
-          <div className="lg:text-right lg:pr-4 lg:pb-12 order-2 lg:order-1">
+          <div className="lg:text-right lg:pr-4">
             <Reveal direction="left" delay={0.15}>
               <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-white/40 mb-5 font-medium">Проблема не</span>
             </Reveal>
@@ -1871,44 +1893,29 @@ const SystemProblem = () => {
                   <span className="lg:order-2 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#c47d6e]/15 text-[#d18b7a] shrink-0">
                     <X size={14} strokeWidth={2.5} />
                   </span>
-                  <span className="lg:order-1 text-[clamp(1.15rem,1.7vw,1.45rem)] uppercase tracking-[0.04em] text-white/85 font-bold">
+                  <span className="lg:order-1 text-[clamp(1.15rem,1.7vw,1.45rem)] uppercase tracking-[0.04em] text-white/90 font-bold drop-shadow-[0_2px_8px_rgba(11,17,48,0.8)]">
                     {item}
                   </span>
                 </motion.li>
               ))}
             </ul>
             <Reveal direction="left" delay={0.7}>
-              <p className="text-white/55 text-[0.92rem] leading-[1.7] max-w-[36ch] lg:ml-auto">
+              <p className="text-white/65 text-[0.92rem] leading-[1.7] max-w-[34ch] lg:ml-auto drop-shadow-[0_2px_6px_rgba(11,17,48,0.7)]">
                 Можно менять работу, партнёров, города, решения — и возвращаться в ту же точку. Потому что сценарий остаётся прежним.
               </p>
             </Reveal>
           </div>
 
-          {/* Центр — Роман-капитан, стоит на нижней границе секции */}
-          <Reveal delay={0.1} scale>
-            <div className="relative w-[260px] sm:w-[300px] md:w-[340px] mx-auto order-1 lg:order-2 lg:-mb-px">
-              {/* Тень-«пьедестал» под фигурой */}
-              <div aria-hidden className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-10 rounded-full pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, transparent 65%)', filter: 'blur(18px)' }}
-              />
-              <img
-                src="https://storage.googleapis.com/uspeshnyy-projects/smit/billing/otrazhenie-camp.ru/dusenko-kap.png"
-                alt="Роман Дусенко"
-                className="relative w-full h-auto object-contain object-bottom select-none pointer-events-none block"
-                style={{ maxHeight: 'min(560px, 72vh)' }}
-                referrerPolicy="no-referrer"
-                draggable={false}
-              />
-            </div>
-          </Reveal>
+          {/* Центральный коридор — пустой, в нём «дышит» Роман из фона */}
+          <div className="hidden lg:block" aria-hidden />
 
           {/* Правая колонка — СИСТЕМА */}
-          <div className="lg:pl-4 lg:pb-12 order-3">
+          <div className="lg:pl-4">
             <Reveal direction="right" delay={0.15}>
               <span className="block text-[0.6rem] uppercase tracking-[0.32em] text-brown-light/80 mb-5 font-medium">Система</span>
             </Reveal>
             <Reveal direction="right" delay={0.25}>
-              <p className="text-[clamp(1rem,1.4vw,1.18rem)] text-white/75 leading-[1.7] mb-5 max-w-[34ch]">
+              <p className="text-[clamp(1rem,1.4vw,1.18rem)] text-white/85 leading-[1.7] mb-5 max-w-[34ch] drop-shadow-[0_2px_6px_rgba(11,17,48,0.7)]">
                 которая формирует
               </p>
             </Reveal>
@@ -1923,12 +1930,12 @@ const SystemProblem = () => {
                   className="flex items-center gap-3"
                 >
                   <span className="h-px w-5 bg-brown-light/50 shrink-0" />
-                  <span className="text-[clamp(1rem,1.4vw,1.18rem)] text-white/85 font-medium">{line}</span>
+                  <span className="text-[clamp(1rem,1.4vw,1.18rem)] text-white/90 font-medium drop-shadow-[0_2px_6px_rgba(11,17,48,0.7)]">{line}</span>
                 </motion.li>
               ))}
             </ul>
             <Reveal direction="right" delay={0.85}>
-              <p className="text-white/55 text-[0.92rem] leading-[1.7] max-w-[36ch] mb-6">
+              <p className="text-white/65 text-[0.92rem] leading-[1.7] max-w-[34ch] mb-6 drop-shadow-[0_2px_6px_rgba(11,17,48,0.7)]">
                 Этот кэмп — про то, чтобы увидеть и изменить именно её.
               </p>
             </Reveal>
