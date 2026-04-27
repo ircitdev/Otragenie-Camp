@@ -1342,22 +1342,69 @@ const Testimonials = () => {
           </div>
         </Reveal>
 
-        {/* Карточка кейса со стрелками по бокам (desktop) и свайпом (mobile) */}
+        {/* Карточка кейса со стрелками по бокам и подглядывающими соседями (колода) */}
         <div className="relative min-h-[640px] flex items-center justify-center">
-          {/* Стрелка prev — слева, скрыта на мобильном (там свайп) */}
+          {/* Стрелка prev */}
           <motion.button
             onClick={() => go(currentIndex - 1)}
             aria-label={`Предыдущий: ${flatCases[(currentIndex - 1 + flatCases.length) % flatCases.length].name}`}
             whileHover={{ scale: 1.08, x: -3 }}
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden sm:flex absolute left-0 lg:left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
+            className="hidden sm:flex absolute left-1 lg:-left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
             <ChevronLeft size={22} strokeWidth={1.8} />
           </motion.button>
 
-          {/* Карточка с drag-свайпом */}
-          <div className="w-full px-2 sm:px-12 md:px-16 lg:px-20 touch-pan-y">
+          {/* Контейнер колоды */}
+          <div className="relative w-full max-w-[760px] mx-auto px-2 sm:px-10 md:px-14 lg:px-16 touch-pan-y">
+            {/* Левый сосед — выглядывает */}
+            <button
+              onClick={() => go(currentIndex - 1)}
+              aria-label="К предыдущему кейсу"
+              tabIndex={-1}
+              className="hidden md:block absolute top-1/2 left-0 -translate-y-1/2 -translate-x-[58%] z-0 w-full max-w-[760px] cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <motion.div
+                key={`prev-${currentIndex}`}
+                initial={{ opacity: 0.55, scale: 0.86 }}
+                animate={{ opacity: 0.55, scale: 0.86 }}
+                whileHover={{ opacity: 0.78, scale: 0.88 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="origin-right pointer-events-none"
+                style={{ filter: 'blur(1.5px) saturate(0.9)' }}
+              >
+                <div aria-hidden className="select-none">
+                  <CaseCard c={flatCases[(currentIndex - 1 + flatCases.length) % flatCases.length]} />
+                </div>
+              </motion.div>
+            </button>
+
+            {/* Правый сосед — выглядывает */}
+            <button
+              onClick={() => go(currentIndex + 1)}
+              aria-label="К следующему кейсу"
+              tabIndex={-1}
+              className="hidden md:block absolute top-1/2 right-0 -translate-y-1/2 translate-x-[58%] z-0 w-full max-w-[760px] cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <motion.div
+                key={`next-${currentIndex}`}
+                initial={{ opacity: 0.55, scale: 0.86 }}
+                animate={{ opacity: 0.55, scale: 0.86 }}
+                whileHover={{ opacity: 0.78, scale: 0.88 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="origin-left pointer-events-none"
+                style={{ filter: 'blur(1.5px) saturate(0.9)' }}
+              >
+                <div aria-hidden className="select-none">
+                  <CaseCard c={flatCases[(currentIndex + 1) % flatCases.length]} />
+                </div>
+              </motion.div>
+            </button>
+
+            {/* Активная карточка с drag-свайпом */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -1369,23 +1416,27 @@ const Testimonials = () => {
                   if (info.offset.x < -threshold || info.velocity.x < -300) go(currentIndex + 1);
                   else if (info.offset.x > threshold || info.velocity.x > 300) go(currentIndex - 1);
                 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 whileTap={{ cursor: 'grabbing' }}
                 style={{ touchAction: 'pan-y' }}
-                className="cursor-grab active:cursor-grabbing select-none"
+                className="relative z-10 cursor-grab active:cursor-grabbing select-none"
               >
                 <CaseCard c={flatCases[currentIndex]} />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Стрелка next — справа, скрыта на мобильном */}
+          {/* Стрелка next */}
           <motion.button
             onClick={() => go(currentIndex + 1)}
             aria-label={`Следующий: ${nextCase.name}`}
             whileHover={{ scale: 1.08, x: 3 }}
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="hidden sm:flex absolute right-0 lg:right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
+            className="hidden sm:flex absolute right-1 lg:-right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
             <ChevronRight size={22} strokeWidth={1.8} />
           </motion.button>
@@ -1945,43 +1996,22 @@ const WhenYouNeedCamp = () => {
               <span className="text-[0.65rem] uppercase tracking-[0.28em] text-brown font-semibold">О проекте · 2026</span>
             </motion.div>
 
-            <SplitText
-              tag="h2"
-              text="Когда люди понимают, что им нужен такой выезд"
-              splitType="words"
-              delay={55}
-              duration={0.8}
-              ease="power3.out"
-              from={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-              to={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              textAlign="left"
-              className="text-[clamp(1.9rem,4vw,3rem)] font-bold leading-[1.08] heading-gradient mb-5 w-full"
-            />
+            <Reveal direction="left" delay={0.1}>
+              <h2 className="text-[clamp(1.9rem,4vw,3rem)] font-bold leading-[1.08] heading-gradient mb-5">
+                Когда люди понимают,<br />что <span style={{ WebkitTextFillColor: 'oklch(56.4% 0.072 52)' }}>им нужен такой выезд</span>
+              </h2>
+            </Reveal>
 
-            <ScrollReveal
-              baseOpacity={0.15}
-              baseRotation={2.5}
-              blurStrength={6}
-              enableBlur
-              rotationEnd="bottom 70%"
-              wordAnimationEnd="bottom 65%"
-              containerClassName="!m-0 mb-2"
-              textClassName="!text-[0.95rem] text-text-dark-soft !leading-[1.7] !font-semibold"
-            >
-              Иногда жизнь начинает подавать очень явные сигналы.
-            </ScrollReveal>
-            <ScrollReveal
-              baseOpacity={0.12}
-              baseRotation={2}
-              blurStrength={5}
-              enableBlur
-              rotationEnd="bottom 70%"
-              wordAnimationEnd="bottom 65%"
-              containerClassName="!m-0 mb-8"
-              textClassName="!text-[0.93rem] text-text-dark-soft !leading-[1.7] !font-normal"
-            >
-              Внешне всё может выглядеть нормально — работа, проекты, ответственность
-            </ScrollReveal>
+            <Reveal direction="left" delay={0.25}>
+              <p className="text-[0.95rem] text-text-dark-soft leading-[1.7] mb-2 font-semibold">
+                Иногда жизнь начинает подавать очень явные сигналы.
+              </p>
+            </Reveal>
+            <Reveal direction="left" delay={0.35}>
+              <p className="text-[0.93rem] text-text-dark-soft leading-[1.7] mb-8">
+                Внешне всё может выглядеть нормально — работа, проекты, ответственность
+              </p>
+            </Reveal>
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -2032,18 +2062,15 @@ const WhenYouNeedCamp = () => {
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
                 style={{ background: 'radial-gradient(ellipse at top right, rgba(255,247,234,0.18) 0%, transparent 60%)' }}
               />
-              <ScrollReveal
-                baseOpacity={0.25}
-                baseRotation={1.5}
-                blurStrength={5}
-                enableBlur
-                rotationEnd="bottom 70%"
-                wordAnimationEnd="bottom 60%"
-                containerClassName="!m-0 mb-3 relative"
-                textClassName="!text-[0.88rem] text-white/80 !leading-[1.7] !font-normal"
+              <motion.p
+                initial={{ opacity: 0, y: 14, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="text-[0.88rem] text-white/85 leading-[1.7] mb-3 relative"
               >
                 Очень часто именно в этот момент человек понимает: если я не остановлюсь и честно не посмотрю на свою жизнь, она продолжит двигаться по той же траектории
-              </ScrollReveal>
+              </motion.p>
               <motion.p
                 initial={{ opacity: 0, x: -8 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -2094,18 +2121,15 @@ const WhenYouNeedCamp = () => {
                 >
                   <Quote className="text-white/30 mb-4" size={24} />
                 </motion.div>
-                <SplitText
-                  tag="p"
-                  text="«Когда работа, деньги и даже отдых перестают приносить радость — проблема не в них. Проблема в системе, из которой вы действуете»."
-                  splitType="words"
-                  delay={32}
-                  duration={0.7}
-                  ease="power3.out"
-                  from={{ opacity: 0, y: 18, filter: 'blur(4px)' }}
-                  to={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  textAlign="left"
-                  className="font-serif italic text-[clamp(0.95rem,1.8vw,1.15rem)] text-white leading-[1.6] mb-5 w-full"
-                />
+                <motion.p
+                  initial={{ opacity: 0, y: 18, filter: 'blur(4px)' }}
+                  whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.95, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-serif italic text-[clamp(0.95rem,1.8vw,1.15rem)] text-white leading-[1.6] mb-5"
+                >
+                  «Когда работа, деньги и даже отдых перестают приносить радость — проблема не в них. Проблема в системе, из которой вы действуете».
+                </motion.p>
                 <motion.div
                   initial={{ opacity: 0, x: -16 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -2529,10 +2553,10 @@ const ForWho = () => (
       <Reveal delay={0.4}>
         <div className="mt-16 md:mt-20 pt-10 border-t border-brown-light/12 flex items-center justify-center">
           <a
-            href="#"
+            href="#results"
             onClick={(e) => {
               e.preventDefault();
-              document.querySelector('section.bg-navy.text-white')?.scrollIntoView({ behavior: 'smooth' });
+              document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' });
             }}
             className="inline-flex flex-col items-center gap-3 text-brown-light/70 hover:text-brown-light transition-colors group"
           >
@@ -2581,7 +2605,7 @@ const RESULTS_BGS = [
 const Results = ({ onOpenModal }: any) => {
   const [bg] = useState(() => RESULTS_BGS[Math.floor(Math.random() * RESULTS_BGS.length)]);
   return (
-  <section className="min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
+  <section id="results" className="scroll-mt-20 min-h-screen flex items-center py-12 bg-navy text-white relative overflow-hidden">
     <div className="absolute inset-0 z-0">
       <img src={bg} alt="" aria-hidden="true" className="w-full h-full object-cover object-[center_top] opacity-30" referrerPolicy="no-referrer" />
       <div className="absolute inset-0 bg-navy/80 mix-blend-multiply" />
