@@ -2726,27 +2726,31 @@ const Modal = ({ isOpen, onClose, selectedPlan }: any) => {
       console.error("Error sending notification:", error);
     }
 
-    // If plan selected — redirect to direct Prodamus payform link
-    if (selectedPlan && selectedPlan.payformUrl) {
+    // If plan selected — generate Prodamus link via server (do=link API)
+    if (selectedPlan && selectedPlan.priceNumber) {
       ymGoal("payment_start", { plan: selectedPlan.name, price: selectedPlan.price, mode: paymentMode });
       try {
-        const url = new URL(selectedPlan.payformUrl);
-        if (paymentMode === 'installment') {
-          url.searchParams.set('paid_content', 'bnpl');
-          url.searchParams.set('payment_method', 'bnpl');
-        }
-        if (formData.contact) {
-          if (formData.contact.includes('@')) {
-            url.searchParams.set('customer_email', formData.contact);
-          } else {
-            url.searchParams.set('customer_phone', formData.contact);
+        const response = await fetch('/api/prodamus/pay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tariffName: selectedPlan.productName || selectedPlan.name,
+            price: selectedPlan.priceNumber,
+            contact: formData.contact,
+            name: formData.name,
+            installment: paymentMode === 'installment',
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.paymentUrl) {
+            ymGoal("payment_redirect", { plan: selectedPlan.name });
+            window.location.href = data.paymentUrl;
+            return;
           }
         }
-        ymGoal("payment_redirect", { plan: selectedPlan.name });
-        window.location.href = url.toString();
-        return;
       } catch (error) {
-        console.error("Error redirecting to payment:", error);
+        console.error("Error generating payment link:", error);
         // fall through to success screen
       }
     }

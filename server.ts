@@ -120,48 +120,52 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
-  // Generate payment link endpoint
-  app.post("/api/prodamus/pay", (req, res) => {
+  // Generate payment link endpoint via Prodamus do=link API
+  // Docs: https://help.prodamus.ru/payform.ru-onlain-oplaty/rest-api/instrukcii-dlya-samostoyatelnaya-integracii-servisov
+  app.post("/api/prodamus/pay", async (req, res) => {
     const { tariffName, price, contact, name, installment } = req.body;
-    const prodamusUrl = process.env.PRODAMUS_URL; // e.g., https://yourdomain.payform.ru
-    const prodamusSecret = process.env.PRODAMUS_SECRET_KEY;
+    const prodamusUrl = process.env.PRODAMUS_URL;
 
     if (!prodamusUrl) {
       return res.status(500).json({ error: "PRODAMUS_URL is not configured" });
     }
 
-    // Build params as a plain object first (Prodamus signature needs ordered map)
-    const params: Record<string, any> = {
-      products: [
-        { name: tariffName, price: price.toString(), quantity: '1' },
-      ],
-      customer_extra: JSON.stringify({ name, contact }),
-      order_id: `ORDER_${Date.now()}`,
-    };
+    const linkUrl = new URL(prodamusUrl);
+    linkUrl.searchParams.append('do', 'link');
+    linkUrl.searchParams.append('products[0][name]', String(tariffName));
+    linkUrl.searchParams.append('products[0][price]', String(price));
+    linkUrl.searchParams.append('products[0][quantity]', '1');
+    linkUrl.searchParams.append('order_id', `ORDER_${Date.now()}`);
+    linkUrl.searchParams.append('customer_extra', JSON.stringify({ name, contact }));
 
     if (contact) {
       if (contact.includes('@')) {
-        params.customer_email = contact;
+        linkUrl.searchParams.append('customer_email', contact);
       } else {
-        params.customer_phone = contact;
+        linkUrl.searchParams.append('customer_phone', contact);
       }
     }
 
+    // Installment 1.5 and 3 months (льготный тариф 6.5%)
     if (installment) {
-      params.paid_content = 'bnpl';
-      params.payment_method = 'bnpl';
+      linkUrl.searchParams.append('available_payment_methods', 'installment_0_0_2|installment_0_0_3');
     }
 
-    // Prodamus HMAC-SHA256 signature: recursive ksort → JSON encode (UNESCAPED_UNICODE | UNESCAPED_SLASHES) → hmac
-    if (prodamusSecret) {
-      params.signature = prodamusSign(params, prodamusSecret);
+    try {
+      const response = await fetch(linkUrl.toString(), { method: 'GET' });
+      const text = (await response.text()).trim();
+
+      // Prodamus returns the short link as plain text body, e.g. "https://xxxx.payform.ru/abc123/"
+      if (text.startsWith('http')) {
+        return res.json({ paymentUrl: text });
+      }
+
+      console.error('Prodamus do=link unexpected response:', text.slice(0, 500));
+      return res.status(502).json({ error: 'Unexpected response from Prodamus', body: text.slice(0, 500) });
+    } catch (error: any) {
+      console.error('Prodamus do=link error:', error?.message || error);
+      return res.status(502).json({ error: 'Failed to generate payment link' });
     }
-
-    // Flatten to query string (PHP-style brackets for nested arrays)
-    const url = new URL(prodamusUrl);
-    appendNested(url.searchParams, params);
-
-    res.json({ paymentUrl: url.toString() });
   });
 
   // General Telegram notification endpoint
