@@ -85,6 +85,16 @@
   @media (prefers-reduced-motion: reduce) {
     .heading-gradient { animation: none; background-position: 50% 50%; }
   }
+  /* Liquid glass — для карточек на тёмном фоне с фото-подложкой */
+  .liquid-glass {
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+      0 24px 60px -20px rgba(0, 0, 0, 0.55);
+  }
+
   /* Плашка-тег в стиле презентации */
   .tag-pill {
     display: inline-flex;

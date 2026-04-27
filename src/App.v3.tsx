@@ -2089,7 +2089,7 @@ const Results = ({ onOpenModal }: any) => {
         {RESULTS.map((r, i) => (
           <Reveal key={i} direction="up" delay={0.1 + i * 0.07}>
             <BorderGlow
-              backgroundColor="#16213d"
+              backgroundColor="rgba(22,33,61,0.35)"
               borderRadius={16}
               glowRadius={36}
               glowColor="36 60 70"
@@ -2098,14 +2098,22 @@ const Results = ({ onOpenModal }: any) => {
               coneSpread={26}
               colors={['#c9a97a', '#9a7d5a', '#e6d5c3']}
               fillOpacity={0.3}
-              className="h-full"
+              className="h-full liquid-glass"
             >
-              <div className="p-5 group h-full">
-                <div className="text-[2rem] font-bold text-brown-light/30 leading-none mb-4 group-hover:text-brown-light/60 transition tabular-nums select-none">
-                  {String(i + 1).padStart(2, '0')}
+              <div className="p-5 group h-full relative">
+                {/* Glassy inner highlight */}
+                <div aria-hidden className="pointer-events-none absolute inset-0 rounded-[15px] overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent" />
+                  <div className="absolute -top-px left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                  <div className="absolute -bottom-px left-4 right-4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                 </div>
-                <h4 className="text-[1.1rem] font-bold mb-1.5 text-white group-hover:text-brown-light transition">{r.title}</h4>
-                <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
+                <div className="relative">
+                  <div className="text-[2rem] font-bold text-brown-light/30 leading-none mb-4 group-hover:text-brown-light/60 transition tabular-nums select-none">
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <h4 className="text-[1.1rem] font-bold mb-1.5 text-white group-hover:text-brown-light transition">{r.title}</h4>
+                  <p className="text-[0.85rem] text-white/60 leading-[1.6] group-hover:text-white/80 transition">{r.desc}</p>
+                </div>
               </div>
             </BorderGlow>
           </Reveal>
