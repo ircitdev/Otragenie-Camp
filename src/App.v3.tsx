@@ -10,6 +10,7 @@ import ShinyText from './components/ShinyText';
 import ScrollReveal from './components/ScrollReveal';
 import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
+import BlurText from './components/BlurText';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -874,9 +875,15 @@ const Authors = ({ onOpenModal }: any) => (
       <Reveal direction="up" delay={0.05}>
         <div className="text-center mb-6">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Авторы программы</span>
-          <h2 className="text-[clamp(1.8rem,3.8vw,2.8rem)] font-bold leading-[1.1] text-white mb-3">
-            Программу проводят <span className="text-brown-light">Майя и Роман</span>
-          </h2>
+          <BlurText
+            as="h2"
+            text="Программу проводят Майя и Роман"
+            animateBy="words"
+            direction="top"
+            delay={120}
+            stepDuration={0.4}
+            className="text-[clamp(1.8rem,3.8vw,2.8rem)] font-bold leading-[1.1] text-white mb-3 justify-center"
+          />
           <p className="text-[clamp(0.9rem,1.4vw,1rem)] text-white/60 leading-[1.65] max-w-2xl mx-auto">
             Дуэт, который соединяет женскую и мужскую перспективу в работе с жизненными сценариями, отношениями и стратегией жизни
           </p>
@@ -2065,7 +2072,15 @@ const Results = ({ onOpenModal }: any) => {
       <Reveal direction="up" delay={0.05}>
         <div className="text-center mb-8">
           <span className="text-[0.68rem] uppercase tracking-[0.3em] text-brown-light font-medium block mb-3">Результат</span>
-          <h2 className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-white">Что ты заберёшь с собой</h2>
+          <BlurText
+            as="h2"
+            text="Что ты заберёшь с собой"
+            animateBy="words"
+            direction="top"
+            delay={130}
+            stepDuration={0.4}
+            className="text-[clamp(1.9rem,4vw,2.8rem)] font-bold leading-[1.1] text-white justify-center"
+          />
         </div>
       </Reveal>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
