@@ -430,44 +430,79 @@ const JourneyPath = () => (
       />
     </div>
     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }} />
-    <div className="max-w-4xl mx-auto px-6 md:px-12 relative text-center z-[5] w-full">
+    <div className="max-w-5xl mx-auto px-6 md:px-12 relative text-center z-[5] w-full">
+
+      {/* Бренд-маркер сверху */}
+      <Reveal delay={0.05}>
+        <div className="inline-flex items-center gap-3 mb-10 md:mb-12">
+          <div className="h-px w-10 bg-brown-light/40" />
+          <span className="text-[0.7rem] uppercase tracking-[0.42em] text-brown-light/80 font-medium tabular-nums">
+            «Отражение»
+          </span>
+          <div className="h-px w-10 bg-brown-light/40" />
+        </div>
+      </Reveal>
+
+      {/* Сухая фактура — крупно, что это такое */}
       <ScrollReveal
-        baseOpacity={0.08}
-        baseRotation={2}
-        blurStrength={6}
+        baseOpacity={0.1}
+        baseRotation={1.5}
+        blurStrength={4}
         enableBlur
-        containerClassName="mb-16"
-        textClassName="text-[clamp(1.5rem,3vw,2rem)] text-white/90 leading-[1.55] max-w-3xl mx-auto block font-light"
+        containerClassName="mb-8 md:mb-10"
+        textClassName="text-[clamp(1.6rem,3.4vw,2.4rem)] text-white leading-[1.35] max-w-3xl mx-auto block font-bold"
       >
-        «Отражение» — это двухдневный терапевтический выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
+        двухдневный терапевтический выезд
       </ScrollReveal>
-      <Reveal delay={0.18}>
-        <div className="inline-block">
-          <p className="text-[0.88rem] uppercase tracking-[0.3em] text-brown/70 mb-7 font-medium">За два дня вы проходите путь</p>
-          <div className="flex items-center gap-5 md:gap-8 justify-center">
-            <ScrollReveal
-              baseOpacity={0.1}
-              baseRotation={3}
-              blurStrength={5}
-              enableBlur
-              textClassName="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium block"
-            >
-              от честной диагностики своей жизни
-            </ScrollReveal>
-            <div className="flex items-center gap-1.5 text-brown shrink-0">
-              <div className="w-8 md:w-14 h-px bg-brown/50" />
-              <ArrowRight size={22} className="text-brown" />
-            </div>
-            <ScrollReveal
-              baseOpacity={0.1}
-              baseRotation={-3}
-              blurStrength={5}
-              enableBlur
-              textClassName="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium block"
-            >
-              к первым правилам новой
-            </ScrollReveal>
+
+      {/* Мотивационная часть — мельче, светлее, акценты на 3 якорях */}
+      <Reveal delay={0.4}>
+        <p className="text-[clamp(1.1rem,2vw,1.45rem)] text-white/75 leading-[1.65] max-w-3xl mx-auto mb-16 md:mb-20 font-light">
+          для людей, которые <span className="text-brown-light font-medium">хотят большего</span> от своей жизни
+          и <span className="text-brown-light font-medium">готовы наконец разобраться</span>,
+          что им <span className="text-brown-light font-medium">мешает это получить</span>.
+        </p>
+      </Reveal>
+
+      {/* «Путь» — разделитель + двухполюсный концепт */}
+      <Reveal delay={0.6}>
+        <div className="flex items-center justify-center gap-3 mb-7 md:mb-9">
+          <div className="h-px w-10 bg-brown/40" />
+          <span className="text-[0.74rem] uppercase tracking-[0.36em] text-brown/80 font-bold tabular-nums">
+            За два дня · путь
+          </span>
+          <div className="h-px w-10 bg-brown/40" />
+        </div>
+      </Reveal>
+
+      <Reveal delay={0.7}>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
+          <ScrollReveal
+            baseOpacity={0.12}
+            baseRotation={2}
+            blurStrength={5}
+            enableBlur
+            textClassName="text-[clamp(1.3rem,2.6vw,1.7rem)] text-white/95 leading-[1.3] font-medium block max-w-[18ch] md:text-right"
+          >
+            от честной диагностики своей жизни
+          </ScrollReveal>
+
+          {/* Стрелка-разделитель с двумя линиями */}
+          <div className="flex items-center gap-2 text-brown-light shrink-0">
+            <div className="w-6 md:w-12 h-px bg-brown-light/60" />
+            <ArrowRight size={22} strokeWidth={1.6} className="text-brown-light" />
+            <div className="w-6 md:w-12 h-px bg-brown-light/60" />
           </div>
+
+          <ScrollReveal
+            baseOpacity={0.12}
+            baseRotation={-2}
+            blurStrength={5}
+            enableBlur
+            textClassName="text-[clamp(1.3rem,2.6vw,1.7rem)] text-white/95 leading-[1.3] font-medium block max-w-[18ch] md:text-left"
+          >
+            к первым правилам новой
+          </ScrollReveal>
         </div>
       </Reveal>
     </div>
@@ -1626,9 +1661,13 @@ const Pricing = ({ onOpenModal }: any) => {
                   <h3 className="text-[1.5rem] font-bold mb-1.5">{plan.name}</h3>
                   <p className={`text-[0.82rem] leading-[1.55] ${featured ? "text-white/60" : "text-text-dark-soft"}`}>{plan.desc}</p>
                 </div>
-                <div className="mb-5 flex items-baseline gap-1.5">
+                <div className="mb-2 flex items-baseline gap-1.5">
                   <span className="text-[3rem] md:text-[3.6rem] font-bold text-brown-light leading-none tabular-nums tracking-tight">{plan.price.split(" ")[0]}</span>
                   <span className={`text-base ${featured ? "text-white/40" : "text-text-dark-muted"}`}>{plan.price.split(" ").slice(1).join(" ")}</span>
+                </div>
+                <div className={`mb-5 text-[0.78rem] leading-snug flex items-center gap-1.5 ${featured ? "text-brown-light" : "text-brown"}`}>
+                  <span className="inline-block w-1 h-1 rounded-full bg-current opacity-60" />
+                  <span>или от <strong className="font-bold tabular-nums">{Math.ceil(parseInt(plan.price.replace(/\D/g, '')) / 4 / 1000)} 000 ₽</strong> × 4 платежа · <span className="opacity-70">рассрочка</span></span>
                 </div>
                 <ul className="flex-1 space-y-3 mb-6">
                   {plan.feats.map((f: any, j: number) => (
