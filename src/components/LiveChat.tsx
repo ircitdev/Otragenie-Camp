@@ -124,7 +124,8 @@ export const LiveChat: React.FC = () => {
         onClick={() => setIsOpen(v => !v)}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}
-        className="fixed bottom-24 right-6 z-40 w-14 h-14 rounded-full bg-[#5c6b5e] text-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] flex items-center justify-center"
+        className="fixed right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-[#5c6b5e] text-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] flex items-center justify-center"
+        style={{ bottom: 'calc(6rem + env(safe-area-inset-bottom, 0px))' }}
         aria-label="Живой чат"
       >
         <AnimatePresence mode="wait">
@@ -156,7 +157,8 @@ export const LiveChat: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-44 right-6 z-40 w-[calc(100vw-3rem)] max-w-[340px] bg-white rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.18)] border border-stone-200/60 overflow-hidden flex flex-col"
+            className="fixed right-4 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-[340px] bg-white rounded-2xl shadow-[0_24px_60px_rgba(0,0,0,0.18)] border border-stone-200/60 overflow-hidden flex flex-col"
+            style={{ bottom: 'calc(11rem + env(safe-area-inset-bottom, 0px))' }}
             style={{ maxHeight: '70vh' }}
           >
             {/* Header */}

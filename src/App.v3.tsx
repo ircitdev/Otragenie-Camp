@@ -11,6 +11,7 @@ import ScrollReveal from './components/ScrollReveal';
 import GlareHover from './components/GlareHover';
 import TiltedCard from './components/TiltedCard';
 import BlurText from './components/BlurText';
+import DarkVeil from './components/DarkVeil';
 
 // Yandex.Metrika goal helper
 const YM_ID = 108536568;
@@ -845,7 +846,7 @@ const Philosophy = () => (
 );
 
 const Authors = ({ onOpenModal }: any) => (
-  <section id="authors" className="scroll-mt-20 min-h-screen flex items-center py-10 bg-navy text-white relative overflow-hidden">
+  <section id="authors" className="scroll-mt-20 min-h-screen flex items-center pt-28 md:pt-40 pb-10 bg-navy text-white relative overflow-hidden">
     <div
       aria-hidden
       className="absolute inset-0 pointer-events-none"
@@ -1184,12 +1185,12 @@ const Testimonials = () => {
           </div>
         </Reveal>
 
-        {/* Имена-навигация */}
+        {/* Имена-навигация — центрированно */}
         <Reveal direction="up" delay={0.1}>
-          <div className="relative mb-10">
+          <div className="relative mb-8">
             <div
               ref={railRef}
-              className="flex items-center gap-1 overflow-x-auto no-scrollbar pb-2"
+              className="flex items-center justify-center flex-wrap gap-1 overflow-x-auto no-scrollbar pb-2"
               style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
             >
               {flatCases.slice(0, visibleCount).map((c, j) => {
@@ -1218,49 +1219,51 @@ const Testimonials = () => {
               )}
             </div>
             {/* Тонкая горизонтальная линия под именами */}
-            <div className="h-px bg-brown/15 mt-1" />
+            <div className="h-px bg-brown/15 max-w-3xl mx-auto" />
           </div>
         </Reveal>
 
-        {/* Карточка кейса с AnimatePresence */}
-        <div className="relative min-h-[640px]">
-          <AnimatePresence mode="wait">
-            <CaseCard key={currentIndex} c={flatCases[currentIndex]} />
-          </AnimatePresence>
-        </div>
-
-        {/* Управление: prev / счётчик / next с подсказкой следующего имени */}
-        <div className="flex items-center justify-center gap-4 md:gap-6 mt-8">
+        {/* Карточка кейса со стрелками по бокам */}
+        <div className="relative min-h-[640px] flex items-center justify-center">
+          {/* Стрелка prev — слева */}
           <motion.button
             onClick={() => go(currentIndex - 1)}
-            aria-label="Предыдущий кейс"
-            whileHover={{ scale: 1.06 }}
+            aria-label={`Предыдущий: ${flatCases[(currentIndex - 1 + flatCases.length) % flatCases.length].name}`}
+            whileHover={{ scale: 1.08, x: -3 }}
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="w-12 h-12 rounded-full border border-brown/30 bg-white text-brown shadow-[0_4px_14px_rgba(154,125,90,0.1)] flex items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
+            className="absolute left-0 lg:left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] flex items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
-            <ChevronLeft size={20} strokeWidth={1.8} />
+            <ChevronLeft size={22} strokeWidth={1.8} />
           </motion.button>
 
-          <div className="text-[0.78rem] tabular-nums text-text-dark-soft min-w-[3.5rem] text-center font-medium">
-            <span className="text-brown font-bold">{String(currentIndex + 1).padStart(2, '0')}</span>
-            <span className="text-text-dark-muted mx-1">/</span>
-            <span>{String(flatCases.length).padStart(2, '0')}</span>
+          {/* Карточка */}
+          <div className="w-full px-12 md:px-16 lg:px-20">
+            <AnimatePresence mode="wait">
+              <CaseCard key={currentIndex} c={flatCases[currentIndex]} />
+            </AnimatePresence>
           </div>
 
+          {/* Стрелка next — справа */}
           <motion.button
             onClick={() => go(currentIndex + 1)}
             aria-label={`Следующий: ${nextCase.name}`}
-            whileHover={{ scale: 1.06 }}
+            whileHover={{ scale: 1.08, x: 3 }}
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="group flex items-center gap-3 pl-4 pr-2 py-2 rounded-full border border-brown/30 bg-white text-brown shadow-[0_4px_14px_rgba(154,125,90,0.1)] hover:bg-brown hover:text-white hover:border-brown transition-colors"
+            className="absolute right-0 lg:right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-13 md:h-13 rounded-full border border-brown/30 bg-white/95 backdrop-blur-sm text-brown shadow-[0_6px_22px_rgba(154,125,90,0.18)] flex items-center justify-center hover:bg-brown hover:text-white hover:border-brown transition-colors"
           >
-            <span className="text-[0.74rem] font-medium hidden sm:inline">{nextCase.name}</span>
-            <span className="w-8 h-8 rounded-full bg-brown/10 group-hover:bg-white/20 flex items-center justify-center transition-colors">
-              <ChevronRight size={16} strokeWidth={2} />
-            </span>
+            <ChevronRight size={22} strokeWidth={1.8} />
           </motion.button>
+        </div>
+
+        {/* Счётчик под карточкой */}
+        <div className="flex items-center justify-center mt-6">
+          <div className="text-[0.78rem] tabular-nums text-text-dark-soft text-center font-medium">
+            <span className="text-brown font-bold">{String(currentIndex + 1).padStart(2, '0')}</span>
+            <span className="text-text-dark-muted mx-1.5">/</span>
+            <span>{String(flatCases.length).padStart(2, '0')}</span>
+          </div>
         </div>
       </div>
     </section>
@@ -2126,14 +2129,26 @@ const HowItWorks = () => {
 
 const ForWho = () => (
   <section id="for-who" className="scroll-mt-20 relative overflow-hidden bg-navy py-24 md:py-32">
+    {/* DarkVeil WebGL-фон */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none opacity-40">
+      <DarkVeil
+        hueShift={28}
+        noiseIntensity={0.03}
+        scanlineIntensity={0.06}
+        scanlineFrequency={1.2}
+        warpAmount={0.4}
+        speed={0.35}
+        resolutionScale={1}
+      />
+    </div>
+    {/* Затемнение поверх veil для читаемости текста */}
+    <div aria-hidden className="absolute inset-0 pointer-events-none bg-gradient-to-b from-navy/85 via-navy/75 to-navy/90" />
     {/* Тёплый radial halo по центру */}
     <div
       aria-hidden
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[60vh] rounded-full pointer-events-none"
-      style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.15) 0%, transparent 65%)', filter: 'blur(60px)' }}
+      style={{ background: 'radial-gradient(ellipse at center, rgba(184,153,110,0.18) 0%, transparent 65%)', filter: 'blur(60px)' }}
     />
-    {/* Едва различимый шум для глубины */}
-    <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: '200px 200px' }} />
 
     <div className="max-w-2xl mx-auto px-6 md:px-12 relative z-10">
       {/* Шапка — left-aligned, не центр */}

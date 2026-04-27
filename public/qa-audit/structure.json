@@ -1,0 +1,118 @@
+{
+  "sections": [
+    {
+      "index": 0,
+      "id": "hero",
+      "offsetTop": 0,
+      "height": 900,
+      "bg": "oklch(0.185 0.038 264)",
+      "firstHeading": "Отражение"
+    },
+    {
+      "index": 1,
+      "id": "(no id)",
+      "offsetTop": 900,
+      "height": 468,
+      "bg": "oklch(0.185 0.038 264)",
+      "firstHeading": ""
+    },
+    {
+      "index": 2,
+      "id": "when",
+      "offsetTop": 1368,
+      "height": 922,
+      "bg": "oklch(0.952 0.012 72)",
+      "firstHeading": "Когда люди понимают,что им нужен такой выезд"
+    },
+    {
+      "index": 3,
+      "id": "(no id)",
+      "offsetTop": 2290,
+      "height": 720,
+      "bg": "oklch(0.185 0.038 264)",
+      "firstHeading": "в системе,из которойты живёшь"
+    },
+    {
+      "index": 4,
+      "id": "(no id)",
+      "offsetTop": 3010,
+      "height": 892,
+      "bg": "oklch(0.952 0.012 72)",
+      "firstHeading": "Что происходитна кэмпе"
+    },
+    {
+      "index": 5,
+      "id": "authors",
+      "offsetTop": 3902,
+      "height": 935,
+      "bg": "oklch(0.185 0.038 264)",
+      "firstHeading": "Программу проводят Майя и Роман"
+    },
+    {
+      "index": 6,
+      "id": "(no id)",
+      "offsetTop": 4837,
+      "height": 900,
+      "bg": "oklch(0.952 0.012 72)",
+      "firstHeading": "Инструменты отражения"
+    },
+    {
+      "index": 7,
+      "id": "program",
+      "offsetTop": 5737,
+      "height": 839,
+      "bg": "oklch(0.928 0.016 72)",
+      "firstHeading": "Три дня трансформации"
+    },
+    {
+      "index": 8,
+      "id": "location",
+      "offsetTop": 6576,
+      "height": 1108,
+      "bg": "oklch(0.952 0.012 72)",
+      "firstHeading": "Красная Поляна · Глэмпинг «Дзен рекавери»"
+    },
+    {
+      "index": 9,
+      "id": "testimonials",
+      "offsetTop": 7684,
+      "height": 936,
+      "bg": "oklch(0.952 0.012 72)",
+      "firstHeading": "Истории трансформации"
+    },
+    {
+      "index": 10,
+      "id": "for-who",
+      "offsetTop": 8619,
+      "height": 578,
+      "bg": "oklch(0.928 0.016 72)",
+      "firstHeading": "Кому это нужно сейчас"
+    },
+    {
+      "index": 11,
+      "id": "(no id)",
+      "offsetTop": 9197,
+      "height": 900,
+      "bg": "oklch(0.185 0.038 264)",
+      "firstHeading": "Что ты заберёшь с собой"
+    },
+    {
+      "index": 12,
+      "id": "pricing",
+      "offsetTop": 10097,
+      "height": 1012,
+      "bg": "oklch(0.964 0.01 72)",
+      "firstHeading": "Тарифы"
+    },
+    {
+      "index": 13,
+      "id": "(no id)",
+      "offsetTop": 11109,
+      "height": 706,
+      "bg": "oklch(0.185 0.038 264)",
+      "firstHeading": "Если ничего не менять —через год будет то же самое"
+    }
+  ],
+  "scrollHeight": 12142,
+  "bodyBg": "oklch(0.952 0.012 72)"
+}

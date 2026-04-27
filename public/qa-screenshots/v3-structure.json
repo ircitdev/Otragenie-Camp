@@ -1,0 +1,342 @@
+{
+  "sectionIds": [
+    {
+      "tag": "div",
+      "id": "root",
+      "offsetTop": 0,
+      "height": 17406,
+      "className": ""
+    },
+    {
+      "tag": "section",
+      "id": "hero",
+      "offsetTop": 0,
+      "height": 900,
+      "className": "relative min-h-screen flex items-center justify-center overflow-hidden bg-navy group/hero"
+    },
+    {
+      "tag": "section",
+      "id": "about",
+      "offsetTop": 1904,
+      "height": 900,
+      "className": "min-h-screen flex items-center bg-cream relative overflow-hidden py-16"
+    },
+    {
+      "tag": "section",
+      "id": "pains",
+      "offsetTop": 2804,
+      "height": 1429,
+      "className": "py-24 md:py-36 bg-[#0b1130] relative overflow-hidden"
+    },
+    {
+      "tag": "section",
+      "id": "philosophy",
+      "offsetTop": 6969,
+      "height": 900,
+      "className": "min-h-screen flex items-center py-16 bg-cream relative overflow-hidden"
+    },
+    {
+      "tag": "section",
+      "id": "authors",
+      "offsetTop": 7869,
+      "height": 900,
+      "className": "min-h-screen flex items-center py-10 bg-navy text-white relative overflow-hidden"
+    },
+    {
+      "tag": "section",
+      "id": "program",
+      "offsetTop": 9669,
+      "height": 900,
+      "className": "min-h-screen flex items-center py-12 bg-white relative overflow-hidden"
+    },
+    {
+      "tag": "div",
+      "id": "program-panel-0",
+      "offsetTop": 427,
+      "height": 249,
+      "className": ""
+    },
+    {
+      "tag": "section",
+      "id": "location",
+      "offsetTop": 10569,
+      "height": 966,
+      "className": "min-h-screen flex items-center py-12 bg-cream relative overflow-hidden"
+    },
+    {
+      "tag": "section",
+      "id": "testimonials",
+      "offsetTop": 11535,
+      "height": 889,
+      "className": "py-12 md:py-16 bg-cream relative overflow-hidden"
+    },
+    {
+      "tag": "section",
+      "id": "for-who",
+      "offsetTop": 12424,
+      "height": 900,
+      "className": "min-h-screen flex items-center py-12 bg-white relative overflow-hidden"
+    },
+    {
+      "tag": "section",
+      "id": "pricing",
+      "offsetTop": 14224,
+      "height": 1057,
+      "className": "min-h-screen flex items-center py-12 bg-white relative overflow-hidden"
+    }
+  ],
+  "allSections": [
+    {
+      "index": 0,
+      "id": "hero",
+      "offsetTop": 0,
+      "height": 900,
+      "firstHeading": "Отражение"
+    },
+    {
+      "index": 1,
+      "id": "(no id)",
+      "offsetTop": 900,
+      "height": 1004,
+      "firstHeading": "Путь за два дня"
+    },
+    {
+      "index": 2,
+      "id": "about",
+      "offsetTop": 1904,
+      "height": 900,
+      "firstHeading": "Место, где честность становится опорой."
+    },
+    {
+      "index": 3,
+      "id": "pains",
+      "offsetTop": 2804,
+      "height": 1429,
+      "firstHeading": "Почему вы здесь?"
+    },
+    {
+      "index": 4,
+      "id": "(no id)",
+      "offsetTop": 4233,
+      "height": 936,
+      "firstHeading": "КОГДА ВЫ ПОНИМАЕТЕ,ЧТО НУЖЕН КЭМП"
+    },
+    {
+      "index": 5,
+      "id": "(no id)",
+      "offsetTop": 5169,
+      "height": 900,
+      "firstHeading": "Проблема не в тебе."
+    },
+    {
+      "index": 6,
+      "id": "(no id)",
+      "offsetTop": 6069,
+      "height": 900,
+      "firstHeading": "Что происходитна кэмпе"
+    },
+    {
+      "index": 7,
+      "id": "philosophy",
+      "offsetTop": 6969,
+      "height": 900,
+      "firstHeading": "Глубина и структура в одной работе."
+    },
+    {
+      "index": 8,
+      "id": "authors",
+      "offsetTop": 7869,
+      "height": 900,
+      "firstHeading": "Программу проводят Майя и Роман"
+    },
+    {
+      "index": 9,
+      "id": "(no id)",
+      "offsetTop": 8769,
+      "height": 900,
+      "firstHeading": "ИНСТРУМЕНТЫ ОТРАЖЕНИЯ"
+    },
+    {
+      "index": 10,
+      "id": "program",
+      "offsetTop": 9669,
+      "height": 900,
+      "firstHeading": "Три дня трансформации"
+    },
+    {
+      "index": 11,
+      "id": "location",
+      "offsetTop": 10569,
+      "height": 966,
+      "firstHeading": "Красная Поляна · Глэмпинг «Дзен рекавери»"
+    },
+    {
+      "index": 12,
+      "id": "testimonials",
+      "offsetTop": 11535,
+      "height": 889,
+      "firstHeading": "Истории трансформации"
+    },
+    {
+      "index": 13,
+      "id": "for-who",
+      "offsetTop": 12424,
+      "height": 900,
+      "firstHeading": "Кому это нужносейчас"
+    },
+    {
+      "index": 14,
+      "id": "(no id)",
+      "offsetTop": 13324,
+      "height": 900,
+      "firstHeading": "ЧТО ТЫ ЗАБЕРЁШЬ С СОБОЙ"
+    },
+    {
+      "index": 15,
+      "id": "pricing",
+      "offsetTop": 14224,
+      "height": 1057,
+      "firstHeading": "Тарифы"
+    },
+    {
+      "index": 16,
+      "id": "(no id)",
+      "offsetTop": 15281,
+      "height": 900,
+      "firstHeading": "Часто спрашивают"
+    },
+    {
+      "index": 17,
+      "id": "(no id)",
+      "offsetTop": 16181,
+      "height": 900,
+      "firstHeading": "Если ничего не менять,через год будет то же самое"
+    }
+  ],
+  "headings": [
+    {
+      "tag": "h1",
+      "text": "Отражение"
+    },
+    {
+      "tag": "h1",
+      "text": "Отражение"
+    },
+    {
+      "tag": "h2",
+      "text": "Путь за два дня"
+    },
+    {
+      "tag": "h3",
+      "text": "Честная диагностика"
+    },
+    {
+      "tag": "h3",
+      "text": "Отношения как зеркало"
+    },
+    {
+      "tag": "h3",
+      "text": "Глубинная практика"
+    },
+    {
+      "tag": "h3",
+      "text": "Смысл и ценности"
+    },
+    {
+      "tag": "h3",
+      "text": "Архитектура новой версии"
+    },
+    {
+      "tag": "h3",
+      "text": "Первые правила новой жизни"
+    },
+    {
+      "tag": "h2",
+      "text": "Место, где честность становится опорой."
+    },
+    {
+      "tag": "h2",
+      "text": "Почему вы здесь?"
+    },
+    {
+      "tag": "h2",
+      "text": "КОГДА ВЫ ПОНИМАЕТЕ,ЧТО НУЖЕН КЭМП"
+    },
+    {
+      "tag": "h2",
+      "text": "Проблема не в тебе."
+    },
+    {
+      "tag": "h2",
+      "text": "Не в отношениях. Не в работе."
+    },
+    {
+      "tag": "h2",
+      "text": "Не в усталости."
+    },
+    {
+      "tag": "h2",
+      "text": "Что происходитна кэмпе"
+    },
+    {
+      "tag": "h2",
+      "text": "Глубина и структура в одной работе."
+    },
+    {
+      "tag": "h3",
+      "text": "Глубина"
+    },
+    {
+      "tag": "h3",
+      "text": "Структура"
+    },
+    {
+      "tag": "h3",
+      "text": "Изменения"
+    },
+    {
+      "tag": "h2",
+      "text": "Программу проводят Майя и Роман"
+    },
+    {
+      "tag": "h3",
+      "text": "Майя Дзодзатти"
+    },
+    {
+      "tag": "h3",
+      "text": "Роман Дусенко"
+    },
+    {
+      "tag": "h2",
+      "text": "ИНСТРУМЕНТЫ ОТРАЖЕНИЯ"
+    },
+    {
+      "tag": "h3",
+      "text": "Индивидуальная рефлексия"
+    },
+    {
+      "tag": "h3",
+      "text": "Групповая работа"
+    },
+    {
+      "tag": "h3",
+      "text": "Глубинные практики"
+    },
+    {
+      "tag": "h3",
+      "text": "Телесная работа и интеграция"
+    },
+    {
+      "tag": "h2",
+      "text": "Три дня трансформации"
+    },
+    {
+      "tag": "h3",
+      "text": "Четверг вечер — Заезд"
+    }
+  ],
+  "bodyBg": "rgb(243, 237, 228)",
+  "bodyFont": "Inter, -apple-system, sans-serif",
+  "scrollHeight": 17406,
+  "clientWidth": 1440
+}

@@ -1,0 +1,267 @@
+{
+  "results": [
+    {
+      "name": "v3-full-page-desktop",
+      "status": "OK"
+    },
+    {
+      "name": "v3-hero-fold",
+      "status": "OK"
+    },
+    {
+      "name": "v3-01-hero",
+      "status": "OK",
+      "selector": "#hero",
+      "height": 900
+    },
+    {
+      "name": "v3-02-journey",
+      "status": "SELECTOR_NOT_FOUND",
+      "selector": "#journey"
+    },
+    {
+      "name": "v3-03-about",
+      "status": "OK",
+      "selector": "#about",
+      "height": 900
+    },
+    {
+      "name": "v3-04-pains",
+      "status": "OK",
+      "selector": "#pains",
+      "height": 1428.875
+    },
+    {
+      "name": "v3-05-system-problem",
+      "status": "SELECTOR_NOT_FOUND",
+      "selector": "#system-problem"
+    },
+    {
+      "name": "v3-06-what-happens",
+      "status": "SELECTOR_NOT_FOUND",
+      "selector": "#what-happens"
+    },
+    {
+      "name": "v3-07-authors",
+      "status": "OK",
+      "selector": "#authors",
+      "height": 900
+    },
+    {
+      "name": "v3-08-location",
+      "status": "OK",
+      "selector": "#location",
+      "height": 966.15625
+    },
+    {
+      "name": "v3-09-testimonials",
+      "status": "OK",
+      "selector": "#testimonials",
+      "height": 889.3125
+    },
+    {
+      "name": "v3-10-pricing",
+      "status": "OK",
+      "selector": "#pricing",
+      "height": 1057.125
+    },
+    {
+      "name": "v3-11-faq",
+      "status": "SELECTOR_NOT_FOUND",
+      "selector": "#faq"
+    },
+    {
+      "name": "v3-12-footer",
+      "status": "OK",
+      "selector": "footer",
+      "height": 324.859375
+    },
+    {
+      "name": "v3-00-header",
+      "status": "OK",
+      "selector": "header, nav",
+      "height": 83.859375
+    },
+    {
+      "name": "v3-section-0",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-1",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-2",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-3",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-4",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-5",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-6",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-7",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-8",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-9",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-10",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-11",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-12",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-13",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-14",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-15",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-16",
+      "status": "OK"
+    },
+    {
+      "name": "v3-section-17",
+      "status": "OK"
+    },
+    {
+      "name": "v3-scroll-0",
+      "status": "OK",
+      "scrollY": 0
+    },
+    {
+      "name": "v3-scroll-1",
+      "status": "OK",
+      "scrollY": 900
+    },
+    {
+      "name": "v3-scroll-2",
+      "status": "OK",
+      "scrollY": 1800
+    },
+    {
+      "name": "v3-scroll-3",
+      "status": "OK",
+      "scrollY": 2700
+    },
+    {
+      "name": "v3-scroll-4",
+      "status": "OK",
+      "scrollY": 3600
+    },
+    {
+      "name": "v3-scroll-5",
+      "status": "OK",
+      "scrollY": 4500
+    },
+    {
+      "name": "v3-scroll-6",
+      "status": "OK",
+      "scrollY": 5400
+    },
+    {
+      "name": "v3-scroll-7",
+      "status": "OK",
+      "scrollY": 6300
+    },
+    {
+      "name": "v3-scroll-8",
+      "status": "OK",
+      "scrollY": 7200
+    },
+    {
+      "name": "v3-scroll-9",
+      "status": "OK",
+      "scrollY": 8100
+    },
+    {
+      "name": "v3-scroll-10",
+      "status": "OK",
+      "scrollY": 9000
+    },
+    {
+      "name": "v3-scroll-11",
+      "status": "OK",
+      "scrollY": 9900
+    },
+    {
+      "name": "v3-scroll-12",
+      "status": "OK",
+      "scrollY": 10800
+    },
+    {
+      "name": "v3-scroll-13",
+      "status": "OK",
+      "scrollY": 11700
+    },
+    {
+      "name": "v3-scroll-14",
+      "status": "OK",
+      "scrollY": 12600
+    },
+    {
+      "name": "v3-scroll-15",
+      "status": "OK",
+      "scrollY": 13500
+    },
+    {
+      "name": "v3-scroll-16",
+      "status": "OK",
+      "scrollY": 14400
+    },
+    {
+      "name": "v3-scroll-17",
+      "status": "OK",
+      "scrollY": 15300
+    },
+    {
+      "name": "v3-scroll-18",
+      "status": "OK",
+      "scrollY": 16200
+    },
+    {
+      "name": "v3-scroll-19",
+      "status": "OK",
+      "scrollY": 17100
+    },
+    {
+      "name": "v3-mobile-full",
+      "status": "OK"
+    },
+    {
+      "name": "v3-tablet-full",
+      "status": "OK"
+    }
+  ],
+  "capturedAt": "2026-04-19T09:34:26.054Z"
+}
