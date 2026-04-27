@@ -404,7 +404,7 @@ const Hero = ({ onOpenModal }: any) => {
 // --- JourneyPath (Экран 2 — пунктирный маршрут) ---
 
 const JourneyPath = () => (
-  <section className="bg-navy py-20 md:py-28 relative overflow-hidden">
+  <section className="bg-navy py-32 md:py-44 relative overflow-hidden min-h-[75vh] flex items-center">
     <div className="absolute inset-0 pointer-events-none">
       <LightRays
         raysOrigin="top-center"
@@ -421,27 +421,27 @@ const JourneyPath = () => (
       />
     </div>
     <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }} />
-    <div className="max-w-3xl mx-auto px-6 md:px-12 relative text-center z-[5]">
+    <div className="max-w-4xl mx-auto px-6 md:px-12 relative text-center z-[5] w-full">
       <ScrollReveal
         baseOpacity={0.08}
         baseRotation={2}
         blurStrength={6}
         enableBlur
-        containerClassName="mb-10"
-        textClassName="text-[clamp(1.05rem,2vw,1.25rem)] text-white/85 leading-[1.75] max-w-2xl mx-auto block"
+        containerClassName="mb-16"
+        textClassName="text-[clamp(1.5rem,3vw,2rem)] text-white/90 leading-[1.55] max-w-3xl mx-auto block font-light"
       >
         «Отражение» — это двухдневный терапевтический выезд для людей, которые хотят большего от своей жизни и готовы наконец разобраться, что им мешает это получить.
       </ScrollReveal>
       <Reveal delay={0.18}>
         <div className="inline-block">
-          <p className="text-[0.78rem] uppercase tracking-[0.28em] text-brown/70 mb-5 font-medium">За два дня вы проходите путь</p>
-          <div className="flex items-center gap-4 md:gap-6 justify-center">
-            <span className="text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug font-medium">от честной диагностики<br className="hidden sm:block" /> своей жизни</span>
-            <div className="flex items-center gap-1 text-brown shrink-0">
-              <div className="w-6 md:w-10 h-px bg-brown/50" />
-              <ArrowRight size={16} className="text-brown" />
+          <p className="text-[0.88rem] uppercase tracking-[0.3em] text-brown/70 mb-7 font-medium">За два дня вы проходите путь</p>
+          <div className="flex items-center gap-5 md:gap-8 justify-center">
+            <span className="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium">от честной диагностики<br className="hidden sm:block" /> своей жизни</span>
+            <div className="flex items-center gap-1.5 text-brown shrink-0">
+              <div className="w-8 md:w-14 h-px bg-brown/50" />
+              <ArrowRight size={22} className="text-brown" />
             </div>
-            <span className="text-[clamp(1rem,2.2vw,1.3rem)] text-white/90 leading-snug font-medium">к первым правилам<br className="hidden sm:block" /> новой</span>
+            <span className="text-[clamp(1.4rem,2.8vw,1.85rem)] text-white/95 leading-snug font-medium">к первым правилам<br className="hidden sm:block" /> новой</span>
           </div>
         </div>
       </Reveal>
