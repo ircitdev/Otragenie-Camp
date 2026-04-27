@@ -267,7 +267,7 @@ export const PRICING = [
   {
     name: "База", desc: "Для тех, кто хочет пройти глубокий процесс в группе и получить честное отражение своей ситуации", price: "149 000 ₽",
     theme: "base",
-    payformUrl: "https://payform.ru/6wbmBhA/",
+    payformUrl: "https://payform.ru/ewbmBlQ/",
     feats: [
       { title: "участие в 2-дневной программе", desc: "полное погружение в процесс" },
       { title: "групповую работу и разборы", desc: "вы увидите свою ситуацию через разные перспективы" },
