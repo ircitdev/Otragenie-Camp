@@ -106,11 +106,18 @@ blockquote, q, cite {
   font-family: "Young Serif", Georgia, serif;
 }
 
-/* Заголовки — Geologica, не serif */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Geologica", -apple-system, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+/* Geologica для всех заголовков — включая те что без font-serif класса */
+@layer base {
+  h1:not(.font-serif),
+  h2:not(.font-serif),
+  h3:not(.font-serif),
+  h4:not(.font-serif),
+  h5:not(.font-serif),
+  h6:not(.font-serif) {
+    font-family: "Geologica", -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
 }
 
 ::-webkit-scrollbar {
