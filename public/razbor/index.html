@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Отражение Camp — отчёт о соответствии работ ТЗ</title>
+<meta name="description" content="Технический отчёт о выполненных работах по проекту «Отражение Camp» (19–21 июня 2026). 12 экранов сайта, инфраструктура, хронология, цитаты из переписки.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://otragenie-camp.ru/razbor/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Отражение Camp">
+<meta property="og:url" content="https://otragenie-camp.ru/razbor/">
+<meta property="og:title" content="Отчёт о соответствии работ ТЗ — Отражение Camp">
+<meta property="og:description" content="Сверка выполненных работ с техническим заданием: 12 экранов, инфраструктура, хронология, источники в чате. Период: 8–28 апреля 2026.">
+<meta property="og:image" content="https://otragenie-camp.ru/razbor/screens/01_hero_d.jpg">
+<meta property="og:image:width" content="1440">
+<meta property="og:image:height" content="900">
+<meta property="og:image:alt" content="Отражение Camp — главный экран сайта">
+<meta property="og:locale" content="ru_RU">
+
+<!-- Twitter / Telegram -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Отчёт о соответствии работ ТЗ — Отражение Camp">
+<meta name="twitter:description" content="Сверка выполненных работ с техническим заданием: 12 экранов, инфраструктура, хронология, источники в чате.">
+<meta name="twitter:image" content="https://otragenie-camp.ru/razbor/screens/01_hero_d.jpg">
+
+<meta name="theme-color" content="#9a7d5a">
+<style>
+  :root {
+    --bg: #f8f4ed;
+    --paper: #ffffff;
+    --text: #2b2419;
+    --muted: #7c6f5e;
+    --brown: #9a7d5a;
+    --brown-dark: #7a6244;
+    --brown-light: #c9a97a;
+    --ok: #2f7a4f;
+    --ok-bg: #e7f3ec;
+    --warn: #b07a1f;
+    --warn-bg: #faf1de;
+    --line: #e7dfd2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1180px; margin: 0 auto; padding: 48px 24px 96px; }
+  header {
+    border-bottom: 2px solid var(--brown);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    color: var(--brown);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: clamp(1.6rem, 3vw, 2.3rem); margin: 0 0 12px; line-height: 1.15; }
+  h2 {
+    font-size: 1.4rem;
+    margin: 56px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  h3 { font-size: 1.05rem; margin: 22px 0 8px; }
+  p { margin: 0 0 12px; }
+  .meta {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    color: var(--muted); font-size: 0.9rem; margin-top: 14px;
+  }
+  .meta b { color: var(--text); font-weight: 600; }
+
+  .summary {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 24px 0 8px;
+  }
+  .summary ul { padding-left: 22px; margin: 8px 0 0; }
+  .summary li { margin: 4px 0; }
+
+  .legend {
+    display: flex; gap: 12px; margin: 28px 0 18px; flex-wrap: wrap;
+    font-size: 0.86rem;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-weight: 600; font-size: 0.78rem;
+  }
+  .b-ok { background: var(--ok-bg); color: var(--ok); }
+  .b-extra { background: #eef3fa; color: #2a5b9a; }
+  .b-warn { background: var(--warn-bg); color: var(--warn); }
+
+  .item {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 26px 28px;
+    margin: 22px 0;
+    page-break-inside: avoid;
+  }
+  .item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .item-num {
+    font-weight: 700;
+    color: var(--brown-dark);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .item-title { font-weight: 700; font-size: 1.18rem; margin: 4px 0 0; }
+  .req {
+    background: #faf6ee;
+    border-left: 3px solid var(--brown-light);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 14px 0 18px;
+    font-size: 0.94rem;
+    color: var(--text);
+  }
+  .req b { color: var(--brown-dark); }
+
+  .src-list {
+    margin: 12px 0 18px;
+    background: #f5efe2;
+    border-radius: 10px;
+    padding: 12px 16px 12px 22px;
+    border-left: 3px solid #b8a586;
+  }
+  .src-list .src-title {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin: 0 0 6px;
+    list-style: none;
+  }
+  .src-list ul { margin: 4px 0 0; padding-left: 18px; }
+  .src-list li {
+    font-size: 0.85rem;
+    margin: 4px 0;
+    color: var(--text);
+  }
+  .src-list li b { color: var(--brown-dark); }
+  .src-list li i { color: var(--muted); font-style: normal; }
+  .src-list .ts { font-variant-numeric: tabular-nums; color: var(--muted); margin-right: 6px; }
+
+  .shots { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 16px; margin-top: 14px; }
+  @media (max-width: 760px) { .shots { grid-template-columns: 1fr; } }
+  .shot { background: #f1ebe0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+  .shot img { width: 100%; height: auto; display: block; }
+  .shot-cap {
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    background: #f8f3ea;
+  }
+
+  .footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+  .footer a { color: var(--brown-dark); }
+  table.ledger {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.92rem;
+  }
+  table.ledger th, table.ledger td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.ledger th { background: #f3ebdc; color: var(--brown-dark); font-weight: 600; }
+  table.ledger tr:last-child td { border-bottom: 0; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  @media print {
+    body { background: white; }
+    .container { padding: 18px; max-width: 100%; }
+    .item, .summary { box-shadow: none; }
+    h2 { page-break-after: avoid; }
+    .shots { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="eyebrow">Отражение Camp · 19–21 июня 2026</div>
+  <h1>Отчёт о соответствии выполненных работ техническому заданию</h1>
+  <div class="meta">
+    <span><b>Период работ:</b> 8–28 апреля 2026</span>
+    <span><b>Подрядчик:</b> Aleksandr Uspeshnyy</span>
+    <span><b>Продакшен:</b> <a href="https://otragenie-camp.ru/v3" style="color: var(--brown-dark);">otragenie-camp.ru/v3</a></span>
+  </div>
+</header>
+
+<section class="summary">
+  <h3 style="margin-top: 0;">Краткое резюме</h3>
+  <p>
+    Сайт развёрнут на собственном домене и работающем сервере, лендинг реализован по структуре технического задания
+    (14 экранов), телеграм-бот настроен и интегрирован с командной форум-группой,
+    подключён приём платежей через Prodamus с опцией «Частями» (BNPL), а также сверх ТЗ реализованы
+    дополнительные модули: голосовой AI-ассистент, виджет живого менеджера (LiveChat),
+    три итерации правок (15, 19 и 28 апреля).
+  </p>
+
+  <h3>Финансовые условия</h3>
+  <table class="ledger">
+    <tr><th>Параметр</th><th class="num">Сумма, ₽</th></tr>
+    <tr><td>Согласованная стоимость работ по КП от 8 апреля</td><td class="num">40 000</td></tr>
+    <tr><td>Аванс по КП (50%)</td><td class="num">20 000</td></tr>
+    <tr><td>Фактически получено: 10 000 от Р. Дусенко + 10 000 от М. Дзодзатти (9 апреля)</td><td class="num">20 000</td></tr>
+    <tr><td><b>К доплате после сдачи работ</b></td><td class="num"><b>20 000</b></td></tr>
+  </table>
+</section>
+
+<div class="legend">
+  <span class="badge b-ok">✓ Реализовано по ТЗ</span>
+  <span class="badge b-extra">★ Сверх ТЗ — без доплаты</span>
+  <span class="badge b-warn">⏳ Уточнено по ходу работы</span>
+</div>
+
+<h2>Соответствие по экранам</h2>
+
+<!-- 1 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 01</div>
+      <div class="item-title">Hero — главный первый экран</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> название проекта, даты и локация, ключевая идея, кнопка бронирования,
+    видеофон под темой выезда. <b>Дополнительно реализовано:</b> ротация 5 видеороликов на десктопе
+    и 4 на мобильном с весами показа (промо-ролик в 50% случаев), адаптация под мобильный.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04 · после 12:00]</span> <b>Мария Зубрицкая:</b> «Даты не верно. Описание не как в тз» <i>— приведено к ТЗ.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Майя Дзодзатти:</b> «Слово терапевтическая НЕ МОЖЕТ ТАМ БЫТЬ. Мы по закону не имеем права использовать это слово…» <i>— слово удалено везде, где встречалось.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Даем обратную связь по тз» <i>— тексты hero приведены в формулировки ТЗ.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/01_hero_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/01_hero_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 03</div>
+      <div class="item-title">«О проекте» — когда нужен такой выезд</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> вводный блок с описанием момента, когда человек узнаёт себя в формулировках кэмпа;
+    карточки болей участников; цитата ведущей. Видео локации в качестве правой колонки. Тексты
+    приведены к формулировкам из ТЗ во второй итерации (19 апреля), затем обновлены в третьей (28 апреля).
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Далее сразу после этого был экран 3 — Когда вы понимаете что нужен Кэмп» <i>— секция воспроизведена.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Это не цитата, а ключевое заключение мысли после пунктов как вы это ощущаете» <i>— блок переработан.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Здесь снова не весь текст из тз, и размещение текста мне не очень нравится…» <i>— добавлен пропущенный фрагмент про «менять работу, партнёров, города…».</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/03_when_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/03_when_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 04</div>
+      <div class="item-title">«Система, из которой вы действуете» — Майя</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> цитата Майи о том, что проблема не в работе/деньгах/отношениях,
+    а в системе принятия решений. Фоновое фото Майи, тёплая аура (SoftAurora WebGL).
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Здесь выделить надо: я бы выделила не в отношениях, не в работе, не в усталости. И выделила проблема в системе из которой ты живешь» <i>— верстка изменена под акценты по ТЗ.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Очень много шрифтов и при этом несоблюдение правил…» <i>— шрифтовая иерархия унифицирована.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/04_system_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/04_system_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 05</div>
+      <div class="item-title">«Что происходит на кэмпе»</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> описание формата работы, концентрированный двухдневный процесс,
+    «работа, в которой за два дня становится видно то, что в обычной жизни остаётся незамеченным годами».
+    Видео <code>girlsswim.MP4</code> (зацикленное) вместо изначального стокового изображения по правке от 15.04.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Картинка не соответствует смыслам, это не про глубокую работу в терапии» <i>— фон заменён на тематическое видео.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Майя Дзодзатти:</b> «Может взять фото, которые быть в презе» <i>— в третьей итерации использованы согласованные материалы.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «ЧТО ПРОИСХОДИТ НА КЭМПЕ — Это пространство, где ты больше не можешь не видеть правду…» <i>— текст приведён к формулировке ТЗ.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/05_what_happens_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/05_what_happens_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 06</div>
+      <div class="item-title">Авторы — Майя Дзодзатти и Роман Дусенко</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+    <span class="badge b-warn">⏳ Цифры экспертов ожидаются от заказчика</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> блок с экспертами кэмпа, их регалии и краткое описание подхода.
+    Используются согласованные фотографии. Адаптировано под мобильный.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Фото участников как в презе должны быть» <i>— фото заменены на согласованные.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «В тз у каждого эксперта указаны цифры которые важно указать, а так же личный опыт в отношениях» <i>— ожидаются точные цифры от Майи и команды; место под них зарезервировано.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/06_authors_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/06_authors_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 8 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 08</div>
+      <div class="item-title">Программа трёх дней</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> детальная программа выезда по дням и блокам — с диагностикой,
+    глубинной работой и интеграцией. Тексты — в формулировках ТЗ.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Здесь было: ИНСТРУМЕНТЫ ОТРАЖЕНИЯ. И точный текст как должно быть написано» <i>— текст приведён к ТЗ.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Работа проходит в малой группе, всего 10 человек…» <i>— формулировка использована дословно.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/08_program_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/08_program_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 9 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 09</div>
+      <div class="item-title">Локация — глэмпинг «Дзен рекавери», Красная Поляна</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> описание локации в формулировках ТЗ, галерея фотографий,
+    указание формата размещения. Загружены актуальные фотографии глэмпинга.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[08.04]</span> <b>Мария Зубрицкая:</b> «Я там ошиблась в тз, не глемпинг лес а Дзен рекавери, поправила в тз тоже» <i>— название локации актуализировано.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Красная Поляна · Глэмпинг „Дзен рекавери“… (фото локации)» <i>— текст и фото обновлены под формулировку ТЗ.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Здесь название глемпинга не то…» <i>— заменено повсюду.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Майя Дзодзатти:</b> «Там нет питания вообще» <i>— упоминание трёхразового питания удалено из FAQ и тарифов.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/09_location_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/09_location_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 10 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 10</div>
+      <div class="item-title">Кейсы клиентов</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+    <span class="badge b-extra">★ + переверстка под формат «колоды»</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> блок с кейсами «до / после», навигация между карточками. По доп. правке от 15 апреля
+    реализована подсветка соседних карточек по бокам активной (формат «колоды»),
+    свайп на мобильном, кнопки «вперёд / назад». Переверстка выполнена сверх объёма КП.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Здесь не видно и не заметно что есть еще кейсы. Сделать так, чтобы справа было видно кусочек следующей карточки. И под стрелочками приписку „Смотреть кейсы →“» <i>— карусель переверстана в формат «колоды» с предпросмотром соседних карточек, сверх объёма КП.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/10_testimonials_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/10_testimonials_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 11 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 11</div>
+      <div class="item-title">Для кого этот выезд</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> описание целевой аудитории, для кого создан кэмп.
+    Тексты — в формулировках ТЗ.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Пропущена вводная часть: „Иногда в жизни наступает момент…“» <i>— добавлено.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Формулировки и текст нужно все использовать как в тз» <i>— тексты приведены дословно.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/11_for_who_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/11_for_who_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 12 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 12</div>
+      <div class="item-title">Что вы получите по итогу</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> блок ожидаемых результатов участия. Динамический фоновый слой,
+    общая визуальная стилистика выезда. Реализован якорь «Что ты получишь» с правильным переходом
+    на эту секцию (исправлено по обратной связи).
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[—]</span> <b>Замечание заказчика:</b> «Эта ссылка ведёт вверх страницы, а должна на секцию ниже» <i>— якорь исправлен на корректный переход к секции «Что вы получите».</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/12_results_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/12_results_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 13 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 13</div>
+      <div class="item-title">Тарифы и оплата</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+    <span class="badge b-extra">★ + интеграция «Частями» (BNPL)</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> 3 варианта тарифа, кнопки оплаты с переходом на платёжную страницу.
+    <b>Сверх ТЗ:</b> подключена опция «Оплата частями» (Prodamus BNPL, 1.5/3/6/10/12 мес.),
+    дополнительный пункт оферты внесён, платёжная страница работает в продакшене.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «По кнопкам оплатить, мы утверждали такие варианты: 20 тыс забронировать место, Полная оплата, Рассрочка и кредит» <i>— все три варианта реализованы.</i></li>
+      <li><span class="ts">[15.04]</span> <b>Майя Дзодзатти:</b> «Должны быть варианты с рассрочкой… на сумму процентов» <i>— подключена интеграция «Оплата частями» от Prodamus с тарифной сеткой 1.5–12 мес.</i></li>
+      <li><span class="ts">[27.04]</span> <b>Aleksandr Uspeshnyy:</b> прислал условия Prodamus «Частями» с комиссиями и сроками; <b>Роман Дусенко</b> подтвердил подключение.</li>
+      <li><span class="ts">[28.04]</span> <b>Aleksandr Uspeshnyy:</b> «Оплата частями подключена» <i>— тариф настроен и работает в продакшене.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/13_pricing_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/13_pricing_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<!-- 14 -->
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Экран 14</div>
+      <div class="item-title">Финал — две развилки и итог</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+    <span class="badge b-extra">★ + ротация фонов</span>
+  </div>
+  <div class="req">
+    <b>Требование ТЗ:</b> финальный экран с двумя сценариями («без выезда» и «с выездом»)
+    и общим выводом. <b>Сверх ТЗ:</b> фоновое изображение автоматически меняется
+    между тремя кадрами каждые 8 секунд с плавным crossfade и Ken-Burns scale.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Вот после тарифов мы утверждали вариант с красной и зеленой капсулой» <i>— реализованы две капсулы «Сценарий 01» и «Сценарий 02».</i></li>
+      <li><span class="ts">[—]</span> <b>Замечание заказчика:</b> «Сделай чтобы фоновое изображение в секции „Сценарий 01 · без выезда“ плавно менялось каждые 8 секунд» — приложены 3 фото <i>— фоны добавлены, ротация настроена.</i></li>
+    </ul>
+  </div>
+  <div class="shots">
+    <figure class="shot"><div class="shot-cap">Десктоп · 1440 px</div><img src="screens/14_final_d.jpg" alt=""></figure>
+    <figure class="shot"><div class="shot-cap">Мобильный · iPhone 13</div><img src="screens/14_final_m.jpg" alt=""></figure>
+  </div>
+</div>
+
+<h2>Дополнительная инфраструктура</h2>
+
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Backend / Bot</div>
+      <div class="item-title">Telegram-бот воронки лидогенерации</div>
+    </div>
+    <span class="badge b-extra">★ Сверх ТЗ</span>
+  </div>
+  <div class="req">
+    Воронка <b>/start → согласие с офертой → имя → роль → боль → forum-topic в группе → аудио-практика → follow-up через 24 часа</b>.
+    Сообщения пользователя в личке копируются в его forum-topic в Telegram-группе команды,
+    ответы из топика возвращаются пользователю.
+    Реализован gate с пользовательским соглашением (первый шаг — «Согласен»).
+    Админ-команды: <code>/setaudio</code>, <code>/cancelaudio</code>, <code>/audioinfo</code>, <code>/audiotest</code>,
+    <code>/analytics</code> (Яндекс.Метрика), <code>/prices</code>, <code>/dates</code>, <code>/docs</code>.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[08.04]</span> <b>Роман Дусенко:</b> «Саша, подключи нам в подарок 🎁 классный чат бот, на запись на диагностику» <i>— реализована полная воронка лидогенерации, выходящая за объём изначального КП.</i></li>
+      <li><span class="ts">[—]</span> <b>Замечание заказчика:</b> «Первое сообщение пользователю — просьба согласиться с пользовательским соглашением. Просим написать „Согласен“, после этого только чат» <i>— gate с консентом реализован, далее воронка работает только после согласия.</i></li>
+    </ul>
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Frontend / Widget</div>
+      <div class="item-title">LiveChat — живой менеджер из Telegram</div>
+    </div>
+    <span class="badge b-extra">★ Сверх ТЗ</span>
+  </div>
+  <div class="req">
+    Зелёный FAB-виджет в правом нижнем углу. Сообщения посетителя сайта попадают в отдельный
+    forum-topic в Telegram-группе. Менеджер отвечает прямо из Telegram — ответ возвращается посетителю
+    в виджет с поллингом каждые 3 секунды. На мобильном виджет показывается только после секции «Авторы»,
+    чтобы не перекрывать CTA Hero.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Мария Зубрицкая:</b> «Давайте вместо аи бота поставим ссылку на Леру? или допом, чтобы они смогли связаться с живым человеком?» <i>— реализован виджет живого чата с пересылкой в Telegram.</i></li>
+      <li><span class="ts">[—]</span> <b>Замечание заказчика:</b> «На мобильном виджет чата показывать только после секции Авторы» <i>— добавлено условие появления.</i></li>
+    </ul>
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Frontend / AI</div>
+      <div class="item-title">Голосовой AI-ассистент на Gemini</div>
+    </div>
+    <span class="badge b-extra">★ Сверх ТЗ</span>
+  </div>
+  <div class="req">
+    Микрофон-FAB, Web Speech API, TTS, function calling для генерации платёжных ссылок.
+    Системный промпт содержит весь контент сайта, чтобы ассистент отвечал в фактах кэмпа.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[08.04]</span> <b>Роман Дусенко:</b> «Подключи чат-бот на запись на диагностику» <i>— реализован голосовой ассистент с function calling под платежи.</i></li>
+    </ul>
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">Backend / Payments</div>
+      <div class="item-title">Prodamus — приём платежей и BNPL</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    Эндпоинт <code>/api/prodamus/pay</code> формирует платёжную ссылку, сверка через
+    HMAC-SHA256 на webhook <code>/api/prodamus/webhook</code>. Подключена опция «Частями».
+    Уведомления об оплатах поступают в общую группу.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[15.04]</span> <b>Майя Дзодзатти:</b> «Оферта нужна. В ней прописываются варианты оплаты, далее бухгалтер смотрит как правильно все это обозвать в назначении платежа, а потом инфа дублируюется на сайт» <i>— оферта подключена, ссылка ведёт на /oferta.</i></li>
+      <li><span class="ts">[27–28.04]</span> <b>Aleksandr Uspeshnyy:</b> «Оплата частями подключена» <i>— BNPL работает.</i></li>
+    </ul>
+  </div>
+</div>
+
+<div class="item">
+  <div class="item-head">
+    <div>
+      <div class="item-num">DevOps</div>
+      <div class="item-title">Домен, сервер, развёртывание</div>
+    </div>
+    <span class="badge b-ok">✓ Реализовано</span>
+  </div>
+  <div class="req">
+    Регистрация домена <b>otragenie-camp.ru</b>, настройка сервера (PM2, nginx, HTTPS),
+    автоматический деплой через <code>git pull</code> + <code>npm run build</code>,
+    SQLite для бота с персистентным хранением. Логирование событий, мониторинг через PM2.
+  </div>
+  <div class="src-list">
+    <div class="src-title">Источники по этому пункту</div>
+    <ul>
+      <li><span class="ts">[07.04]</span> <b>Aleksandr Uspeshnyy:</b> предложил пул из 30+ вариантов доменов; согласован <code>otragenie-camp.ru</code>.</li>
+      <li><span class="ts">[08.04 · 11:10]</span> <b>Beget:</b> «Поздравляем, домен otragenie-camp.ru успешно зарегистрирован».</li>
+      <li><span class="ts">[08.04]</span> <b>Aleksandr Uspeshnyy:</b> «Домен готов, сервер настроен http://otragenie-camp.ru».</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Хронология работ</h2>
+<table class="ledger">
+  <tr><th>Дата</th><th>Событие</th><th>Источник в чате</th></tr>
+  <tr><td>07.04</td><td>Подбор и согласование домена.</td><td>Aleksandr Uspeshnyy → 30+ вариантов; ответ Марии Зубрицкой: «Первый» (otragenie-camp.ru)</td></tr>
+  <tr><td>08.04</td><td>Отправлено КП. Запрошен аванс 20 000 ₽.</td><td>Aleksandr Uspeshnyy: «Жду 20т.р. на сбер по номеру»</td></tr>
+  <tr><td>09.04</td><td>Получено 20 000 ₽ (10 000 от Р. Дусенко + 10 000 от М. Дзодзатти). Работа начата.</td><td>Aleksandr Uspeshnyy: «Коллеги, получил только половину аванса ☝️» → Майя: «Я отправлю завтра»</td></tr>
+  <tr><td>11.04</td><td>М. Зубрицкая обновила ТЗ — изменены даты выезда.</td><td>Мария Зубрицкая: «У нас поменялись даты выезда, в тз поправила»</td></tr>
+  <tr><td>14.04</td><td>Выпущена первая версия + документация по адресу <code>/doc</code>.</td><td>Aleksandr Uspeshnyy: «otragenie-camp.ru/v1, документация /doc, пароль otragenie888camp»</td></tr>
+  <tr><td>15.04</td><td>Пакет правок от М. Зубрицкой; юр. замечание М. Дзодзатти про слово «терапевтическая»; обсуждение оферты и BNPL.</td><td>Серия из 30+ сообщений Марии Зубрицкой по экранам; Майя Дзодзатти: «слово нельзя использовать нигде»</td></tr>
+  <tr><td>18.04</td><td>Уточнено: «все ли правки описаны?» — ответ «да». Правки внесены.</td><td>Aleksandr Uspeshnyy: «Все правки по странице описаны на данный момент?» → Мария Зубрицкая: «Добрый день, да»</td></tr>
+  <tr><td>19.04</td><td>Выпущено обновление, отправлен Notion-отчёт по правкам.</td><td>Aleksandr Uspeshnyy: «Готово, проверьте» + ссылка на Notion</td></tr>
+  <tr><td>20.04</td><td>Серия дополнительных правок (часть выходит за объём КП: дизайн-система, шрифты, цветовая палитра, переверстка кейсов).</td><td>Запиненные сообщения Марии Зубрицкой: «по оформлению дизайна тоже у меня вопросики», «Очень много шрифтов», «не реализованы в полном объеме еще предыдущие»</td></tr>
+  <tr><td>22.04</td><td>Согласовано: следующее обновление + финальный визуальный аудит.</td><td>Aleksandr Uspeshnyy: «Ожидайте обновление. Согласуем все экраны, потом прогоню проверку визуал аудитор»</td></tr>
+  <tr><td>27.04</td><td>Подключена оплата «Частями» (Prodamus BNPL).</td><td>Aleksandr Uspeshnyy: условия Prodamus «Частями»; «Роман сказал да»</td></tr>
+  <tr><td>28.04</td><td>Выпущено крупное обновление, отправлен отчёт <code>/fix28report</code>. Запрошена приёмка.</td><td>Aleksandr Uspeshnyy: «otragenie-camp.ru/fix28report/», «оплата частями подключена»; обращения @madam_dzodzatti, @miriamblake, @RomanDusenko 👋</td></tr>
+  <tr><td>29.04</td><td>Р. Дусенко подтвердил приёмку в личной переписке: «Мне нравится». Следующий запрос «принимайте работу» в общем чате остался без ответа от группы.</td><td>Личная переписка с Р. Дусенко (09:49) + общий чат (без реакции группы)</td></tr>
+  <tr><td>30.04</td><td>Решение о непринятии работы получено в личной переписке. В общий чат решение не выносилось.</td><td>Личная переписка с Р. Дусенко (06:11)</td></tr>
+</table>
+
+<div class="footer">
+  Документ сформирован на основе данных продакшена <a href="https://otragenie-camp.ru/v3">otragenie-camp.ru/v3</a>
+  и переписки в общем чате проекта (7–28 апреля 2026).
+  Скриншоты сделаны автоматически (Playwright, viewport 1440×900 для десктопа и iPhone 13 для мобильного).
+</div>
+
+</div>
+</body>
+</html>
