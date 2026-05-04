@@ -485,7 +485,7 @@ const JourneyPath = () => (
         containerClassName="mb-8 md:mb-10"
         textClassName="text-[clamp(1.6rem,3.4vw,2.4rem)] text-white leading-[1.35] max-w-3xl mx-auto block font-bold"
       >
-        двухдневный терапевтический выезд
+        двухдневный интенсивный выезд
       </ScrollReveal>
 
       {/* Мотивационная часть — мельче, светлее, акценты на 3 якорях */}
