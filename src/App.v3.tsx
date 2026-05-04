@@ -2174,7 +2174,7 @@ const SystemProblem = () => {
   const notItems = ["в тебе", "в отношениях", "в работе", "в усталости"];
   const systemFormsLines = ["твои решения", "отношения", "состояния", "повторы"];
   return (
-    <section className="bg-navy text-white relative overflow-hidden pt-20 md:pt-28 pb-0 min-h-[100vh]">
+    <section id="system" className="scroll-mt-20 bg-navy text-white relative overflow-hidden pt-20 md:pt-28 pb-0 min-h-[100vh]">
       {/* Лёгкий шум */}
       <div aria-hidden className="absolute inset-0 opacity-[0.035] pointer-events-none z-[1]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", backgroundSize: "180px 180px" }} />
 
@@ -2323,7 +2323,7 @@ const SystemProblem = () => {
 
 
 const WhatHappens = () => (
-  <section data-section="what-happens" className="py-16 md:py-24 bg-cream relative overflow-hidden">
+  <section id="what-happens" data-section="what-happens" className="scroll-mt-20 py-16 md:py-24 bg-cream relative overflow-hidden">
     <div className="max-w-7xl w-full mx-auto px-6 md:px-12">
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {/* Видео слева */}
@@ -2735,7 +2735,7 @@ const FinalBlockBackground = () => {
 };
 
 const FinalBlock = ({ onOpenModal }: any) => (
-  <section className="relative bg-navy text-white overflow-hidden">
+  <section id="final" className="scroll-mt-20 relative bg-navy text-white overflow-hidden">
     <FinalBlockBackground />
 
     <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 py-32 md:py-44">
